@@ -1,9 +1,6 @@
 package coroutines
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class FirstRunBlocking {
     companion object {
@@ -90,6 +87,24 @@ class FifthRunBlocking {
             job.cancel()
             job.join()
             /* Couldn't figure out the role of join method after cancel method. The result is same with or without the join method */
+            println("main: Now I can quit")
+        }
+    }
+}
+
+class SixthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch {
+                repeat(1000) { i ->
+                    println("job: I am sleeping $i ...")
+                    delay(500L)
+                }
+            }
+            delay(1300L)
+            println("main: I am tired of waiting")
+            job.cancelAndJoin()
             println("main: Now I can quit")
         }
     }
