@@ -64,13 +64,33 @@ class FourthRunBlocking {
                 doWork()
             }
             delay(1200L)
-            job.join() // waits for te child coroutine to complete
+            job.join() // waits for the child coroutine to complete
             println("World!!!")
         }
 
         private suspend fun doWork() {
             delay(1000L)
             println("Hello")
+        }
+    }
+}
+
+class FifthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch {
+                repeat(1000) { i ->
+                    println("job: I am sleeping $i ...")
+                    delay(500L)
+                }
+            }
+            delay(1300L)
+            println("main: I am tired of waiting")
+            job.cancel()
+            job.join()
+            /* Couldn't figure out the role of join method after cancel method. The result is same with or without the join method */
+            println("main: Now I can quit")
         }
     }
 }
