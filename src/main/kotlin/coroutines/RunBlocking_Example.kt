@@ -1,5 +1,6 @@
 package coroutines
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,8 +22,11 @@ class SecondRunBlocking {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
+            println("Name of the thread in runBlocking: ${Thread.currentThread()}")
             launch {
-                /* You cannot call doWork method*/
+                println("Name of the thread in launch: ${Thread.currentThread()}")
+                /* You cannot call doWork method if it is a non-static method */
+                /* */
                 doWork()
             }
             println("Hello")
