@@ -54,3 +54,23 @@ class ThirdRunBlocking {
         }
     }
 }
+
+class FourthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* launch is a child coroutine of runBlocking */
+            val job = launch {
+                doWork()
+            }
+            delay(1200L)
+            job.join() // waits for te child coroutine to complete
+            println("World!!!")
+        }
+
+        private suspend fun doWork() {
+            delay(1000L)
+            println("Hello")
+        }
+    }
+}
