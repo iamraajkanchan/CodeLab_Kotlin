@@ -110,7 +110,7 @@ class SixthRunBlocking {
     }
 }
 
-class SevenRunBlocking {
+class SeventhRunBlocking {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -127,6 +127,55 @@ class SevenRunBlocking {
             }
             delay(1300L)
             println("main: I am tired of waiting...")
+        }
+    }
+}
+
+class EighthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            val job = launch(Dispatchers.Default) {
+                var nextPrintTime = startTime
+                var i = 0
+                while (i < 10) {
+                    if (System.currentTimeMillis() > nextPrintTime) {
+                        println("job: I am sleeping ${i++}")
+                        nextPrintTime += 500L
+                    }
+                }
+            }
+            delay(1300L)
+            println("main: I am tired of waiting")
+            job.cancel()
+            /* Even after the cancel and join method the child coroutine continues to execute the line of cold within */
+            job.join()
+            println("main: Now I can quit")
+        }
+    }
+}
+
+class NinthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            val job = launch(Dispatchers.Default) {
+                var nextTime = startTime
+                var i = 0
+                /* HardCoded limit is replaced with the active state of Coroutine. */
+                while (isActive) {
+                    if (System.currentTimeMillis() > nextTime) {
+                        println("job: I am sleeping ${i++}")
+                        nextTime += 500L
+                    }
+                }
+            }
+            delay(1300L)
+            println("main: I am tired of waiting")
+            job.cancelAndJoin()
+            println("main: Now I can quit")
         }
     }
 }
