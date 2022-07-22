@@ -212,7 +212,10 @@ class SimpleCoroutineWithCancelAndJoinMethod {
     }
 }
 
-class SeventhRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt
+ * */
+class SimpleCoroutineWithFailedCancelAttempt {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -234,6 +237,17 @@ class SeventhRunBlocking {
             log("main: Now I ready to quit!!!")
         }
     }
+
+    /*
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2 ...
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting.
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 3 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 4 ...
+    Thread : Thread[main,5,main] :: message : main: Now I ready to quit!!!
+    */
 }
 
 class EighthRunBlocking {
@@ -254,8 +268,8 @@ class EighthRunBlocking {
             delay(1300L)
             println("main: I am tired of waiting")
             job.cancel()
-            /* Even after the cancel and join method the child coroutine continues to execute the line of cold within */
             job.join()
+            /* Even after the cancel and join method the child coroutine continues to execute the line of cold within */
             println("main: Now I can quit")
         }
     }
