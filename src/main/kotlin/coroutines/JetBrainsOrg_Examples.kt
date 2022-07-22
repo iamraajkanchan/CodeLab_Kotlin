@@ -152,23 +152,34 @@ class SimpleCoroutineWitJob {
     * */
 }
 
-class FifthRunBlocking {
+/**
+ * Cancellation and Timeouts : Cancelling Coroutine Execution
+ * */
+class SimpleCoroutineWithCancelAndJoinMethods {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val job = launch {
                 repeat(1000) { i ->
-                    println("job: I am sleeping $i ...")
+                    log("job: I am sleeping $i ...")
                     delay(500L)
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             job.cancel()
             job.join()
-            /* Couldn't figure out the role of join method after cancel method. The result is same with or without the join method */
-            println("main: Now I can quit")
+            /* join() is used to complete the termination of a coroutine */
+            log("main: Now I can quit")
         }
+        /*
+        * Output
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 0 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 1 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 2 ...
+        * Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+        * Thread : Thread[main,5,main] :: message : main: Now I can quit
+        * */
     }
 }
 
