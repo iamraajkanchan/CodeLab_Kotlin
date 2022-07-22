@@ -122,7 +122,10 @@ class ConcurrentCoroutineWithScopeBuilder {
     }
 }
 
-class FourthRunBlocking {
+/**
+ * Coroutines Basics | An explicit Job
+ * */
+class SimpleCoroutineWitJob {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -130,16 +133,23 @@ class FourthRunBlocking {
             val job = launch {
                 doWork()
             }
-            delay(1200L)
+            delay(1200L) // Completed First
             job.join() // waits for the child coroutine to complete
-            println("World!!!")
+            log("World!!!") // Completed Third
         }
 
         private suspend fun doWork() {
             delay(1000L)
-            println("Hello")
+            log("Hello") // Completed Second
         }
     }
+
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Hello
+    * Thread : Thread[main,5,main] :: message : World!!!
+    *
+    * */
 }
 
 class FifthRunBlocking {
@@ -190,13 +200,16 @@ class SeventhRunBlocking {
                 var i = 0
                 while (i < 5) {
                     if (System.currentTimeMillis() >= nextPrintTime) {
-                        println("job: I am sleeping ${i++} ...")
+                        log("job: I am sleeping ${i++} ...")
                         nextPrintTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting...")
+            log("main: I am tired of waiting.")
+            job.cancel()
+            job.join()
+            log("main: Now I ready to quit!!!")
         }
     }
 }
