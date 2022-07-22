@@ -326,35 +326,47 @@ class SimpleCoroutineCancelWithIsActive {
     *  */
 }
 
-class TenthRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable with isActive and cancel()
+ * */
+class SimpleCoroutineCancelWithIsActiveAndCancel {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val startTime = System.currentTimeMillis()
-            /* If launch the coroutine on Main thread, then the cancel() of the job doesn't work*/
+            /* If Main is the context of launch coroutine, then you can't cancel the job */
             val job = launch(Dispatchers.Default) {
                 var nextPrintTime = startTime
                 var i = 0
                 while (isActive) {
                     if (System.currentTimeMillis() > nextPrintTime) {
-                        println("job: I am sleeping ${i++}")
+                        log("job: I am sleeping ${i++}")
                         nextPrintTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
-            /* Cancels the coroutine without join() */
+            log("main: I am tired of waiting")
+            /* If you are using isActive to cancel a coroutine then you might not need join()  */
             job.cancel()
-            println("main: Now I can quit!!!")
+            log("main: Now I can quit!!!")
         }
     }
+
+    /*
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+    Thread : Thread[main,5,main] :: message : main: Now I can quit!!!
+    */
 }
 
 /**
- * Cancellation and Timeouts | Closing resources with finally.
+ * Cancellation and Timeouts : Closing resources with finally.
  * */
-class EleventhRunBlocking {
+class SimpleCoroutineCancelWithFinally {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
