@@ -373,15 +373,15 @@ class SimpleCoroutineCancelWithFinally {
             val job = launch {
                 try {
                     repeat(1000) {
-                        println("job: I am sleeping $it")
+                        log("job: I am sleeping $it")
                         delay(500L)
                     }
                 } finally {
-                    println("job: I am running finally")
+                    log("job: I am running finally")
                 }
             }
             delay(1300)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             // cancel() throws CancellationException. That is the reason why cancel() method needs join() method to cancel a coroutine.
             // job.cancel()
             /*
@@ -408,15 +408,14 @@ class SimpleCoroutineCancelWithFinally {
             job.cancelAndJoin()
             /*
             * Output of using job.cancelAndJoin() method
-            * job: I am sleeping 0
-            * job: I am sleeping 1
-            * job: I am sleeping 2
-            * main: I am tired of waiting
-            * job: I am running finally
-            * main: Now I can quit
-            *
+            Thread : Thread[main,5,main] :: message : job: I am sleeping 0
+            Thread : Thread[main,5,main] :: message : job: I am sleeping 1
+            Thread : Thread[main,5,main] :: message : job: I am sleeping 2
+            Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+            Thread : Thread[main,5,main] :: message : job: I am running finally
+            Thread : Thread[main,5,main] :: message : main: Now I can quit
             * */
-            println("main: Now I can quit")
+            log("main: Now I can quit")
         }
     }
 }
