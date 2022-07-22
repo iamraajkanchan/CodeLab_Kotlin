@@ -179,3 +179,26 @@ class NinthRunBlocking {
         }
     }
 }
+
+class TenthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            val job = launch {
+                var nextPrintTime = startTime
+                var i = 0
+                while (isActive) {
+                    if (System.currentTimeMillis() > nextPrintTime) {
+                        println("job: I am sleeping ${i++}")
+                        nextPrintTime += 500L
+                    }
+                }
+            }
+            delay(1300L)
+            println("main: I am tired of waiting")
+            job.cancel()
+            println("main: Now I can quit!!!")
+        }
+    }
+}
