@@ -204,3 +204,61 @@ class TenthRunBlocking {
         }
     }
 }
+
+/**
+ * Cancellation and Timeouts | Closing resources with finally.
+ * */
+class EleventhRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch {
+                try {
+                    repeat(1000) {
+                        println("job: I am sleeping $it")
+                        delay(500L)
+                    }
+                } finally {
+                    println("job: I am running finally")
+                }
+            }
+            delay(1300)
+            println("main: I am tired of waiting")
+            // cancel() throws CancellationException. That is the reason why cancel() method needs join() method to cancel a coroutine.
+            // job.cancel()
+            /*
+            * Output of using job.cancel()
+            * job: I am sleeping 0
+            * job: I am sleeping 1
+            * job: I am sleeping 2
+            * main: I am tired of waiting
+            * main: Now I can quit
+            * job: I am running finally // With this line of output it is confirmed that the coroutine is not cancelled.
+            *
+            * */
+            // job.join()
+            /*
+            * Output of using job.cancel() with job.join() method
+            * job: I am sleeping 0
+            * job: I am sleeping 1
+            * job: I am sleeping 2
+            * main: I am tired of waiting
+            * job: I am running finally
+            * main: Now I can quit
+            *
+            * */
+            job.cancelAndJoin()
+            /*
+            * Output of using job.cancelAndJoin() method
+            * job: I am sleeping 0
+            * job: I am sleeping 1
+            * job: I am sleeping 2
+            * main: I am tired of waiting
+            * job: I am running finally
+            * main: Now I can quit
+            *
+            * */
+            println("main: Now I can quit")
+        }
+    }
+}
