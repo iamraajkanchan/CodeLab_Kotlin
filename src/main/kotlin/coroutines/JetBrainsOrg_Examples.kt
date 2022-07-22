@@ -183,21 +183,32 @@ class SimpleCoroutineWithCancelAndJoinMethods {
     }
 }
 
-class SixthRunBlocking {
+/**
+ * Cancellation and Timeouts : Cancellation is Cooperative
+ * */
+class SimpleCoroutineWithCancelAndJoinMethod {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val job = launch {
                 repeat(1000) { i ->
-                    println("job: I am sleeping $i ...")
+                    log("job: I am sleeping $i ...")
                     delay(500L)
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             job.cancelAndJoin()
-            println("main: Now I can quit")
+            log("main: Now I can quit")
         }
+        /*
+        * Output
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 0 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 1 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 2 ...
+        * Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+        * Thread : Thread[main,5,main] :: message : main: Now I can quit
+        * */
     }
 }
 
