@@ -185,6 +185,7 @@ class TenthRunBlocking {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val startTime = System.currentTimeMillis()
+            /* If launch the coroutine on Main thread, then the cancel() of the job doesn't work*/
             val job = launch(Dispatchers.Default) {
                 var nextPrintTime = startTime
                 var i = 0
