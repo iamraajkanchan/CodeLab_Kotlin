@@ -51,7 +51,7 @@ class SimpleCoroutineWithScopeBuilder {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* If you don't use the launch coroutine then the doWorld() executes first */
+            /* doWorld() is called inside a child coroutine, so it is suspended to execute log("Hello") */
             launch {
                 doWorld()
             }
@@ -71,19 +71,23 @@ class SimpleCoroutineWithScopeBuilder {
     }
 }
 
-class ThirdExample {
+class SimpleCoroutineDefiningAdvantageOfChildCoroutine {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* As doWork is defined in the same thread i.e. main so the code inside doWork method is completed first and then println method is executed */
+            /* doWork() is called outside a child coroutine, so it is not suspended and executes log("World!!!") */
             doWork()
-            println("World!!!")
+            log("Hello")
         }
 
         private suspend fun doWork() {
             delay(1000L)
-            println("Hello")
+            log("World!!!")
         }
+        /*
+        * Thread : Thread[main,5,main] :: message : World!!!
+        * Thread : Thread[main,5,main] :: message : Hello
+        * */
     }
 }
 
