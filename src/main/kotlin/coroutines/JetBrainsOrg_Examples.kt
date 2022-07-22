@@ -213,9 +213,9 @@ class SimpleCoroutineWithCancelAndJoinMethod {
 }
 
 /**
- * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt
+ * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt with Cancel And Join Method
  * */
-class SimpleCoroutineWithFailedCancelAttempt {
+class SimpleCoroutineFailedCancelAttemptWithCancelJoin {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -234,6 +234,7 @@ class SimpleCoroutineWithFailedCancelAttempt {
             log("main: I am tired of waiting.")
             job.cancel()
             job.join()
+            /* cancel() and join() failed to stop the child coroutine */
             log("main: Now I ready to quit!!!")
         }
     }
@@ -250,7 +251,10 @@ class SimpleCoroutineWithFailedCancelAttempt {
     */
 }
 
-class EighthRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt with CancelAndJoin Method
+ * */
+class SimpleCoroutineFailedCancelAttemptWithCancelAndJoin {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -258,21 +262,31 @@ class EighthRunBlocking {
             val job = launch(Dispatchers.Default) {
                 var nextPrintTime = startTime
                 var i = 0
-                while (i < 10) {
+                while (i < 5) {
                     if (System.currentTimeMillis() > nextPrintTime) {
-                        println("job: I am sleeping ${i++}")
+                        log("job: I am sleeping ${i++}")
                         nextPrintTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
-            job.cancel()
-            job.join()
-            /* Even after the cancel and join method the child coroutine continues to execute the line of cold within */
-            println("main: Now I can quit")
+            log("main: I am tired of waiting")
+            job.cancelAndJoin()
+            /* Even the cancelAndJoin() failed to stop the child coroutine */
+            log("main: Now I can quit")
         }
     }
+    /*
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 3
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 4
+    Thread : Thread[main,5,main] :: message : main: Now I can quit
+    *
+    */
 }
 
 class NinthRunBlocking {
