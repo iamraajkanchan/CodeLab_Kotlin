@@ -185,7 +185,7 @@ class TenthRunBlocking {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val startTime = System.currentTimeMillis()
-            val job = launch {
+            val job = launch(Dispatchers.Default) {
                 var nextPrintTime = startTime
                 var i = 0
                 while (isActive) {
@@ -197,6 +197,7 @@ class TenthRunBlocking {
             }
             delay(1300L)
             println("main: I am tired of waiting")
+            /* Cancels the coroutine without join() */
             job.cancel()
             println("main: Now I can quit!!!")
         }
