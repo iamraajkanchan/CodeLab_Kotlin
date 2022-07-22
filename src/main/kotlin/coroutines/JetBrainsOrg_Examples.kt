@@ -289,7 +289,10 @@ class SimpleCoroutineFailedCancelAttemptWithCancelAndJoin {
     */
 }
 
-class NinthRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable with isActive
+ * */
+class SimpleCoroutineCancelWithIsActive {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -300,17 +303,27 @@ class NinthRunBlocking {
                 /* HardCoded limit is replaced with the active state of Coroutine. */
                 while (isActive) {
                     if (System.currentTimeMillis() > nextTime) {
-                        println("job: I am sleeping ${i++}")
+                        log("job: I am sleeping ${i++}")
                         nextTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             job.cancelAndJoin()
-            println("main: Now I can quit")
+            log("main: Now I can quit")
         }
     }
+    /*
+    *
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+    Thread : Thread[main,5,main] :: message : main: Now I can quit
+    *
+    *  */
 }
 
 class TenthRunBlocking {
