@@ -30,7 +30,7 @@ class SimpleCoroutineWithRefactoring {
             println("Name of the thread in runBlocking: ${Thread.currentThread()}")
             launch {
                 println("Name of the thread in launch: ${Thread.currentThread()}")
-                /* You cannot call doWork method if it is a non-static method */
+                /* You cannot call doWork() if it is a non-static method */
                 /* */
                 doWork()
             }
@@ -51,7 +51,7 @@ class SimpleCoroutineWithScopeBuilder {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* If you don't use the launch coroutine then the doWorld() executes first */
+            /* doWorld() is called inside a child coroutine, so it is suspended before completing */
             launch {
                 doWorld()
             }
@@ -71,23 +71,61 @@ class SimpleCoroutineWithScopeBuilder {
     }
 }
 
-class ThirdExample {
+/**
+ * Coroutines Basics | Scope Builder
+ * */
+class SimpleCoroutineDefiningAdvantageOfChildCoroutine {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* As doWork is defined in the same thread i.e. main so the code inside doWork method is completed first and then println method is executed */
+            /* doWork() is called outside a child coroutine, so it is completed first */
             doWork()
-            println("World!!!")
+            /* If you call doWork() inside a child coroutine, then it is suspended before completing */
+            log("Hello")
         }
 
         private suspend fun doWork() {
             delay(1000L)
-            println("Hello")
+            log("World!!!")
+        }
+        /*
+        * Thread : Thread[main,5,main] :: message : World!!!
+        * Thread : Thread[main,5,main] :: message : Hello
+        * */
+    }
+}
+
+/**
+ * Coroutines Basics | Scope Builder and Concurrency
+ * */
+class ConcurrentCoroutineWithScopeBuilder {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* doWork() is called outside a child coroutine, so it is completed first. */
+            doWork()
+            /* If you call doWork() inside a child coroutine, then it is suspended before completing */
+            log("Done")
+        }
+
+        private suspend fun doWork() = coroutineScope {
+            launch {
+                delay(1000L)
+                log("World 1")
+            }
+            launch {
+                delay(2000L)
+                log("World 2")
+            }
+            log("Hello")
         }
     }
 }
 
-class FourthRunBlocking {
+/**
+ * Coroutines Basics | An explicit Job
+ * */
+class SimpleCoroutineWitJob {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -95,57 +133,89 @@ class FourthRunBlocking {
             val job = launch {
                 doWork()
             }
-            delay(1200L)
+            delay(1200L) // Completed First
             job.join() // waits for the child coroutine to complete
-            println("World!!!")
+            log("World!!!") // Completed Third
         }
 
         private suspend fun doWork() {
             delay(1000L)
-            println("Hello")
+            log("Hello") // Completed Second
         }
     }
+
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Hello
+    * Thread : Thread[main,5,main] :: message : World!!!
+    *
+    * */
 }
 
-class FifthRunBlocking {
+/**
+ * Cancellation and Timeouts : Cancelling Coroutine Execution
+ * */
+class SimpleCoroutineWithCancelAndJoinMethods {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val job = launch {
                 repeat(1000) { i ->
-                    println("job: I am sleeping $i ...")
+                    log("job: I am sleeping $i ...")
                     delay(500L)
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             job.cancel()
             job.join()
-            /* Couldn't figure out the role of join method after cancel method. The result is same with or without the join method */
-            println("main: Now I can quit")
+            /* join() is used to complete the termination of a coroutine */
+            log("main: Now I can quit")
         }
+        /*
+        * Output
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 0 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 1 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 2 ...
+        * Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+        * Thread : Thread[main,5,main] :: message : main: Now I can quit
+        * */
     }
 }
 
-class SixthRunBlocking {
+/**
+ * Cancellation and Timeouts : Cancellation is Cooperative
+ * */
+class SimpleCoroutineWithCancelAndJoinMethod {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val job = launch {
                 repeat(1000) { i ->
-                    println("job: I am sleeping $i ...")
+                    log("job: I am sleeping $i ...")
                     delay(500L)
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
+            log("main: I am tired of waiting")
             job.cancelAndJoin()
-            println("main: Now I can quit")
+            log("main: Now I can quit")
         }
+        /*
+        * Output
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 0 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 1 ...
+        * Thread : Thread[main,5,main] :: message : job: I am sleeping 2 ...
+        * Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+        * Thread : Thread[main,5,main] :: message : main: Now I can quit
+        * */
     }
 }
 
-class SeventhRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt with Cancel And Join Method
+ * */
+class SimpleCoroutineFailedCancelAttemptWithCancelJoin {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -155,18 +225,36 @@ class SeventhRunBlocking {
                 var i = 0
                 while (i < 5) {
                     if (System.currentTimeMillis() >= nextPrintTime) {
-                        println("job: I am sleeping ${i++} ...")
+                        log("job: I am sleeping ${i++} ...")
                         nextPrintTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting...")
+            log("main: I am tired of waiting.")
+            job.cancel()
+            job.join()
+            /* cancel() and join() failed to stop the child coroutine */
+            log("main: Now I ready to quit!!!")
         }
     }
+
+    /*
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2 ...
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting.
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 3 ...
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 4 ...
+    Thread : Thread[main,5,main] :: message : main: Now I ready to quit!!!
+    */
 }
 
-class EighthRunBlocking {
+/**
+ * Cancellation and Timeouts : Making Computation code Cancellable - Failed Attempt with CancelAndJoin Method
+ * */
+class SimpleCoroutineFailedCancelAttemptWithCancelAndJoin {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -174,21 +262,31 @@ class EighthRunBlocking {
             val job = launch(Dispatchers.Default) {
                 var nextPrintTime = startTime
                 var i = 0
-                while (i < 10) {
+                while (i < 5) {
                     if (System.currentTimeMillis() > nextPrintTime) {
-                        println("job: I am sleeping ${i++}")
+                        log("job: I am sleeping ${i++}")
                         nextPrintTime += 500L
                     }
                 }
             }
             delay(1300L)
-            println("main: I am tired of waiting")
-            job.cancel()
-            /* Even after the cancel and join method the child coroutine continues to execute the line of cold within */
-            job.join()
-            println("main: Now I can quit")
+            log("main: I am tired of waiting")
+            job.cancelAndJoin()
+            /* Even the cancelAndJoin() failed to stop the child coroutine */
+            log("main: Now I can quit")
         }
     }
+    /*
+    * Output
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 0
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 1
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 2
+    Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 3
+    Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : job: I am sleeping 4
+    Thread : Thread[main,5,main] :: message : main: Now I can quit
+    *
+    */
 }
 
 class NinthRunBlocking {
