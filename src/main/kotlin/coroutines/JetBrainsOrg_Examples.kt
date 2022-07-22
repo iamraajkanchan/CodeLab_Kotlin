@@ -4,7 +4,10 @@ import kotlinx.coroutines.*
 
 fun log(message: String) = println("Thread : ${Thread.currentThread()} :: message : $message")
 
-class FirstRunBlocking {
+/**
+ * Coroutines Basics | Your First Coroutine
+ * */
+class SimpleCoroutine {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -17,7 +20,10 @@ class FirstRunBlocking {
     }
 }
 
-class SecondRunBlocking {
+/**
+ * Coroutines Basics | Extract Function Refactoring
+ * */
+class SimpleCoroutineWithRefactoring {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
@@ -38,7 +44,34 @@ class SecondRunBlocking {
     }
 }
 
-class ThirdRunBlocking {
+/**
+ * Coroutines Basics | Scope Builder
+ * */
+class SimpleCoroutineWithScopeBuilder {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* If you don't use the launch coroutine then the doWorld() executes first */
+            launch {
+                doWorld()
+            }
+            log("Hello")
+        }
+
+        private suspend fun doWorld() = coroutineScope {
+            delay(1000L)
+            log("World!!!")
+        }
+
+        /*
+        * Output
+        * Thread : Thread[main,5,main] :: message : Hello
+        * Thread : Thread[main,5,main] :: message : World!!!
+        * */
+    }
+}
+
+class ThirdExample {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
