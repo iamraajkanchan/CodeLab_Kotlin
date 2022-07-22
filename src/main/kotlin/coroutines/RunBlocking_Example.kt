@@ -2,6 +2,8 @@ package coroutines
 
 import kotlinx.coroutines.*
 
+fun log(message: String) = println("Thread : ${Thread.currentThread()} :: message : $message")
+
 class FirstRunBlocking {
     companion object {
         @JvmStatic
@@ -259,6 +261,46 @@ class EleventhRunBlocking {
             *
             * */
             println("main: Now I can quit")
+        }
+    }
+}
+
+/**
+ * Cancellation and Timeouts | Run NonCancellable block.
+ * */
+class TwelfthRunBlocking {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch {
+                try {
+                    repeat(1000) {
+                        log("job: I am sleeping $it")
+                        delay(500L)
+                    }
+                } finally {
+                    log("job: I am running finally inside")
+                    withContext(NonCancellable) {
+                        delay(3000L)
+                        log("job: I have delayed to process of cancellation by 3 seconds")
+                    }
+                }
+            }
+            delay(1300L)
+            log("main: I am tired of waiting")
+            job.cancelAndJoin()
+            log("main: Now I can quit")
+            /*
+            * Output
+            * Thread : Thread[main,5,main] :: message : job: I am sleeping 0
+            * Thread : Thread[main,5,main] :: message : job: I am sleeping 1
+            * Thread : Thread[main,5,main] :: message : job: I am sleeping 2
+            * Thread : Thread[main,5,main] :: message : main: I am tired of waiting
+            * Thread : Thread[main,5,main] :: message : job: I am running finally inside
+            * Thread : Thread[main,5,main] :: message : job: I have delayed to process of cancellation by 3 seconds
+            * Thread : Thread[main,5,main] :: message : main: Now I can quit
+            *
+            * */
         }
     }
 }
