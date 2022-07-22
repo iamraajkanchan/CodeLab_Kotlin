@@ -421,9 +421,9 @@ class SimpleCoroutineCancelWithFinally {
 }
 
 /**
- * Cancellation and Timeouts | Run NonCancellable block.
+ * Cancellation and Timeouts | Run NonCancellable block - withContext and NonCancellable
  * */
-class TwelfthRunBlocking {
+class DelayCoroutineCancellationWithContextAndNonCancellable {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
