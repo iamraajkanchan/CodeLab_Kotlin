@@ -30,7 +30,7 @@ class SimpleCoroutineWithRefactoring {
             println("Name of the thread in runBlocking: ${Thread.currentThread()}")
             launch {
                 println("Name of the thread in launch: ${Thread.currentThread()}")
-                /* You cannot call doWork method if it is a non-static method */
+                /* You cannot call doWork() if it is a non-static method */
                 /* */
                 doWork()
             }
@@ -51,7 +51,7 @@ class SimpleCoroutineWithScopeBuilder {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* doWorld() is called inside a child coroutine, so it is suspended to execute log("Hello") */
+            /* doWorld() is called inside a child coroutine, so it is suspended before completing */
             launch {
                 doWorld()
             }
@@ -71,12 +71,16 @@ class SimpleCoroutineWithScopeBuilder {
     }
 }
 
+/**
+ * Coroutines Basics | Scope Builder
+ * */
 class SimpleCoroutineDefiningAdvantageOfChildCoroutine {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            /* doWork() is called outside a child coroutine, so it is not suspended and executes log("World!!!") */
+            /* doWork() is called outside a child coroutine, so it is completed first */
             doWork()
+            /* If you call doWork() inside a child coroutine, then it is suspended before completing */
             log("Hello")
         }
 
@@ -88,6 +92,33 @@ class SimpleCoroutineDefiningAdvantageOfChildCoroutine {
         * Thread : Thread[main,5,main] :: message : World!!!
         * Thread : Thread[main,5,main] :: message : Hello
         * */
+    }
+}
+
+/**
+ * Coroutines Basics | Scope Builder and Concurrency
+ * */
+class ConcurrentCoroutineWithScopeBuilder {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* doWork() is called outside a child coroutine, so it is completed first. */
+            doWork()
+            /* If you call doWork() inside a child coroutine, then it is suspended before completing */
+            log("Done")
+        }
+
+        private suspend fun doWork() = coroutineScope {
+            launch {
+                delay(1000L)
+                log("World 1")
+            }
+            launch {
+                delay(2000L)
+                log("World 2")
+            }
+            log("Hello")
+        }
     }
 }
 
