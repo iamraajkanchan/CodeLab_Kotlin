@@ -935,3 +935,38 @@ class JobInContextIntroduction {
     * Thread : Thread[main,5,main] :: message : My job is BlockingCoroutine{Active}@5f8ed237
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Children of Coroutine
+ * */
+class ChildCoroutineIntroduction {
+    companion object{
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val parentCoroutine = launch {
+                launch(Job()) {
+                    log("job1: I run in my own Job and execute independently!")
+                    delay(1000)
+                    log("job1: I am not affected by the cancellation request on my parent coroutine")
+                }
+                launch {
+                    delay(100)
+                    log("job2: I am a child of the parentCoroutine")
+                    delay(1000)
+                    log("job2: I will not execute this line because my parent coroutine is cancelled")
+                }
+            }
+            delay(500) // Terminating a parent coroutine after 500ms
+            parentCoroutine.cancelAndJoin()
+            delay(1000) // Waiting for the independent job to complete.
+            log("main: Who has survived the cancellation request on parent coroutine")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : job1: I run in my own Job and execute independently!
+    * Thread : Thread[main,5,main] :: message : job2: I am a child of the parentCoroutine
+    * Thread : Thread[main,5,main] :: message : job1: I am not affected by the cancellation request on my parent coroutine
+    * Thread : Thread[main,5,main] :: message : main: Who has survived the cancellation request on parent coroutine
+    * */
+}
