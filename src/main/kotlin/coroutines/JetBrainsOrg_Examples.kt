@@ -656,3 +656,45 @@ class ConcurrentSuspendingFunctions {
     * functions ran concurrently to return the result.
     * */
 }
+
+/**
+ * Composing Suspending Functions : Lazily Started async
+ * */
+class LazyConcurrentSuspendingFunctions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val time = measureTimeMillis {
+                val one =
+                    async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulOne() }
+                val two =
+                    async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulTwo() }
+                /*
+                * Values used for start parameter of async or launch coroutine calls.
+                * DEFAULT -- immediately schedules coroutine for execution according to its context;
+                * LAZY -- starts coroutine lazily, only when it is needed;
+                * ATOMIC -- atomically (in a non-cancellable way) schedules coroutine for execution according to its context;
+                * UNDISPATCHED -- immediately executes coroutine until its first suspension point in the current thread.
+                */
+                one.start()
+                two.start()
+                /*
+                * If you don't call start() on 'two' variable then it's suspending function
+                * will execute sequentially.
+                * Output
+                * Thread : Thread[main,5,main] :: message : Result is 25
+                * Thread : Thread[main,5,main] :: message : Completed in 2143 ms
+                * */
+                log("Result is ${one.await() + two.await()}")
+            }
+            log("Completed in $time ms")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Result is 25
+    * Thread : Thread[main,5,main] :: message : Completed in 1138 ms
+    * As the system took less than 2 seconds to complete the task, it determines that both the suspending
+    * functions ran concurrently to return the result.
+    * */
+}
