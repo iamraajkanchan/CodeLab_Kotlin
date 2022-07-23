@@ -919,3 +919,19 @@ class JumpingThreadsIntroduction {
     * Thread : Thread[Context1,5,main] :: message : Ending Context1
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Job in the context
+ * */
+class JobInContextIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            log("My job is ${coroutineContext[Job]}")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : My job is BlockingCoroutine{Active}@5f8ed237
+    * */
+}
