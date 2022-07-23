@@ -761,3 +761,45 @@ class ConcurrentSuspendingFunctionsMergeWithMainRecommended {
     * Thread : Thread[main,5,main] :: message : Completed in 1039 ms
     * */
 }
+
+/**
+ * Composing Suspending Functions : Structured concurrency with async - Exception
+ * */
+class ConcurrentSuspendingFunctionsMergeWithMainException {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val time = measureTimeMillis {
+                try {
+                    failedConcurrentSum()
+                } catch (e: ArithmeticException) {
+                    log("Computation failed with Arithmetic Exception")
+                }
+            }
+            log("Completed in $time ms")
+        }
+
+        private suspend fun failedConcurrentSum(): Int = coroutineScope {
+            val one = async<Int> {
+                try {
+                    delay(Long.MAX_VALUE)
+                    42
+                } finally {
+                    log("First Child was cancelled")
+                }
+            }
+            val two = async<Int> {
+                log("Second child throws an exception")
+                throw ArithmeticException()
+            }
+            one.await() + two.await()
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Second child throws an exception
+    * Thread : Thread[main,5,main] :: message : First Child was cancelled
+    * Thread : Thread[main,5,main] :: message : Computation failed with Arithmetic Exception
+    * Thread : Thread[main,5,main] :: message : Completed in 26 ms
+    * */
+}
