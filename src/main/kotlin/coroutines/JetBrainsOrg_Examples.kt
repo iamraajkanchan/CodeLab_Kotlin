@@ -565,3 +565,35 @@ class SimpleCoroutineAsynchronousTimeoutFailed {
     * As the output is not zero this means that creating a Resource object is creating a memory leak.
     * */
 }
+
+/**
+ * Cancellation and Timeout : Asynchronous Timeout and Resources - Success
+ * */
+class SimpleCoroutineAsynchronousTimeout {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runBlocking {
+                repeat(1000) {
+                    launch {
+                        var resource: Resource? = null
+                        try {
+                            withTimeout(60) {
+                                delay(50)
+                                resource = Resource()
+                            }
+                        } finally {
+                            resource?.close()
+                        }
+                    }
+                }
+            }
+            log("$acquired")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : 0
+    * As the timeout is zero this means that creating an object of Resource isn't create a memory leak.
+    * */
+}
