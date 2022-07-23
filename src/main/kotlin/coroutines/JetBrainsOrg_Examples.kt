@@ -613,11 +613,13 @@ class SynchronousSuspendingFunctions {
             }
             log("Completed in : $time")
         }
-        private suspend fun doSomethingUsefulOne(): Int {
+
+        suspend fun doSomethingUsefulOne(): Int {
             delay(1000L)
             return 12
         }
-        private suspend fun doSomethingUsefulTwo(): Int {
+
+        suspend fun doSomethingUsefulTwo(): Int {
             delay(1000L)
             return 13
         }
@@ -629,4 +631,21 @@ class SynchronousSuspendingFunctions {
     * As the system took more than 2 seconds to complete the task, it determines that both the suspending
     * functions ran sequentially to return the result.
     * */
+}
+
+/**
+ * Composing Suspending Functions : Concurrent using async
+ * */
+class ConcurrentSuspendingFunctions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val time = measureTimeMillis {
+                val one = async { SynchronousSuspendingFunctions.doSomethingUsefulOne() }
+                val two = async { SynchronousSuspendingFunctions.doSomethingUsefulTwo() }
+                log("Result is ${one.await() + two.await()}")
+            }
+            log("Completed in $time milliseconds")
+        }
+    }
 }
