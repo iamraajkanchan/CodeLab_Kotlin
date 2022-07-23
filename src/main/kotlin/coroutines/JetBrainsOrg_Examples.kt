@@ -698,3 +698,37 @@ class LazyConcurrentSuspendingFunctions {
     * functions ran concurrently to return the result.
     * */
 }
+
+/**
+ * Composing Suspending Functions : Async-Style Functions - Not Recommended.
+ * */
+class ConcurrentSuspendingFunctionsMergeWithMainDiscouraged {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val time = measureTimeMillis {
+                val one = somethingUsefulOneAsync()
+                val two = somethingUsefulTwoAsync()
+                runBlocking {
+                    log("Result is ${one.await() + two.await()}")
+                }
+            }
+            log("Completed in $time ms")
+        }
+
+        @OptIn(DelicateCoroutinesApi::class)
+        private fun somethingUsefulOneAsync() = GlobalScope.async {
+            SynchronousSuspendingFunctions.doSomethingUsefulOne()
+        }
+
+        @OptIn(DelicateCoroutinesApi::class)
+        private fun somethingUsefulTwoAsync() = GlobalScope.async {
+            SynchronousSuspendingFunctions.doSomethingUsefulTwo()
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Result is 25
+    * Thread : Thread[main,5,main] :: message : Completed in 1156 ms
+    * */
+}
