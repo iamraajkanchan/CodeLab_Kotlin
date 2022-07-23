@@ -461,7 +461,7 @@ class DelayCoroutineCancellationWithContextAndNonCancellable {
 }
 
 /**
- * Cancellation and Timeouts : Timeout - Failed Attempt
+ * Cancellation and Timeouts : Timeout - Fail
  * */
 class SimpleCoroutineFailedTimeout {
     companion object {
@@ -489,4 +489,39 @@ class SimpleCoroutineFailedTimeout {
 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
 	at java.base/java.lang.Thread.run(Thread.java:833)
     * */
+}
+
+/**
+ * Cancellation and Timeout : Timeout - Success
+ * */
+class SimpleCoroutineTimeout {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val result = withTimeoutOrNull(1300L) {
+                repeat(1000) {
+                    log("I am sleeping $it...")
+                    delay(500)
+                }
+                "Done" // Returning a value from withTimeoutOrNull to the result variable.
+            }
+            log("Result is $result")
+        }
+
+        /*
+        * If the repeat block completes in time.
+        * Output
+        * Thread : Thread[main,5,main] :: message : I am sleeping 0...
+        * Thread : Thread[main,5,main] :: message : Result is Done
+        * */
+
+        /*
+        * If the repeat block doesn't complete in time.
+        * Output
+        Thread : Thread[main,5,main] :: message : I am sleeping 0...
+        Thread : Thread[main,5,main] :: message : I am sleeping 1...
+        Thread : Thread[main,5,main] :: message : I am sleeping 2...
+        Thread : Thread[main,5,main] :: message : Result is null
+        * */
+    }
 }
