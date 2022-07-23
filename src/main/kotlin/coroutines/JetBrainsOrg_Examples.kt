@@ -648,4 +648,11 @@ class ConcurrentSuspendingFunctions {
             log("Completed in $time milliseconds")
         }
     }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Result is 25
+    * Thread : Thread[main,5,main] :: message : Completed in 1086 milliseconds
+    * As the system took less than 2 seconds to complete the task, it determines that both the suspending
+    * functions ran concurrently to return the result.
+    * */
 }
