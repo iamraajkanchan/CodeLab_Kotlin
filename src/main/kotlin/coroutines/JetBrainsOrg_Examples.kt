@@ -459,3 +459,34 @@ class DelayCoroutineCancellationWithContextAndNonCancellable {
         }
     }
 }
+
+/**
+ * Cancellation and Timeouts : Timeout - Failed Attempt
+ * */
+class SimpleCoroutineFailedTimeout {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* Close the coroutine in 1300 milliseconds */
+            withTimeout(1300L) {
+                repeat(1000) {
+                    log("I am sleeping $it")
+                    delay(500L)
+                }
+            }
+        }
+    }
+    /*
+    * Output
+    Thread : Thread[main,5,main] :: message : I am sleeping 0
+    Thread : Thread[main,5,main] :: message : I am sleeping 1
+    Thread : Thread[main,5,main] :: message : I am sleeping 2
+    Exception in thread "main" kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 1300 ms
+	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:184)
+	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:154)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:508)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:284)
+	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+    * */
+}
