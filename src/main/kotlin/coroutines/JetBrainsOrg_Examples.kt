@@ -890,3 +890,32 @@ class DebugWithLogging {
     Thread : Thread[main,5,main] :: message : Result is 30
     */
 }
+
+/**
+ * Coroutine Context with Dispatchers : Jumping between Threads
+ * */
+class JumpingThreadsIntroduction {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) {
+            newSingleThreadContext("Context1").use { context1 ->
+                newSingleThreadContext("Context2").use { context2 ->
+                    runBlocking(context1) {
+                        log("Starting Context1")
+                        withContext(context2) {
+                            log("Working In Context2")
+                        }
+                        log("Ending Context1")
+                    }
+                }
+            }
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[Context1,5,main] :: message : Starting Context1
+    * Thread : Thread[Context2,5,main] :: message : Working In Context2
+    * Thread : Thread[Context1,5,main] :: message : Ending Context1
+    * */
+}
