@@ -862,3 +862,31 @@ class ConfinedAndUnconfinedDispatcherDifference {
     * Thread : Thread[main,5,main] :: message : Ending Coroutine with Main Dispatcher
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Debugging using logging
+ * */
+class DebugWithLogging {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val a = async<Int> {
+                delay(1000L)
+                log("I am computing a piece of the answer")
+                10
+            }
+            val b = async<Int> {
+                delay(1500L)
+                log("I am computing b piece of the answer")
+                20
+            }
+            log("Result is ${a.await() + b.await()}")
+        }
+    }
+    /*
+    * Output
+    Thread : Thread[main,5,main] :: message : I am computing a piece of the answer
+    Thread : Thread[main,5,main] :: message : I am computing b piece of the answer
+    Thread : Thread[main,5,main] :: message : Result is 30
+    */
+}
