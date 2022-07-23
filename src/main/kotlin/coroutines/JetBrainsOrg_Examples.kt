@@ -819,7 +819,7 @@ class DispatchersAndThreadsIntroduction {
                 log("IO Dispatcher")
             }
             launch(Dispatchers.Unconfined) {
-                log("Unconfimed Dispatcher")
+                log("Unconfined Dispatcher")
             }
             launch(newSingleThreadContext("MyOwnThread")) {
                 log("Main MyOwnThread")
@@ -828,9 +828,37 @@ class DispatchersAndThreadsIntroduction {
     }
     /*
     * Output
-    * Thread : Thread[main,5,main] :: message : Unconfimed Dispatcher
+    * Thread : Thread[main,5,main] :: message : Unconfined Dispatcher
     * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : IO Dispatcher
     * Thread : Thread[MyOwnThread,5,main] :: message : Main MyOwnThread
     * Thread : Thread[main,5,main] :: message : Default Dispatcher
+    * */
+}
+
+/**
+ * Coroutine Context and Dispatchers : Confined vs Unconfined Dispatchers
+ * */
+class ConfinedAndUnconfinedDispatcherDifference {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            launch(Dispatchers.Unconfined) {
+                log("Starting Coroutine with Unconfined Dispatcher")
+                delay(1000L)
+                log("Ending Coroutine with Unconfined Dispatcher")
+            }
+            launch {
+                log("Starting Coroutine with Main Dispatcher")
+                delay(1000L)
+                log("Ending Coroutine with Main Dispatcher")
+            }
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Starting Coroutine with Unconfined Dispatcher
+    * Thread : Thread[main,5,main] :: message : Starting Coroutine with Main Dispatcher
+    * Thread : Thread[kotlinx.coroutines.DefaultExecutor,5,main] :: message : Ending Coroutine with Unconfined Dispatcher
+    * Thread : Thread[main,5,main] :: message : Ending Coroutine with Main Dispatcher
     * */
 }
