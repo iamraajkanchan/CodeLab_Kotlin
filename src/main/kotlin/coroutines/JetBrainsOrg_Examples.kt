@@ -803,3 +803,34 @@ class ConcurrentSuspendingFunctionsMergeWithMainException {
     * Thread : Thread[main,5,main] :: message : Completed in 26 ms
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Dispatchers and Threads
+ * */
+class DispatchersAndThreadsIntroduction {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            launch {
+                log("Default Dispatcher")
+            }
+            launch(Dispatchers.IO) {
+                log("IO Dispatcher")
+            }
+            launch(Dispatchers.Unconfined) {
+                log("Unconfimed Dispatcher")
+            }
+            launch(newSingleThreadContext("MyOwnThread")) {
+                log("Main MyOwnThread")
+            }
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Unconfimed Dispatcher
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : IO Dispatcher
+    * Thread : Thread[MyOwnThread,5,main] :: message : Main MyOwnThread
+    * Thread : Thread[main,5,main] :: message : Default Dispatcher
+    * */
+}
