@@ -525,3 +525,43 @@ class SimpleCoroutineTimeout {
         * */
     }
 }
+
+/**
+ * Cancellation and Timeout : Asynchronous Timeout and Resources - Failed
+ * */
+
+private var acquired: Int = 0
+
+class Resource {
+    init {
+        acquired++
+    }
+
+    fun close() = acquired--
+}
+
+class SimpleCoroutineAsynchronousTimeoutFailed {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runBlocking {
+                repeat(1000) {
+                    launch {
+                        /* Trying to get an object of Resource after 60 seconds */
+                        val resource = withTimeout(60) {
+                            delay(50)
+                            Resource()
+                        }
+                        resource.close()
+                    }
+                }
+            }
+            log("$acquired")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : 94
+    * As the output is not zero this means that creating a Resource object is creating a memory leak.
+    * */
+}
