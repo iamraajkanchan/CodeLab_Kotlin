@@ -1000,3 +1000,33 @@ class ParentalResponsibilityIntroduction {
     * Thread : Thread[main,5,main] :: message : main: Now processing of the request coroutine is complete
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Naming Coroutines for Debugging.
+ * */
+class NamingCoroutine {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            log("main: Started")
+            val v1 = async(CoroutineName("v1Coroutine")) {
+                delay(1000L)
+                log("async job :: v1 :: Working in v1Coroutine")
+                252
+            }
+            val v2 = async(CoroutineName("v2Coroutine")) {
+                delay(1000L)
+                log("async job :: v2 :: Working in v2Coroutine")
+                6
+            }
+            log("The answer of v1/v2 is ${v1.await() / v2.await()}")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : main: Started
+    * Thread : Thread[main,5,main] :: message : async job :: v1 :: Working in v1Coroutine
+    * Thread : Thread[main,5,main] :: message : async job :: v2 :: Working in v2Coroutine
+    * Thread : Thread[main,5,main] :: message : The answer of v1/v2 is 42
+    * */
+}
