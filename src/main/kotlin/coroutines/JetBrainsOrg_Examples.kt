@@ -940,7 +940,7 @@ class JobInContextIntroduction {
  * Coroutine Context and Dispatchers : Children of Coroutine
  * */
 class ChildCoroutineIntroduction {
-    companion object{
+    companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val parentCoroutine = launch {
@@ -968,5 +968,35 @@ class ChildCoroutineIntroduction {
     * Thread : Thread[main,5,main] :: message : job2: I am a child of the parentCoroutine
     * Thread : Thread[main,5,main] :: message : job1: I am not affected by the cancellation request on my parent coroutine
     * Thread : Thread[main,5,main] :: message : main: Who has survived the cancellation request on parent coroutine
+    * */
+}
+
+/**
+ * Coroutine Context and Dispatchers : Parental Responsibilities
+ * */
+class ParentalResponsibilityIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val request = launch {
+                repeat(3) {
+                    launch {
+                        delay((it + 1) * 200L)
+                        log("job$it: Coroutine $it is done")
+                    }
+                }
+                log("I am done and, I don't explicitly join my children")
+            }
+            request.join()
+            log("main: Now processing of the request coroutine is complete")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : I am done and, I don't explicitly join my children
+    * Thread : Thread[main,5,main] :: message : job0: Coroutine 0 is done
+    * Thread : Thread[main,5,main] :: message : job1: Coroutine 1 is done
+    * Thread : Thread[main,5,main] :: message : job2: Coroutine 2 is done
+    * Thread : Thread[main,5,main] :: message : main: Now processing of the request coroutine is complete
     * */
 }
