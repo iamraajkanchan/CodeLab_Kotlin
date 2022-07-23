@@ -1,6 +1,7 @@
 package coroutines
 
 import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
 fun log(message: String) = println("Thread : ${Thread.currentThread()} :: message : $message")
 
@@ -595,5 +596,37 @@ class SimpleCoroutineAsynchronousTimeout {
     * Output
     * Thread : Thread[main,5,main] :: message : 0
     * As the timeout is zero this means that creating an object of Resource isn't create a memory leak.
+    * */
+}
+
+/**
+ * Composing Suspending Functions : Sequential by default
+ * */
+class SynchronousSuspendingFunctions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val time = measureTimeMillis {
+                val one = doSomethingUsefulOne()
+                val two = doSomethingUsefulTwo()
+                log("Result is ${one + two}")
+            }
+            log("Completed in : $time")
+        }
+        private suspend fun doSomethingUsefulOne(): Int {
+            delay(1000L)
+            return 12
+        }
+        private suspend fun doSomethingUsefulTwo(): Int {
+            delay(1000L)
+            return 13
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Result is 25
+    * Thread : Thread[main,5,main] :: message : Completed in : 2048
+    * As the system took more than 2 seconds to complete the task, it determines that both the suspending
+    * functions ran sequentially to return the result.
     * */
 }
