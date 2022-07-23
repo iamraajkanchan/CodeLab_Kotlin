@@ -732,3 +732,32 @@ class ConcurrentSuspendingFunctionsMergeWithMainDiscouraged {
     * Thread : Thread[main,5,main] :: message : Completed in 1156 ms
     * */
 }
+
+/**
+ * Composing Suspending Functions : Structured concurrency with Async - Recommended
+ * */
+class ConcurrentSuspendingFunctionsMergeWithMainRecommended {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val time = measureTimeMillis {
+                log("Result is ${concurrentSum()}")
+            }
+            log("Completed in $time ms")
+        }
+
+        /* Here you can't define the context of coroutine. */
+        private suspend fun concurrentSum(): Int = coroutineScope<Int> {
+            log("Running from coroutineScope")
+            val one = async { SynchronousSuspendingFunctions.doSomethingUsefulOne() }
+            val two = async { SynchronousSuspendingFunctions.doSomethingUsefulTwo() }
+            one.await() + two.await()
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Running from coroutineScope
+    * Thread : Thread[main,5,main] :: message : Result is 25
+    * Thread : Thread[main,5,main] :: message : Completed in 1039 ms
+    * */
+}
