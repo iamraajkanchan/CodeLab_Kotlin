@@ -665,10 +665,8 @@ class LazyConcurrentSuspendingFunctions {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking<Unit> {
             val time = measureTimeMillis {
-                val one =
-                    async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulOne() }
-                val two =
-                    async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulTwo() }
+                val one = async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulOne() }
+                val two = async(start = CoroutineStart.LAZY) { SynchronousSuspendingFunctions.doSomethingUsefulTwo() }
                 /*
                 * Values used for start parameter of async or launch coroutine calls.
                 * DEFAULT -- immediately schedules coroutine for execution according to its context;
@@ -1028,5 +1026,23 @@ class NamingCoroutine {
     * Thread : Thread[main,5,main] :: message : async job :: v1 :: Working in v1Coroutine
     * Thread : Thread[main,5,main] :: message : async job :: v2 :: Working in v2Coroutine
     * Thread : Thread[main,5,main] :: message : The answer of v1/v2 is 42
+    * */
+}
+
+/**
+ * Coroutine Context and Dispatchers : Combining Context Elements
+ * */
+class CombineContextElements {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            launch(Dispatchers.Default + CoroutineName("Test")) {
+                log("Working in Test Coroutine")
+            }
+        }
+    }
+    /*
+    * Output
+    *
     * */
 }
