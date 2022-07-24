@@ -215,3 +215,24 @@ class MapIntermediateOperator {
     * response 3
     * */
 }
+
+/**
+ * Asynchronous Flow - Intermediate Flow Operators - Transform Operator
+ * */
+class TransformIntermediateOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..3).asFlow().transform { request ->
+                emit("Making request $request")
+                emit(performRequest(request))
+            }
+            println("Done")
+        }
+
+        private suspend fun performRequest(request: Int): String {
+            delay(1000L)
+            return "response $request"
+        }
+    }
+}
