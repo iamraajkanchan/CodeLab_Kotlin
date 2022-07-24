@@ -236,3 +236,32 @@ class TransformIntermediateOperator {
         }
     }
 }
+
+/**
+ * Asynchronous Flow - Intermediate Flow Operators - Size Limiting Operators
+ * */
+class SizeLimitingIntermediateOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            numbers().take(2).collect { value -> println(value) }
+        }
+
+        private fun numbers(): Flow<Int> = flow {
+            try {
+                emit(1)
+                emit(2)
+                println("This line will not execute")
+                emit(3)
+            } finally {
+                print("Finally in numbers method")
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * Finally in numbers method
+    * */
+}
