@@ -1043,6 +1043,47 @@ class CombineContextElements {
     }
     /*
     * Output
-    *
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Working in Test Coroutine
+    * */
+}
+
+/**
+ * Coroutine Context and Dispatchers : Coroutine Scope
+ * */
+class Activity {
+    private val mainScope = CoroutineScope(Dispatchers.Default + CoroutineName("ActivityScope"))
+    fun destroy() {
+        mainScope.cancel()
+    }
+
+    fun doSomething() {
+        repeat(10) { i ->
+            mainScope.launch {
+                delay((i + 1) * 200L)
+                log("Coroutine $i is done")
+            }
+        }
+    }
+}
+
+class CoroutineScopeIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val activity = Activity()
+            activity.doSomething()
+            log("Coroutines Launched")
+            delay(500L)
+            log("Destroying Activity")
+            activity.destroy()
+            delay(1000L)
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Coroutines Launched
+    * Thread : Thread[DefaultDispatcher-worker-2,5,main] :: message : Coroutine 0 is done
+    * Thread : Thread[DefaultDispatcher-worker-2,5,main] :: message : Coroutine 1 is done
+    * Thread : Thread[main,5,main] :: message : Destroying Activity
     * */
 }
