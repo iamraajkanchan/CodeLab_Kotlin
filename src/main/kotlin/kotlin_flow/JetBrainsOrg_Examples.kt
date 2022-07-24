@@ -1,5 +1,6 @@
 package kotlin_flow
 
+import coroutines.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -199,8 +200,7 @@ class MapIntermediateOperator {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
-            (1..3).asFlow().map { request -> performRequest(request) }
-                .collect { response -> println(response) }
+            (1..3).asFlow().map { request -> performRequest(request) }.collect { response -> println(response) }
         }
 
         private suspend fun performRequest(request: Int): String {
@@ -314,5 +314,32 @@ class SequentialFlowIntroduction {
     * Mapping 4
     * Collecting Mapped 4
     * Filtering 5
+    * */
+}
+
+/**
+ * Asynchronous Flow - Flow Context - Introduction
+ * */
+class FlowContextIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().collect { value -> log("Collected $value") }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            log("Simple Flow Started")
+            for (i in 1..3) {
+                delay(1000L)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Simple Flow Started
+    * Thread : Thread[main,5,main] :: message : Collected 1
+    * Thread : Thread[main,5,main] :: message : Collected 2
+    * Thread : Thread[main,5,main] :: message : Collected 3
     * */
 }
