@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
  * Asynchronous Flow : Representing multiple values - List - You can use List if there is no delay
@@ -140,5 +141,37 @@ class ColdFlowProperty {
     * Calling collect again...
     * Flow Started
     * 123 // If you don't call the collect method this line won't print
+    * */
+}
+
+/**
+ * Asynchronous Flow - Flow cancellation basics
+ * */
+class FlowCancellationBasics {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            /* A flow gets cancelled when the timeout inside the flow gets expired */
+            withTimeoutOrNull(250L) {
+                simple().collect { value -> println(value) }
+            }
+            println("Done")
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(100L)
+                println("Emitting $i")
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * 1
+    * Emitting 2
+    * 2
+    * Done
     * */
 }
