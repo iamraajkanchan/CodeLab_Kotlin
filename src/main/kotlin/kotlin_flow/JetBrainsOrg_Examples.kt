@@ -282,3 +282,37 @@ class ReduceTerminalFlowOperator {
     * 55
     * */
 }
+
+/**
+ * Asynchronous Flow : Flows are Sequential - Each emitted value is processed by all the intermediate
+ * operators from upstream to downstream and is then delivered to the terminal operator after.
+ * */
+class SequentialFlowIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..5).asFlow().filter {
+                println("Filtering $it")
+                it % 2 == 0
+            }.map {
+                println("Mapping $it")
+                "Mapped $it"
+            }.collect { value ->
+                delay(500L)
+                println("Collecting $value")
+            }
+        }
+    }
+    /*
+    * Output
+    * Filtering 1
+    * Filtering 2
+    * Mapping 2
+    * Collecting Mapped 2
+    * Filtering 3
+    * Filtering 4
+    * Mapping 4
+    * Collecting Mapped 4
+    * Filtering 5
+    * */
+}
