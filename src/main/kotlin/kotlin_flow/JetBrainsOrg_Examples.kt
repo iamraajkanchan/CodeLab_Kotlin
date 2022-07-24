@@ -2,13 +2,11 @@ package kotlin_flow
 
 import coroutines.log
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.yield
-import java.util.concurrent.Flow
 
 /**
  * Asynchronous Flow : Representing multiple values - List - You can use List if there is no delay
@@ -90,7 +88,7 @@ class StreamWithFlows {
             simple().collect { println(it) }
         }
 
-        private fun simple(): kotlinx.coroutines.flow.Flow<Int> = flow {
+        private fun simple(): Flow<Int> = flow {
             for (i in 1..3) {
                 delay(100L)
                 emit(i)
@@ -105,5 +103,42 @@ class StreamWithFlows {
     * 2
     * I am not blocked 3
     * 3
+    * */
+}
+
+/**
+ * Asynchronous Flow : Flows are cold - If you don't call the collect() method on flow the flow won't run.
+ * */
+class ColdFlowProperty {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            println("Calling simple function")
+            val flow = simple()
+            println("Calling collect...")
+            flow.collect { value -> print(value) }
+            println()
+            println("Calling collect again...")
+            flow.collect { value -> print(value) }
+            println()
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            println("Flow Started")
+            for (i in 1..3) {
+                delay(1000L)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Calling simple function
+    * Calling collect...
+    * Flow Started
+    * 123 // If you don't call the collect method this line won't print
+    * Calling collect again...
+    * Flow Started
+    * 123 // If you don't call the collect method this line won't print
     * */
 }
