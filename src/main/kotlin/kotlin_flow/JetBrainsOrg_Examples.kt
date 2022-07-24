@@ -1,11 +1,7 @@
 package kotlin_flow
 
-import coroutines.log
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
@@ -193,5 +189,29 @@ class AsFlowIntroduction {
     /*
     * Output
     * 123
+    * */
+}
+
+/**
+ * Asynchronous Flow : Intermediate Flow Operators - Map Operator
+ * */
+class MapIntermediateOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..3).asFlow().map { request -> performRequest(request) }
+                .collect { response -> println(response) }
+        }
+
+        private suspend fun performRequest(request: Int): String {
+            delay(1000L)
+            return "response $request"
+        }
+    }
+    /*
+    * Output
+    * response 1
+    * response 2
+    * response 3
     * */
 }
