@@ -1,11 +1,8 @@
 package kotlin_flow
 
 import coroutines.log
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 
 /**
  * Asynchronous Flow : Representing multiple values - List - You can use List if there is no delay
@@ -341,5 +338,31 @@ class FlowContextIntroduction {
     * Thread : Thread[main,5,main] :: message : Collected 1
     * Thread : Thread[main,5,main] :: message : Collected 2
     * Thread : Thread[main,5,main] :: message : Collected 3
+    * */
+}
+
+/**
+ * Asynchronous Flow - Wrong emission withContext - Throws Error
+ * */
+class WrongEmissionIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().collect { value -> println(value) }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            // The wrong way to change context for CPU-consuming code in flow builder.
+            withContext(Dispatchers.Default) {
+                for (i in 1..3) {
+                    delay(1000L) // Pretend we are computing it in CPU-consuming way.
+                    emit(i) // Emit next value
+                }
+            }
+        }
+    }
+    /*
+    * Output
+    * Throws Exception
     * */
 }
