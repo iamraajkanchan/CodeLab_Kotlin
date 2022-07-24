@@ -265,3 +265,20 @@ class SizeLimitingIntermediateOperator {
     * Finally in numbers method
     * */
 }
+
+/**
+ * Asynchronous Flow - Terminal Flow Operators - Reduce
+ * */
+class ReduceTerminalFlowOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val sum = (1..10).asFlow().reduce { accumulator, value -> accumulator + value }
+            println(sum)
+        }
+    }
+    /*
+    * Output
+    * 55
+    * */
+}
