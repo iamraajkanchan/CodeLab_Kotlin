@@ -1087,3 +1087,33 @@ class CoroutineScopeIntroduction {
     * Thread : Thread[main,5,main] :: message : Destroying Activity
     * */
 }
+
+/**
+ * Coroutine Context and Dispatchers : Thread-Local data -
+ * This feature is basically used to pass data from one coroutine to another coroutine.
+ * */
+class ThreadLocalIntroduction {
+    companion object {
+        private val threadLocal = ThreadLocal<String>()
+
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            threadLocal.set("main")
+            log("Pre-main, Thread Local Value : ${threadLocal.get()}")
+            val job = launch(Dispatchers.Default + threadLocal.asContextElement("launch")) {
+                log("Launch Started, Thread Local Value : ${threadLocal.get()}")
+                yield()
+                log("After yield, Thread Local Value : ${threadLocal.get()}")
+            }
+            job.join()
+            log("Post Main")
+        }
+    }
+    /*
+    * Output
+    * Thread : Thread[main,5,main] :: message : Pre-main, Thread Local Value : main
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Launch Started, Thread Local Value : launch
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : After yield, Thread Local Value : launch
+    * Thread : Thread[main,5,main] :: message : Post Main
+    * */
+}
