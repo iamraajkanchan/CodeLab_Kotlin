@@ -3,6 +3,7 @@ package kotlin_flow
 import coroutines.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -173,5 +174,24 @@ class FlowCancellationBasics {
     * Emitting 2
     * 2
     * Done
+    * */
+}
+
+/**
+ * Asynchronous Flow : Flow Builders - asFlow
+ * */
+class AsFlowIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..3).asFlow().collect { value ->
+                delay(1000L)
+                print(value)
+            }
+        }
+    }
+    /*
+    * Output
+    * 123
     * */
 }
