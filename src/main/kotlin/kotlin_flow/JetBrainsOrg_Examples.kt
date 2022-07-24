@@ -2,8 +2,13 @@ package kotlin_flow
 
 import coroutines.log
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.yield
+import java.util.concurrent.Flow
 
 /**
  * Asynchronous Flow : Representing multiple values - List - You can use List if there is no delay
@@ -66,5 +71,39 @@ class StreamWithSuspendingFunctions {
     /*
     * Output
     * 12345
+    * */
+}
+
+/**
+ * Asynchronous Flow : Representing Multiple Values - Flows
+ * */
+class StreamWithFlows {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            launch {
+                for (k in 1..3) {
+                    println("I am not blocked $k")
+                    delay(100L)
+                }
+            }
+            simple().collect { println(it) }
+        }
+
+        private fun simple(): kotlinx.coroutines.flow.Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(100L)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * I am not blocked 1
+    * 1
+    * I am not blocked 2
+    * 2
+    * I am not blocked 3
+    * 3
     * */
 }
