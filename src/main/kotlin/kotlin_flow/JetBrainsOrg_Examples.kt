@@ -342,7 +342,7 @@ class FlowContextIntroduction {
 }
 
 /**
- * Asynchronous Flow - Wrong emission withContext - Throws Error
+ * Asynchronous Flow - Flow Context - Wrong emission withContext - Throws Error
  * */
 class WrongEmissionIntroduction {
     companion object {
@@ -364,5 +364,34 @@ class WrongEmissionIntroduction {
     /*
     * Output
     * Throws Exception
+    * */
+}
+
+/**
+ * Asynchronous Flow - Flow Context - flowOn Operator
+ * */
+class FlowOnOperatorIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().collect { value -> log("Collected $value") }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(500L)
+                log("Emitting $i")
+                emit(i)
+            }
+        }.flowOn(Dispatchers.Default)
+    }
+    /*
+    * Output
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Emitting 1
+    * Thread : Thread[main,5,main] :: message : Collected 1
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Emitting 2
+    * Thread : Thread[main,5,main] :: message : Collected 2
+    * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Emitting 3
+    * Thread : Thread[main,5,main] :: message : Collected 3
     * */
 }
