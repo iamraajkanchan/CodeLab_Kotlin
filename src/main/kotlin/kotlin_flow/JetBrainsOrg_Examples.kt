@@ -721,3 +721,38 @@ class TryCatchInCollectorExample {
     * Caught java.lang.IllegalStateException: Collected 2
     * */
 }
+
+/**
+ * Asynchronous Flow : Flow Exceptions - Emitter try and catch - This is better try catch then the try catch on Collector
+ * */
+class TryCatchInEmitterExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            try {
+                simple().collect { value -> println(value) }
+            } catch (e: Throwable) {
+                println("Caught $e")
+            }
+        }
+
+        private fun simple(): Flow<String> = flow {
+            for (i in 1..3) {
+                println("Emitting $i")
+                emit(i)
+            }
+        }.map { value ->
+            check(value <= 1) {
+                "Crashed on $value"
+            }
+            "Emitted $value"
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * Emitted 1
+    * Emitting 2
+    * Caught java.lang.IllegalStateException: Crashed on 2
+    * */
+}
