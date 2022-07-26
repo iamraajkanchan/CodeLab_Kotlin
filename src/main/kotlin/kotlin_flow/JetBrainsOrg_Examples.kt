@@ -460,3 +460,35 @@ class WithBufferCollector {
     * Completed in 2161 ms
     * */
 }
+
+/**
+ * Asynchronous Flow - Buffering - Conflate
+ * */
+class ConflateExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val time = measureTimeMillis {
+                simple().conflate().collect { value ->
+                    delay(500L)
+                    println(value)
+                }
+            }
+            println("Completed in $time")
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(500L)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Completed in 2155 ms
+    * */
+}
