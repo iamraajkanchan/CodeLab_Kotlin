@@ -3,6 +3,7 @@ package kotlin_flow
 import coroutines.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlin.system.measureTimeMillis
 
 /**
  * Asynchronous Flow : Representing multiple values - List - You can use List if there is no delay
@@ -393,5 +394,37 @@ class FlowOnOperatorIntroduction {
     * Thread : Thread[main,5,main] :: message : Collected 2
     * Thread : Thread[DefaultDispatcher-worker-1,5,main] :: message : Emitting 3
     * Thread : Thread[main,5,main] :: message : Collected 3
+    * */
+}
+
+/**
+ * Asynchronous Flow : Buffering - Without Using Buffer
+ * */
+class WithoutBufferExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val time = measureTimeMillis {
+                simple().collect { value ->
+                    delay(500L)
+                    println(value)
+                }
+            }
+            println("Completed in $time ms")
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(500L)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Completed in 3177 ms
     * */
 }
