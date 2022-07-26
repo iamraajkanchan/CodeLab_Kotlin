@@ -428,3 +428,35 @@ class WithoutBufferExample {
     * Completed in 3177 ms
     * */
 }
+
+/**
+ * Asynchronous Flow : Buffering - With Buffer Collector
+ * */
+class WithBufferCollector {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val time = measureTimeMillis {
+                simple().buffer().collect { value ->
+                    delay(500L)
+                    println(value)
+                }
+            }
+            println("Completed in $time ms")
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(500)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Completed in 2161 ms
+    * */
+}
