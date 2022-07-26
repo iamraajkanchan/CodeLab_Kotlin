@@ -526,7 +526,7 @@ class CollectLatestExample {
 }
 
 /**
- * Composing Multiple Flows - Zip Operator
+ * Asynchronous Flow : Composing Multiple Flows - Zip Operator
  * */
 class ZipOperatorExample {
     companion object {
@@ -542,5 +542,28 @@ class ZipOperatorExample {
     * 1 -> one
     * 2 -> two
     * 3 -> three
+    * */
+}
+
+/**
+ * Asynchronous Flow : Composing Multiple Forms - Zip vs Combine Operator
+ * */
+class CompareZipOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val numbers = (1..3).asFlow().onEach { delay(300L) }
+            val string = flowOf("one", "two", "three").onEach { delay(400L) }
+            val startTime = System.currentTimeMillis()
+            numbers.zip(string) { a, b -> "$a -> $b" }.collect { value ->
+                println("Collected $value in ${System.currentTimeMillis() - startTime} ms")
+            }
+        }
+    }
+    /*
+    * Output
+    * Collected 1 -> one in 453 ms
+    * Collected 2 -> two in 858 ms
+    * Collected 3 -> three in 1272 ms
     * */
 }
