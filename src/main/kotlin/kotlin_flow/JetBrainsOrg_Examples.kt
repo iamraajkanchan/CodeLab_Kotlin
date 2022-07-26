@@ -602,7 +602,7 @@ class FlatMapConcatOperatorExample {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val startTime = System.currentTimeMillis()
-            (1..3).asFlow().flatMapConcat { requestFlow(it) }.collect { value ->
+            (1..3).asFlow().onEach { delay(100L) }.flatMapConcat { requestFlow(it) }.collect { value ->
                 println("Collected $value in ${System.currentTimeMillis() - startTime} ms")
             }
         }
@@ -615,11 +615,42 @@ class FlatMapConcatOperatorExample {
     }
     /*
     * Output
-    * Collected 1 First in 28 ms
-    * Collected 1 Second in 544 ms
-    * Collected 2 First in 545 ms
-    * Collected 2 Second in 1058 ms
-    * Collected 3 First in 1058 ms
-    * Collected 3 Second in 1573 ms
+    * Collected 1 First in 174 ms
+    * Collected 1 Second in 676 ms
+    * Collected 2 First in 786 ms
+    * Collected 2 Second in 1299 ms
+    * Collected 3 First in 1408 ms
+    * Collected 3 Second in 1913 ms
+    * */
+}
+
+/**
+ * Asynchronous Flow - Flattening Flows - flatMapMerge Operator
+ * */
+class FlatMapMergerOperator {
+    companion object {
+        @OptIn(FlowPreview::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            (1..3).asFlow().onEach { delay(100L) }.flatMapMerge { requestFlow(it) }.collect { value ->
+                println("Collecting $value in ${System.currentTimeMillis() - startTime} ms")
+            }
+        }
+
+        private fun requestFlow(i: Int): Flow<String> = flow {
+            emit("$i First")
+            delay(500L)
+            emit("$i Second")
+        }
+    }
+    /*
+    * Output
+    * Collecting 1 First in 201 ms
+    * Collecting 2 First in 292 ms
+    * Collecting 3 First in 402 ms
+    * Collecting 1 Second in 714 ms
+    * Collecting 2 Second in 792 ms
+    * Collecting 3 Second in 920 ms
     * */
 }
