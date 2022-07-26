@@ -595,6 +595,7 @@ class CombineOperatorExample {
 
 /**
  * Asynchronous Flow - Flattening Flows - flatMapConcat Operator
+ * Reference - https://www.youtube.com/watch?v=WV_PYm8A4aQ
  * */
 class FlatMapConcatOperatorExample {
     companion object {
@@ -626,6 +627,7 @@ class FlatMapConcatOperatorExample {
 
 /**
  * Asynchronous Flow - Flattening Flows - flatMapMerge Operator
+ * Reference - https://www.youtube.com/watch?v=WV_PYm8A4aQ
  * */
 class FlatMapMergerOperator {
     companion object {
@@ -657,6 +659,7 @@ class FlatMapMergerOperator {
 
 /**
  * Asynchronous Flow : Flattening Flows - flatMapLatest
+ * Reference - https://www.youtube.com/watch?v=WV_PYm8A4aQ
  * */
 class FlatMapLatestExample {
     companion object {
@@ -680,5 +683,41 @@ class FlatMapLatestExample {
     * Collecting 2 First in 371 ms
     * Collecting 3 First in 489 ms
     * Collecting 3 Second in 1003 ms
+    * */
+}
+
+/**
+ * Asynchronous Flow : Flow Exceptions - Collector try and catch
+ * */
+class TryCatchInCollectorExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            try {
+                simple().collect { value ->
+                    println(value)
+                    check(value <= 1) {
+                        "Collected $value"
+                    }
+                }
+            } catch (e: Throwable) {
+                println("Caught $e")
+            }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                println("Emitting $i")
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * 1
+    * Emitting 2
+    * 2
+    * Caught java.lang.IllegalStateException: Collected 2
     * */
 }
