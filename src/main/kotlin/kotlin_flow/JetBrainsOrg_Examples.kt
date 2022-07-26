@@ -492,3 +492,35 @@ class ConflateExample {
     * Completed in 2155 ms
     * */
 }
+
+/**
+ * Asynchronous Flow - Buffering - CollectLatest
+ * */
+class CollectLatestExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val time = measureTimeMillis {
+                simple().collectLatest { value ->
+                    delay(500)
+                    println(value)
+                }
+            }
+            println("Completed in $time")
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                delay(500)
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Completed in 2169 ms
+    * */
+}
