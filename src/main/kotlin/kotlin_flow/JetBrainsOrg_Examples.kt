@@ -592,3 +592,34 @@ class CombineOperatorExample {
     * Collected 3 -> three in 1298 ms
     * */
 }
+
+/**
+ * Asynchronous Flow - Flattening Flows - flatMapConcat Operator
+ * */
+class FlatMapConcatOperatorExample {
+    companion object {
+        @OptIn(FlowPreview::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            (1..3).asFlow().flatMapConcat { requestFlow(it) }.collect { value ->
+                println("Collected $value in ${System.currentTimeMillis() - startTime} ms")
+            }
+        }
+
+        private fun requestFlow(i: Int): Flow<String> = flow {
+            emit("$i First")
+            delay(500L)
+            emit("$i Second")
+        }
+    }
+    /*
+    * Output
+    * Collected 1 First in 28 ms
+    * Collected 1 Second in 544 ms
+    * Collected 2 First in 545 ms
+    * Collected 2 Second in 1058 ms
+    * Collected 3 First in 1058 ms
+    * Collected 3 Second in 1573 ms
+    * */
+}
