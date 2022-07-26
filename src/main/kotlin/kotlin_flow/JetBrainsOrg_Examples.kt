@@ -567,3 +567,28 @@ class CompareZipOperator {
     * Collected 3 -> three in 1272 ms
     * */
 }
+
+/**
+ * Asynchronous Flow - Composing Multiple Flows - Combine Operator
+ * */
+class CombineOperatorExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val numbers = (1..3).asFlow().onEach { delay(300L) }
+            val string = flowOf("one", "two", "three").onEach { delay(400L) }
+            val startTime = System.currentTimeMillis()
+            numbers.combine(string) { a, b -> "$a -> $b" }.collect { value ->
+                println("Collected $value in ${System.currentTimeMillis() - startTime} ms")
+            }
+        }
+    }
+    /*
+    * Output
+    * Collected 1 -> one in 487 ms
+    * Collected 2 -> one in 691 ms
+    * Collected 2 -> two in 893 ms
+    * Collected 3 -> two in 1001 ms
+    * Collected 3 -> three in 1298 ms
+    * */
+}
