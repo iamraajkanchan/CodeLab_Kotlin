@@ -524,3 +524,23 @@ class CollectLatestExample {
     * Completed in 2169 ms
     * */
 }
+
+/**
+ * Composing Multiple Flows - Zip Operator
+ * */
+class ZipOperatorExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val numbers = (1..3).asFlow()
+            val string = flowOf("one", "two", "three")
+            numbers.zip(string) { a, b -> "$a -> $b" }.collect { value -> println(value) }
+        }
+    }
+    /*
+    * Output
+    * 1 -> one
+    * 2 -> two
+    * 3 -> three
+    * */
+}
