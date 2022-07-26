@@ -654,3 +654,31 @@ class FlatMapMergerOperator {
     * Collecting 3 Second in 920 ms
     * */
 }
+
+/**
+ * Asynchronous Flow : Flattening Flows - flatMapLatest
+ * */
+class FlatMapLatestExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val startTime = System.currentTimeMillis()
+            (1..3).asFlow().onEach { delay(100L) }.flatMapLatest { requestFlow(it) }.collect { value ->
+                println("Collecting $value in ${System.currentTimeMillis() - startTime} ms")
+            }
+        }
+
+        private fun requestFlow(i: Int): Flow<String> = flow {
+            emit("$i First")
+            delay(500L)
+            emit("$i Second")
+        }
+    }
+    /*
+    * Output
+    * Collecting 1 First in 251 ms
+    * Collecting 2 First in 371 ms
+    * Collecting 3 First in 489 ms
+    * Collecting 3 Second in 1003 ms
+    * */
+}
