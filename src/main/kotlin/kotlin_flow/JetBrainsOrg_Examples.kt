@@ -928,3 +928,26 @@ class OnCompletionWithCatchExample {
     * Done
     * */
 }
+
+/**
+ * Asynchronous Flow : Flow Exception - Successful Completion - Throws Error
+ * */
+class SuccessfulCompletionExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().onCompletion { cause -> println("Flow completed with $cause") }.collect { value ->
+                check(value <= 1) { "Crashed on $value" }
+                println(value)
+            }
+        }
+
+        private fun simple() = (1..3).asFlow()
+    }
+    /*
+    * Output
+    * 1
+    * Flow completed with java.lang.IllegalStateException: Crashed on 2
+    * Error message from system.
+    * */
+}
