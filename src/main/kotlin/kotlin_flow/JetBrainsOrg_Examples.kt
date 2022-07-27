@@ -820,3 +820,29 @@ class TransparentCatchExample {
     * */
 }
 
+/**
+ * Asynchronous Flow : Exception Transparency - Catching Declaratively - Using Check in onEach operator
+ * */
+class CatchingDeclarativelyExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().onEach { value -> check(value <= 1) { "Crashed on $value" } }.catch { e -> println("Caught $e") }
+                .collect { value -> println(value) }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                println("Emitting $i")
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * 1
+    * Emitting 2
+    * Caught java.lang.IllegalStateException: Crashed on 2
+    * */
+}
