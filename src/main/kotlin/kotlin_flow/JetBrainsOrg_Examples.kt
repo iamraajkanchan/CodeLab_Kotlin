@@ -965,4 +965,33 @@ class CollectWithOnEachOperator {
 
         private fun events(): Flow<Int> = (1..3).asFlow().onEach { delay(300L) }
     }
+    /*
+    * Output
+    * Events 1
+    * Events 2
+    * Events 3
+    * Done
+    * */
+}
+
+/**
+ * Asynchronous Flow - Launching Flow - launchIn Operator
+ * */
+class LaunchInOperatorExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            events().onEach { event -> println("Events $event") }.launchIn(this)
+            println("Done")
+        }
+
+        private fun events(): Flow<Int> = (1..3).asFlow().onEach { delay(300L) }
+    }
+    /*
+    * Output
+    * Done
+    * Events 1
+    * Events 2
+    * Events 3
+    * */
 }
