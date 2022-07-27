@@ -995,3 +995,36 @@ class LaunchInOperatorExample {
     * Events 3
     * */
 }
+
+/**
+ * Asynchronous Flow - Flow Cancellation Checks - cancel() operator
+ * */
+class CancelFlowUsingCancelOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            foo().collect { value ->
+                if (value == 3) cancel()
+                println(value)
+            }
+        }
+
+        private fun foo(): Flow<Int> = flow {
+            for (i in 1..5) {
+                println("Emitting $i")
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * 1
+    * Emitting 2
+    * 2
+    * Emitting 3
+    * 3
+    * Emitting 4
+    * Error message from the system
+    * */
+}
