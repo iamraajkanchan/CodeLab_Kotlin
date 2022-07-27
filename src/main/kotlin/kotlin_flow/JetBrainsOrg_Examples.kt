@@ -756,3 +756,36 @@ class TryCatchInEmitterExample {
     * Caught java.lang.IllegalStateException: Crashed on 2
     * */
 }
+
+/**
+ * Asynchronous Flow - Exception Transparency - Catch Operator Introduction
+ * */
+class CatchOperatorIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().catch { e -> emit("Caught $e") }.collect { value ->
+                println(value)
+            }
+        }
+
+        private fun simple(): Flow<String> = flow {
+            for (i in 1..3) {
+                println("Emitting $i")
+                emit(i)
+            }
+        }.map { value ->
+            check(value <= 1) {
+                "Crashed on $value"
+            }
+            "String $value"
+        }
+    }
+    /*
+    * Output
+    * Emitting 1
+    * String 1
+    * Emitting 2
+    * Caught java.lang.IllegalStateException: Crashed on 2
+    * */
+}
