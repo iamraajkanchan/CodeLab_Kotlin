@@ -1052,3 +1052,25 @@ class CancelWithoutCancellableOperatorOnIntRange {
     * Error message from the system
     * */
 }
+
+/**
+ * Asynchronous Flow - Making busy flow cancellable - cancellable Operator with Int Range
+ * */
+class CancelWithCancellableOperatorOnIntRange() {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..5).asFlow().cancellable().collect { value ->
+                if (value == 3) cancel()
+                println(value)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Error message from the system
+    * */
+}
