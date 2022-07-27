@@ -875,3 +875,28 @@ class ImperativeFinallyBlockExample {
     * Done
     * */
 }
+
+/**
+ * Asynchronous Flow - Flow Completion - Declarative Handling - onCompletion Operator
+ **/
+class DeclarativeHandlingExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().onCompletion { println("Done") }.collect { value -> println(value) }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Done
+    * */
+}
