@@ -846,3 +846,32 @@ class CatchingDeclarativelyExample {
     * Caught java.lang.IllegalStateException: Crashed on 2
     * */
 }
+
+/**
+ * Asynchronous Flow - Flow Completion - Imperative finally block
+ * */
+class ImperativeFinallyBlockExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            try {
+                simple().collect { value -> println(value) }
+            } finally {
+                println("Done")
+            }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            for (i in 1..3) {
+                emit(i)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * Done
+    * */
+}
