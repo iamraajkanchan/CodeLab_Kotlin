@@ -663,6 +663,7 @@ class FlatMapMergerOperator {
  * */
 class FlatMapLatestExample {
     companion object {
+        @OptIn(ExperimentalCoroutinesApi::class)
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val startTime = System.currentTimeMillis()
