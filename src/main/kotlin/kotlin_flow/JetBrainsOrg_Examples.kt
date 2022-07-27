@@ -900,3 +900,31 @@ class DeclarativeHandlingExample {
     * Done
     * */
 }
+
+/**
+ * Asynchronous Flow - Flow Completion - Declarative Handling - onCompletion with catch operator
+ * */
+class OnCompletionWithCatchExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            simple().onCompletion { cause -> if (cause != null) println("Flow completed exceptionally") else println("Done") }
+                .catch { _ -> println("Caught Exception") }.collect { value -> println(value) }
+        }
+
+        private fun simple(): Flow<Int> = flow {
+            emit(1)
+            throw java.lang.RuntimeException()
+        }
+    }
+    /*
+    * Output - With Exception
+    * 1
+    * Flow completed exceptionally
+    * Caught Exception
+    *
+    * Output - Without Exception
+    * 1
+    * Done
+    * */
+}
