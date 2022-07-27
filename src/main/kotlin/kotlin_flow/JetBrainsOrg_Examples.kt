@@ -1028,3 +1028,27 @@ class CancelFlowUsingCancelOperator {
     * Error message from the system
     * */
 }
+
+/**
+ * Asynchronous Flow - Making busy flow cancellable - without cancellable Operator with Int Range
+ * */
+class CancelWithoutCancellableOperatorOnIntRange {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            (1..5).asFlow().collect { value ->
+                if (value == 3) cancel()
+                println(value)
+            }
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * 4 (Overrides the request to cancel the flow)
+    * 5 (Overrides the request to cancel the flow)
+    * Error message from the system
+    * */
+}
