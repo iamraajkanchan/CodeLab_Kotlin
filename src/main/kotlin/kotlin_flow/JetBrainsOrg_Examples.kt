@@ -951,3 +951,18 @@ class SuccessfulCompletionExample {
     * Error message from system.
     * */
 }
+
+/**
+ * Asynchronous Flow - Launching Flow - Using onEach to collect the event
+ * */
+class CollectWithOnEachOperator {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            events().onEach { event -> println("Events $event") }.collect()
+            println("Done")
+        }
+
+        private fun events(): Flow<Int> = (1..3).asFlow().onEach { delay(300L) }
+    }
+}
