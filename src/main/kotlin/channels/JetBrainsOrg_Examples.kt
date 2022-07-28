@@ -120,3 +120,32 @@ class PipelinesIntroduction {
     * 1 - 4 - 9 - 16 - 25 - 36 - 49 - 64 - 81 - 100 - Done
     * */
 }
+
+/**
+ * Channels - Prime numbers with Pipeline
+ * */
+class PipeLineForPrimeNumbers {
+    companion object {
+        @JvmStatic
+        fun main(array: Array<String>) = runBlocking {
+            val numbers = produceFrom(2)
+            val primeNumbers = filter(numbers)
+            repeat(5) {
+                println(primeNumbers.receive())
+            }
+            println("Done")
+            coroutineContext.cancelChildren()
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun CoroutineScope.produceFrom(start: Int) = produce<Int> {
+            var x = start
+            while (true) send(x++)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun CoroutineScope.filter(numbers: ReceiveChannel<Int>): ReceiveChannel<Int> = produce {
+            for (x in numbers) if (x % 2 != 0) send(x)
+        }
+    }
+}
