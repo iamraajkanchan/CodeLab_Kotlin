@@ -148,4 +148,13 @@ class PipeLineForPrimeNumbers {
             for (x in numbers) if (x % 2 != 0) send(x)
         }
     }
+    /*
+    * Output
+    * 3
+    * 5
+    * 7
+    * 9
+    * 11
+    * Done
+    * */
 }
