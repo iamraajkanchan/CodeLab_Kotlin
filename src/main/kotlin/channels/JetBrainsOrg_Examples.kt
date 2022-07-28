@@ -1,16 +1,13 @@
 package channels
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 /**
- * Channel - Channel Basics
+ * Channels - Channel Basics
  * */
 class ChannelIntroduction {
     companion object {
@@ -38,7 +35,7 @@ class ChannelIntroduction {
 }
 
 /**
- * Channel - Closing and Iteration over channels
+ * Channels - Closing and Iteration over channels
  * */
 class ClosingAndIterationOverChannels {
     companion object {
@@ -64,7 +61,7 @@ class ClosingAndIterationOverChannels {
 }
 
 /**
- * Channel - Build Channel Producers
+ * Channels - Build Channel Producers
  * */
 class ChannelProducersIntroduction {
     companion object {
@@ -88,5 +85,38 @@ class ChannelProducersIntroduction {
     * 16
     * 25
     * Done
+    * */
+}
+
+/**
+ * Channels - Pipelines
+ * */
+class PipelinesIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val numbers = produceNumbers()
+            val squares = squares(numbers)
+            repeat(10) {
+                print("${squares.receive()} - ")
+            }
+            println("Done")
+            coroutineContext.cancelChildren()
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun CoroutineScope.produceNumbers() = produce<Int> {
+            var x = 1
+            while (true) send(x++)
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun CoroutineScope.squares(numbers: ReceiveChannel<Int>): ReceiveChannel<Int> = produce {
+            for (x in numbers) send(x * x)
+        }
+    }
+    /*
+    * Output
+    * 1 - 4 - 9 - 16 - 25 - 36 - 49 - 64 - 81 - 100 - Done
     * */
 }
