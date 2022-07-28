@@ -158,3 +158,24 @@ class PipeLineForPrimeNumbers {
     * Done
     * */
 }
+
+/**
+ * Channels - Pipeline with Iterator
+ * */
+class PipeLineWithIteratorIntroduction {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numbers = produceNumbers()
+            repeat(5) {
+                println(numbers.next())
+            }
+            println("Done")
+        }
+
+        private fun produceNumbers(): Iterator<Int> = iterator {
+            var x = 1
+            while (true) yield(x++)
+        }
+    }
+}
