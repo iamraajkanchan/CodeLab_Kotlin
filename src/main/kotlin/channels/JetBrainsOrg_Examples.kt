@@ -179,3 +179,47 @@ class PipeLineWithIteratorIntroduction {
         }
     }
 }
+
+/**
+ * Channels - Fan Out
+ * */
+class FanOutExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val numbers = produceNumbers()
+            repeat(5) { i ->
+                launchProcessor(i, numbers)
+            }
+            delay(1000L)
+            numbers.cancel()
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun CoroutineScope.produceNumbers(): ReceiveChannel<Int> = produce {
+            var x = 1
+            while (true) {
+                send(x++)
+                delay(100L)
+            }
+        }
+
+        private fun CoroutineScope.launchProcessor(id: Int, channel: ReceiveChannel<Int>) = launch {
+            for (msg in channel) {
+                println("Processor $id received $msg")
+            }
+        }
+    }
+    /*
+    * Output
+    * Processor 0 received 1
+    * Processor 0 received 2
+    * Processor 1 received 3
+    * Processor 2 received 4
+    * Processor 3 received 5
+    * Processor 4 received 6
+    * Processor 0 received 7
+    * Processor 1 received 8
+    * Processor 2 received 9
+    * */
+}
