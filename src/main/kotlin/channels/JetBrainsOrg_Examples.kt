@@ -31,3 +31,29 @@ class ChannelIntroduction {
     * Done
     * */
 }
+
+/**
+ * Channel - Closing and Iteration over channels
+ * */
+class ClosingAndIterationOverChannels {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val channel = Channel<Int>()
+            launch {
+                for (i in 1..5) channel.send(i * i)
+                channel.close()
+            }
+            for (y in channel) println(y)
+            println("Done")
+        }
+    }
+    /*
+    * 1
+    * 4
+    * 9
+    * 16
+    * 25
+    * Done
+    * */
+}
