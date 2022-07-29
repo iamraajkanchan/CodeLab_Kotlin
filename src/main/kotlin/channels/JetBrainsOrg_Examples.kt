@@ -317,3 +317,45 @@ class ChannelFairProperty {
     * pong Ball(hits=6)
     * */
 }
+
+/**
+ * Channels - Ticker Channel
+ * */
+class TickerChannelExample {
+    companion object {
+        @OptIn(ObsoleteCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val tickerChannel = ticker(100, 0)
+
+            var nextElement = withTimeoutOrNull(1) { tickerChannel.receive() }
+            println("Initial element is available immediately : $nextElement")
+
+            nextElement = withTimeoutOrNull(50) { tickerChannel.receive() }
+            println("Next element is not ready in 50ms : $nextElement")
+
+            nextElement = withTimeoutOrNull(60) { tickerChannel.receive() }
+            println("Next element is ready in 100ms: $nextElement")
+
+            println("Consumer pauses for 150ms")
+            delay(150)
+
+            nextElement = withTimeoutOrNull(1) { tickerChannel.receive() }
+            println("Next element is available immediately after large consumer delay : $nextElement")
+
+            nextElement = withTimeoutOrNull(60) { tickerChannel.receive() }
+            println("Next element is ready in 50ms after consume pause in 150ms: $nextElement")
+
+            tickerChannel.cancel()
+        }
+    }
+    /*
+    * Output
+    * Initial element is available immediately : kotlin.Unit
+    * Next element is not ready in 50ms : null
+    * Next element is ready in 100ms: kotlin.Unit
+    * Consumer pauses for 150ms
+    * Next element is available immediately after large consumer delay : kotlin.Unit
+    * Next element is ready in 50ms after consume pause in 150ms: kotlin.Unit
+    * */
+}
