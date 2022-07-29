@@ -229,7 +229,7 @@ class FanInExample {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val channel = Channel<String>()
-            launch { sendString(channel,"Chinki", 500) }
+            launch { sendString(channel, "Chinki", 500) }
             launch { sendString(channel, "Minki", 600) }
             repeat(6) {
                 println(channel.receive())
@@ -279,5 +279,41 @@ class BufferedChannelExample {
     * Sending 2
     * Sending 3
     * Sending 4
+    * */
+}
+
+/**
+ * Channels - Channels are fair
+ * */
+data class Ball(var hits: Int)
+class ChannelFairProperty {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val table = Channel<Ball>()
+            launch { player("ping", table) }
+            launch { player("pong", table) }
+            table.send(Ball(0))
+            delay(1000)
+            coroutineContext.cancelChildren()
+        }
+
+        private suspend fun player(name: String, table: Channel<Ball>) {
+            for (ball in table) {
+                ball.hits++
+                println("$name $ball")
+                delay(150L)
+                table.send(ball)
+            }
+        }
+    }
+    /*
+    * Output
+    * ping Ball(hits=1)
+    * pong Ball(hits=2)
+    * ping Ball(hits=3)
+    * pong Ball(hits=4)
+    * ping Ball(hits=5)
+    * pong Ball(hits=6)
     * */
 }
