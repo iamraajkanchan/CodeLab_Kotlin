@@ -1,10 +1,7 @@
 package channels
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.channels.*
 
 /**
  * Channels - Channel Basics
@@ -221,5 +218,38 @@ class FanOutExample {
     * Processor 0 received 7
     * Processor 1 received 8
     * Processor 2 received 9
+    * */
+}
+
+/**
+ * Channels - Fan In
+ * */
+class FanInExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val channel = Channel<String>()
+            launch { sendString(channel,"Chinki", 500) }
+            launch { sendString(channel, "Minki", 600) }
+            repeat(6) {
+                println(channel.receive())
+            }
+            coroutineContext.cancelChildren()
+        }
+
+        private suspend fun sendString(channel: SendChannel<String>, s: String, time: Long) {
+            while (true) {
+                delay(time)
+                channel.send(s)
+            }
+        }
+    }
+    /*
+    * Chinki
+    * Minki
+    * Chinki
+    * Minki
+    * Chinki
+    * Minki
     * */
 }
