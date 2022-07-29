@@ -253,3 +253,31 @@ class FanInExample {
     * Minki
     * */
 }
+
+/**
+ * Channels - Buffered Channels
+ * */
+class BufferedChannelExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val channel = Channel<Int>(4) // Setting buffer for this channel
+            val sender = launch {
+                repeat(10) {
+                    println("Sending $it")
+                    channel.send(it)
+                }
+            }
+            delay(1000)
+            sender.cancelAndJoin()
+        }
+    }
+    /*
+    * Output
+    * Sending 0
+    * Sending 1
+    * Sending 2
+    * Sending 3
+    * Sending 4
+    * */
+}
