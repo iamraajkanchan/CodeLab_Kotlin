@@ -298,3 +298,32 @@ class SupervisionScopeExample {
     * Caught an assertion error
     * */
 }
+
+/**
+ * Coroutine Exceptions Handling - Exceptions in supervised coroutines
+ * */
+class SupervisionScopeWithExceptions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                println("CoroutineExceptionHandler caught ${throwable.message} exception")
+            }
+            supervisorScope {
+                val child = launch(handler) {
+                    println("The child throws an exception")
+                    throw AssertionError()
+                }
+                println("The scope is completing")
+            }
+            println("The scope is completed")
+        }
+    }
+    /*
+    * Output
+    * The scope is completing
+    * The child throws an exception
+    * CoroutineExceptionHandler caught null exception
+    * The scope is completed
+    * */
+}
