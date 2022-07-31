@@ -262,3 +262,39 @@ class SupervisionJobExample {
     * The second child is cancelled because the supervisor got cancelled
     * */
 }
+
+/**
+ * Coroutine Exceptions Handling - Supervision Scope
+ * */
+class SupervisionScopeExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            try {
+                supervisorScope {
+                    val child = launch {
+                        try {
+                            println("The child is sleeping")
+                            delay(Long.MAX_VALUE)
+                        } finally {
+                            println("This child is cancelled")
+                        }
+                    }
+                    // Give your child a chance to execute and print using yield
+                    yield()
+                    println("Throwing an exception from the scope")
+                    throw AssertionError()
+                }
+            } catch (e: AssertionError) {
+                println("Caught an assertion error")
+            }
+        }
+    }
+    /*
+    * Output
+    * The child is sleeping
+    * Throwing an exception from the scope
+    * This child is cancelled
+    * Caught an assertion error
+    * */
+}
