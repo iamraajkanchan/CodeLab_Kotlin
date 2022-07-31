@@ -2,6 +2,7 @@ package exception
 
 import kotlinx.coroutines.*
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Coroutine Exceptions Handling - Exception Propagation
@@ -217,5 +218,47 @@ class CancellationExceptionExample {
     * Output
     * Rethrowing CancellationException with original cause
     * CoroutineExceptionHandler caught null exception
+    * */
+}
+
+/**
+ * Coroutine Exceptions Handling - Supervision - Supervision job - Exception is propagated only downwards
+ * */
+class SupervisionJobExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val superVisor = SupervisorJob()
+            with(CoroutineScope(coroutineContext + superVisor)) {
+                val handler = CoroutineExceptionHandler { _, throwable ->
+                    println("CoroutineExceptionHandler caught ${throwable.message} exception")
+                }
+                val firstChild = launch(handler) {
+                    println("The first child is failing")
+                    throw AssertionError("The first child is cancelled")
+                }
+                val secondChild = launch(handler) {
+                    firstChild.join()
+                    println("The first child is cancelled: ${firstChild.isCancelled}")
+                    try {
+                        delay(Long.MAX_VALUE)
+                    } finally {
+                        println("The second child is cancelled because the supervisor got cancelled")
+                    }
+                }
+                firstChild.join()
+                println("Cancelling the supervisor")
+                superVisor.cancel()
+                secondChild.join()
+            }
+        }
+    }
+    /*
+    * Output
+    * The first child is failing
+    * CoroutineExceptionHandler caught The first child is cancelled exception
+    * The first child is cancelled: true
+    * Cancelling the supervisor
+    * The second child is cancelled because the supervisor got cancelled
     * */
 }
