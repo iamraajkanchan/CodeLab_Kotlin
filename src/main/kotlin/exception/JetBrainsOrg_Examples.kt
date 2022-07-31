@@ -1,6 +1,7 @@
 package exception
 
 import kotlinx.coroutines.*
+import java.io.IOException
 
 /**
  * Coroutine Exceptions Handling - Exception Propagation
@@ -145,5 +146,40 @@ class CoroutineExceptionHandlerForParent {
     * Children are cancelled, but exception is not handled until all children terminate
     * The first child finished its non cancellable block
     * CoroutineExceptionHandler got null exception
+    * */
+}
+
+/**
+ * Coroutine Cancellations and Exceptions - Exceptions Aggregation - Additional exceptions (caused
+ * by the child coroutines) are attached to the first exceptions.
+ * */
+class ExceptionsAggregationWithHandler {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                println("CoroutineExceptionHandler caught ${throwable.message} exception")
+            }
+            val job = GlobalScope.launch(handler) {
+                launch {
+                    try {
+                        delay(Long.MAX_VALUE)
+                    } finally {
+                        throw ArithmeticException()
+                    }
+                }
+                launch {
+                    delay(100L)
+                    throw IOException()
+                }
+                delay(Long.MAX_VALUE)
+            }
+            job.join()
+        }
+    }
+    /*
+    * Output
+    * CoroutineExceptionHandler caught null exception
     * */
 }
