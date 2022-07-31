@@ -67,3 +67,39 @@ class CoroutineExceptionHandlerExample {
     * [exception.CoroutineExceptionHandlerExample$Companion$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1@17281e55, StandaloneCoroutine{Cancelling}@10431434, Dispatchers.Default] got exception null
     * */
 }
+
+/**
+ * Coroutine Exceptions Handling - Cancellation and Exceptions - Job.cancel() don't cancel a parent coroutine
+ * it does terminate the child coroutine.
+ * */
+class CancellationAndExceptionsExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch {
+                val child = launch {
+                    try {
+                        delay(Long.MAX_VALUE)
+                    } finally {
+                        println("Child is cancelled")
+                    }
+                }
+                yield() // Because delay value is not defined so to complete the delay you have to use yield
+                println("Cancelling Child")
+                child.cancelAndJoin()
+                println("Parent is not cancelled")
+            }
+            job.join()
+        }
+    }
+    /*
+    * Output - Without Yield
+    * Cancelling Child
+    * Parent is not cancelled
+    *
+    * Output - With Yield
+    * Cancelling Child
+    * Child is cancelled
+    * Parent is not cancelled
+    * */
+}
