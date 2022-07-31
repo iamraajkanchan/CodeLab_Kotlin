@@ -103,3 +103,47 @@ class CancellationAndExceptionsExample {
     * Parent is not cancelled
     * */
 }
+
+/**
+ * Coroutine Exceptions Handler - Cancellation and Exceptions - CoroutineExceptionHandler is not used
+ * for child coroutines
+ * */
+class CoroutineExceptionHandlerForParent {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                println("CoroutineExceptionHandler got ${throwable.message} exception")
+            }
+            val job = GlobalScope.launch(handler) {
+                // The First Child
+                launch {
+                    try {
+                        delay(Long.MAX_VALUE)
+                    } finally {
+                        withContext(NonCancellable) {
+                            println("Children are cancelled, but exception is not handled until all children terminate")
+                            delay(100)
+                            println("The first child finished its non cancellable block")
+                        }
+                    }
+                }
+                // The Second Child
+                launch {
+                    delay(10)
+                    println("Second Child throws an exception")
+                    throw ArithmeticException()
+                }
+            }
+            job.join()
+        }
+    }
+    /*
+    * Output
+    * Second Child throws an exception
+    * Children are cancelled, but exception is not handled until all children terminate
+    * The first child finished its non cancellable block
+    * CoroutineExceptionHandler got null exception
+    * */
+}
