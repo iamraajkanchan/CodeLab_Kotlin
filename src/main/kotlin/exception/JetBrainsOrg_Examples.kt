@@ -37,3 +37,33 @@ class ExceptionPropagationExample {
     * Caught ArithmeticException
     * */
 }
+
+/**
+ * Coroutine Exceptions Handling - CoroutineExceptionHandler
+ * */
+class CoroutineExceptionHandlerExample {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
+                println("$coroutineContext got exception ${throwable.message}")
+            }
+            val job = GlobalScope.launch(handler) {
+                println("Throwing exception from launch")
+                throw AssertionError()
+            }
+            val deferred = GlobalScope.async(handler) {
+                println("Throwing exception from async")
+                throw ArithmeticException()
+            }
+            joinAll(job, deferred)
+        }
+    }
+    /*
+    * Output
+    * Throwing exception from launch
+    * Throwing exception from async
+    * [exception.CoroutineExceptionHandlerExample$Companion$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1@17281e55, StandaloneCoroutine{Cancelling}@10431434, Dispatchers.Default] got exception null
+    * */
+}
