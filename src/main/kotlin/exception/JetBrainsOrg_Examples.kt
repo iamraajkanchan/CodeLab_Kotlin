@@ -150,7 +150,7 @@ class CoroutineExceptionHandlerForParent {
 }
 
 /**
- * Coroutine Cancellations and Exceptions - Exceptions Aggregation - Additional exceptions (caused
+ * Coroutine Exceptions Handling - Exceptions Aggregation - Additional exceptions (caused
  * by the child coroutines) are attached to the first exceptions.
  * */
 class ExceptionsAggregationWithHandler {
@@ -180,6 +180,42 @@ class ExceptionsAggregationWithHandler {
     }
     /*
     * Output
+    * CoroutineExceptionHandler caught null exception
+    * */
+}
+
+/**
+ * Coroutine Exception Handling - Exceptions Aggregation - Cancellation with CancellationException
+ * */
+class CancellationExceptionExample {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                println("CoroutineExceptionHandler caught ${throwable.message} exception")
+            }
+            val job = GlobalScope.launch(handler) {
+                val inner = launch {
+                    launch {
+                        launch {
+                            throw IOException()
+                        }
+                    }
+                }
+                try {
+                    inner.join()
+                } catch (e: CancellationException) {
+                    println("Rethrowing CancellationException with original cause")
+                    throw e
+                }
+            }
+            job.join()
+        }
+    }
+    /*
+    * Output
+    * Rethrowing CancellationException with original cause
     * CoroutineExceptionHandler caught null exception
     * */
 }
