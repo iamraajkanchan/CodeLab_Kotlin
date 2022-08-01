@@ -1,6 +1,8 @@
 package shared_mutable_state
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.measureTimeMillis
 
@@ -222,6 +224,50 @@ class SingleThreadContextForCoarseGrained {
     /*
     * Output
     * Completed 100000 actions in 27 ms
+    * Counter 100000
+    * */
+}
+
+/**
+ * Shared mutable state and concurrency - Mutual Exclusion - Mutex
+ * */
+class MutexWithConcurrency {
+    companion object {
+        private val mutex = Mutex()
+        private var counter = 0
+
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            withContext(Dispatchers.Default) {
+                massiveRun {
+                    mutex.withLock {
+                        counter++
+                    }
+                }
+            }
+            println("Counter $counter")
+        }
+
+        private suspend fun massiveRun(action: suspend () -> Unit) {
+            val n = 100
+            val k = 1000
+            val time = measureTimeMillis {
+                coroutineScope {
+                    repeat(n) {
+                        launch {
+                            repeat(k) {
+                                action()
+                            }
+                        }
+                    }
+                }
+            }
+            println("Completed ${n * k} actions in $time ms")
+        }
+    }
+    /*
+    * Output
+    * Completed 100000 actions in 912 ms
     * Counter 100000
     * */
 }
