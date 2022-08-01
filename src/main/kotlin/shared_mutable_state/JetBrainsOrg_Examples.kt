@@ -1,6 +1,7 @@
 package shared_mutable_state
 
 import kotlinx.coroutines.*
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.measureTimeMillis
 
 /**
@@ -89,5 +90,50 @@ class UseVolatileInsteadOfSharedMutableState {
     * Output
     * Completed 100000 actions in 50 ms
     * Counter 95448
+    * */
+}
+
+/**
+ * Shared mutable state and concurrency - Thread Safe Data Structures - AtomicInteger - It works for
+ * plain counters, collections, queues and other standard data structures and basic operations on them.
+ * However, it does not easily scale to complex state or to complex operations that do not
+ * have ready-to-use thread-safe implementations.
+ * */
+class AtomicIntegerExample {
+    companion object {
+
+        private var counter = AtomicInteger()
+
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            withContext(Dispatchers.Default) {
+                massiveRun {
+                    counter.incrementAndGet()
+                }
+            }
+            println("Counter $counter")
+        }
+
+        private suspend fun massiveRun(action: suspend () -> Unit) {
+            val n = 100
+            val k = 1000
+            val time = measureTimeMillis {
+                coroutineScope {
+                    repeat(n) {
+                        launch {
+                            repeat(k) {
+                                action()
+                            }
+                        }
+                    }
+                }
+            }
+            println("Completed ${n * k} actions in $time ms")
+        }
+    }
+    /*
+    * Output
+    * Completed 100000 actions in 42 ms
+    * Counter 100000
     * */
 }
