@@ -141,7 +141,7 @@ class AtomicIntegerExample {
 /**
  * Shared mutable state and concurrency - Thread confinement fine-grained
  * */
-class SingleThreadContextForMutableState {
+class SingleThreadContextForFineGrained {
     companion object {
         @OptIn(DelicateCoroutinesApi::class)
         private var counterContext = newSingleThreadContext("CounterContext")
@@ -179,6 +179,49 @@ class SingleThreadContextForMutableState {
     /*
     * Output
     * Completed 100000 actions in 57 ms
+    * Counter 100000
+    * */
+}
+
+/**
+ * Shared mutable state and concurrency - Thread confinement coarse-grained
+ * */
+class SingleThreadContextForCoarseGrained {
+    companion object {
+        @OptIn(DelicateCoroutinesApi::class)
+        private val counterContext = newSingleThreadContext("CounterContext")
+        private var counter = 0
+
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            withContext(counterContext) {
+                massiveRun {
+                    counter++
+                }
+            }
+            println("Counter $counter")
+        }
+
+        private suspend fun massiveRun(action: suspend () -> Unit) {
+            val n = 100
+            val k = 1000
+            val time = measureTimeMillis {
+                coroutineScope {
+                    repeat(n) {
+                        launch {
+                            repeat(k) {
+                                action()
+                            }
+                        }
+                    }
+                }
+            }
+            println("Completed ${n * k} actions in $time ms")
+        }
+    }
+    /*
+    * Output
+    * Completed 100000 actions in 27 ms
     * Counter 100000
     * */
 }
