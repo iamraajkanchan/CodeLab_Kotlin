@@ -1,6 +1,7 @@
 package shared_mutable_state
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.atomic.AtomicInteger
@@ -268,6 +269,64 @@ class MutexWithConcurrency {
     /*
     * Output
     * Completed 100000 actions in 912 ms
+    * Counter 100000
+    * */
+}
+
+/**
+ * Shared mutable state anc concurrency - Actors
+ * */
+
+sealed class CounterMsg
+object IncCounter : CounterMsg() // One-way message to increment counter.
+class GetCounter(val response: CompletableDeferred<Int>) : CounterMsg() //
+class ActorsWithConcurrency {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking<Unit> {
+            val counter = counterActor()
+            withContext(Dispatchers.Default) {
+                massiveRun {
+                    counter.send(IncCounter)
+                }
+            }
+            val response = CompletableDeferred<Int>()
+            counter.send(GetCounter(response))
+            println("Counter ${response.await()}")
+            counter.close()
+        }
+
+        @OptIn(ObsoleteCoroutinesApi::class)
+        private fun CoroutineScope.counterActor() = actor<CounterMsg> {
+            var counter = 0
+            for (msg in channel) {
+                when (msg) {
+                    is IncCounter -> counter++
+                    is GetCounter -> msg.response.complete(counter)
+                }
+            }
+        }
+
+        private suspend fun massiveRun(action: suspend () -> Unit) {
+            val n = 100
+            val k = 1000
+            val time = measureTimeMillis {
+                coroutineScope {
+                    repeat(n) {
+                        launch {
+                            repeat(k) {
+                                action()
+                            }
+                        }
+                    }
+                }
+            }
+            println("Completed ${n * k} actions in $time ms")
+        }
+    }
+    /*
+    * Output
+    * Completed 100000 actions in 1235 ms
     * Counter 100000
     * */
 }
