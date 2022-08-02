@@ -106,3 +106,29 @@ class BasicMethodOfListExample {
     * Index of element "two": 1
     * */
 }
+
+/**
+ * Collections Overview - Collection Types - List -
+ * */
+
+data class Person(var name: String, var age: Int)
+class ImmutableListExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val bob = Person("Bob Parson", 31)
+            val people1 = listOf<Person>(Person("Adam Kane", 35), bob, bob)
+            val people2 = listOf<Person>(Person("Adam Kane", 35), Person("Bob Parson", 31), bob)
+            println(people1 == people2)
+            bob.age = 32
+            println("Age of Bob is modified")
+            println(people1 == people2) // is not equal because the age of its second element is not modified
+        }
+    }
+    /*
+    * Output
+    * true
+    * Age of Bob is modified
+    * false
+    * */
+}
