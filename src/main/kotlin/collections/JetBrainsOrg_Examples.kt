@@ -165,3 +165,29 @@ class MutableListExample {
     * Two Four Six
     * */
 }
+
+/**
+ * Collection Overview - Collection Type - Set
+ * */
+class ImmutableSetExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numberSet = setOf<Int>(1, 2, 3, 4)
+            val uniqueNumberSet = setOf<Int>(3, 2, 1, 4, 1, 2, 3)
+            numberSet.forEach { print("$it ") }
+            println()
+            uniqueNumberSet.forEach { print("$it ") }
+            println()
+            if (numberSet.contains(1)) println("1 is in the numberSet")
+            println("numberSet and uniqueNumberSet are same: ${numberSet == uniqueNumberSet}")
+        }
+    }
+    /*
+    * Output
+    * 1 2 3 4
+    * 3 2 1 4
+    * 1 is in the numberSet
+    * numberSet and uniqueNumberSet are same: true
+    * */
+}
