@@ -83,3 +83,26 @@ class MutableCollectionExample {
     * [ago, in, far, far]
     * */
 }
+
+/**
+ * Collections Overview - Collection Types - List - Basic methods and concept of List
+ * */
+class BasicMethodOfListExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numbers = listOf<String>("one", "two", "three", "four")
+            println("Number of elements: ${numbers.size}")
+            println("Third element: ${numbers.get(2)}")
+            println("Fourth element: ${numbers[3]}")
+            println("Index of element \"two\": ${numbers.indexOf("two")}")
+        }
+    }
+    /*
+    * Output
+    * Number of elements: 4
+    * Third element: three
+    * Fourth element: four
+    * Index of element "two": 1
+    * */
+}
