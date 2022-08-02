@@ -227,3 +227,29 @@ class MutableSetExample {
     * 4 3 2 1 6 8
     * */
 }
+
+/**
+ * Collection Overview - Collection Types - Map
+ * */
+class ImmutableMapExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numbersMap = mapOf<String, Int>("key1" to 1, "key2" to 2, "key3" to 3)
+            println("All Keys ${numbersMap.keys}")
+            println("All Values ${numbersMap.values}")
+
+            if ("key2" in numbersMap) println("Value by \"key2\": ${numbersMap["key2"]}")
+            if (1 in numbersMap.values) println("The value 1 is in the numbersMap")
+            if (numbersMap.containsValue(1)) println("The value 1 is in the numbersMap")
+        }
+    }
+    /*
+    * Output
+    * All Keys [key1, key2, key3]
+    * All Values [1, 2, 3]
+    * Value by "key2": 2
+    * The value 1 is in the numbersMap
+    * The value 1 is in the numbersMap
+    * */
+}
