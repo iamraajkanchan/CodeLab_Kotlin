@@ -253,3 +253,43 @@ class ImmutableMapExample {
     * The value 1 is in the numbersMap
     * */
 }
+
+/**
+ * Collection Overview - Collection Type - Map - Convenient way to initialize a map
+ * */
+class MutableMapExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numbersMap = mutableMapOf<String, Int>().apply {
+                this["key1"] = 1
+                this["key2"] = 2
+                this["key3"] = 3
+                this["key4"] = 4
+            }
+            println("Initial numbersMap $numbersMap")
+            println("Adding \"key5\" in numbersMap")
+            numbersMap.put("key5", 5)
+            println("Adding \"key6\" in numbersMap")
+            numbersMap["key6"] = 6
+            println("Modified numbersMap $numbersMap")
+            val unOrderedNumbersMap = mutableMapOf<String, Int>().apply {
+                this["key3"] = 3
+                this["key1"] = 1
+                this["key4"] = 4
+                this["key2"] = 2
+                this["key6"] = 6
+                this["key5"] = 5
+            }
+            println("The numbersMap and unOrderedNumbersMap are equal : ${numbersMap == unOrderedNumbersMap}")
+        }
+    }
+    /*
+    * Output
+    * Initial numbersMap {key1=1, key2=2, key3=3, key4=4}
+    * Adding "key5" in numbersMap
+    * Adding "key6" in numbersMap
+    * Modified numbersMap {key1=1, key2=2, key3=3, key4=4, key5=5, key6=6}
+    * The numbersMap and unOrderedNumbersMap are equal : true
+    * */
+}
