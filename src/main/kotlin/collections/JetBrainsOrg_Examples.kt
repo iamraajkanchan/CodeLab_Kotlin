@@ -132,3 +132,36 @@ class ImmutableListExample {
     * false
     * */
 }
+
+/**
+ * Collections Overview - Collection Types - List -
+ * */
+class MutableListExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numbers = mutableListOf<String>("One", "Two", "Three")
+            numbers.forEach { print("$it ") }
+            println()
+            println("Adding \"Four\"")
+            numbers.add("Four")
+            println("Removing \"One\"")
+            numbers.remove("One")
+            println("Adding \"Six\"")
+            numbers.add("Six")
+            println("Removing \"Three\"")
+            numbers.removeAt(1)
+            numbers.forEach { print("$it ") }
+            println()
+        }
+    }
+    /*
+    * Output
+    * One Two Three
+    * Adding "Four"
+    * Removing "One"
+    * Adding "Six"
+    * Removing "Three"
+    * Two Four Six
+    * */
+}
