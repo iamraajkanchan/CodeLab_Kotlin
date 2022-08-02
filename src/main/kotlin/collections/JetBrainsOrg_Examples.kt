@@ -57,3 +57,29 @@ class ImmutableCollectionExample {
     * one two four five three
     * */
 }
+
+/**
+ * Collection Overview - Collection Types - Collection -
+ * List and Set interfaces implements Collection interface
+ * */
+class MutableCollectionExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val words = "A long time ago in a galaxy far far away".split(" ")
+            val shortWords = mutableListOf<String>()
+            words.getShortWordsTo(shortWords, 3)
+            println(shortWords)
+        }
+
+        private fun Collection<String>.getShortWordsTo(shortWords: MutableCollection<String>, length: Int) {
+            this.filterTo(shortWords) { it.length <= length }
+            val articles = setOf<String>("a", "A", "an", "An", "the", "The")
+            shortWords -= articles
+        }
+    }
+    /*
+    * Output
+    * [ago, in, far, far]
+    * */
+}
