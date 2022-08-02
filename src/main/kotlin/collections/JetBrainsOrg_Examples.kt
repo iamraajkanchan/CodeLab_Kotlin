@@ -191,3 +191,39 @@ class ImmutableSetExample {
     * numberSet and uniqueNumberSet are same: true
     * */
 }
+
+/**
+ * Collection Overview - Collection Type - Set
+ * */
+class MutableSetExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val firstNumberSet = mutableSetOf<Int>(1, 2, 3, 4)
+            val secondNumberSet = mutableSetOf<Int>(4, 3, 2, 1)
+            println(firstNumberSet.first() == secondNumberSet.first())
+            println(firstNumberSet.first() == secondNumberSet.last())
+            firstNumberSet.add(4)
+            secondNumberSet.add(1)
+            println(firstNumberSet.first() == secondNumberSet.first())
+            println(firstNumberSet.first() == secondNumberSet.last())
+            firstNumberSet.filterTo(secondNumberSet) { it % 2 == 0 }
+            println(firstNumberSet == secondNumberSet)
+            firstNumberSet.mapTo(secondNumberSet) { it * 2 }
+            firstNumberSet.forEach { print("$it ") }
+            println()
+            secondNumberSet.forEach { print("$it ") }
+            println()
+        }
+    }
+    /*
+    * Output
+    * false
+    * true
+    * false
+    * true
+    * true
+    * 1 2 3 4
+    * 4 3 2 1 6 8
+    * */
+}
