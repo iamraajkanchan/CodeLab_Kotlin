@@ -25,7 +25,7 @@ class CollectionTypes {
 }
 
 /**
- * Collection Overview - Collection Types - Collection -
+ * Collections Overview - Collection Types - Collection -
  * List and Set interfaces implements Collection interface
  * */
 class ImmutableCollectionExample {
@@ -59,7 +59,7 @@ class ImmutableCollectionExample {
 }
 
 /**
- * Collection Overview - Collection Types - Collection -
+ * Collections Overview - Collection Types - Collection -
  * List and Set interfaces implements Collection interface
  * */
 class MutableCollectionExample {
@@ -167,7 +167,7 @@ class MutableListExample {
 }
 
 /**
- * Collection Overview - Collection Type - Set
+ * Collections Overview - Collection Type - Set
  * */
 class ImmutableSetExample {
     companion object {
@@ -193,7 +193,7 @@ class ImmutableSetExample {
 }
 
 /**
- * Collection Overview - Collection Type - Set
+ * Collections Overview - Collection Type - Set
  * */
 class MutableSetExample {
     companion object {
@@ -229,7 +229,7 @@ class MutableSetExample {
 }
 
 /**
- * Collection Overview - Collection Types - Map
+ * Collections Overview - Collection Types - Map
  * */
 class ImmutableMapExample {
     companion object {
@@ -255,7 +255,7 @@ class ImmutableMapExample {
 }
 
 /**
- * Collection Overview - Collection Type - Map - Convenient way to initialize a map
+ * Collections Overview - Collection Type - Map - Convenient way to initialize a map
  * */
 class MutableMapExample {
     companion object {
@@ -291,5 +291,43 @@ class MutableMapExample {
     * Adding "key6" in numbersMap
     * Modified numbersMap {key1=1, key2=2, key3=3, key4=4, key5=5, key6=6}
     * The numbersMap and unOrderedNumbersMap are equal : true
+    * */
+}
+
+/**
+ * Constructing Collections - Create with Collection Builder functions -
+ * buildList(), buildSet() and buildMap()
+ * */
+class BuilderFunctionsForCollections {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val numberList = buildList<Int> { add(1); add(2); add(3); add(4) }
+            println("Build List for Number : $numberList")
+            val numberSet = buildSet<Int> { add(1); add(1); add(4); add(3) }
+            println("Build Set for Number : $numberSet")
+            val numberMap = buildMap<String, Int> {
+                put("key1", 1)
+                put("key2", 2)
+                put("key3", 3)
+                put("key4", 4)
+                put("key5", 5)
+            }
+            println("Build Map for Number: $numberMap")
+            val strings = buildString(4) {
+                append("Welcome ")
+                append("To ")
+                append("Kotlin ")
+                append(2.0)
+            }
+            println("Build String for a StringBuilder: $strings")
+        }
+    }
+    /*
+    * Output
+    * Build List for Number : [1, 2, 3, 4]
+    * Build Set for Number : [1, 4, 3]
+    * Build Map for Number: {key1=1, key2=2, key3=3, key4=4, key5=5}
+    * Build String for a StringBuilder: Welcome To Kotlin 2.0
     * */
 }
