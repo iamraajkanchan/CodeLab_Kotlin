@@ -1,8 +1,11 @@
 package classes
 
-data class Student(val name: String? = null, var rollNo: Int? = null, var className: String? = null)
+/**
+ * You can use a trailing comma when you declare properties
+ * */
+data class GenericStudent(val name: String? = null, var rollNo: Int? = null, var className: String? = null)
 
-class Person(private val student: Student? = null) {
+class GenericPerson(private val student: GenericStudent? = null) {
     init {
         displayStudentDetails()
     }
@@ -51,9 +54,47 @@ class InitBlockExample(name: String) {
     }
     /*
     * Output
-    * First property: Raj Kanchan
-    * First initializer block that prints Raj Kanchan
-    * Second property: 11
+    * First property: Raj Kanchan.
+    * First initializer block that prints Raj Kanchan.
+    * Second property: 11.
     * Second initializer block that prints 11
+    * */
+}
+
+/**
+ * Classes - Constructors - Secondary Constructors
+ * */
+class SecondaryConstructorPerson(val name: String) {
+    val pets: MutableList<SecondaryConstructorPet> = mutableListOf()
+    private val children: MutableList<SecondaryConstructorPerson> = mutableListOf()
+
+    constructor(name: String, parent: SecondaryConstructorPerson) : this(name) {
+        children.add(parent)
+    }
+}
+
+class SecondaryConstructorPet(val breed: String) {
+    /* */
+    constructor(breed: String, owner: SecondaryConstructorPerson) : this(breed) {
+        owner.pets.add(this)
+    }
+}
+
+class SecondaryConstructorsExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            /* Steven Anderson doesn't have a pet */
+            val anderson = SecondaryConstructorPerson("Steven Anderson")
+            /* John Anderson have a pet */
+            val john = SecondaryConstructorPerson("John Anderson", anderson)
+            /* John Anderson have a cat */
+            val cat = SecondaryConstructorPet("Cat", john)
+            println("${john.name} son of ${anderson.name}, has a ${cat.breed}.")
+        }
+    }
+    /*
+    * Output
+    * John Anderson son of Steven Anderson, has a Cat.
     * */
 }
