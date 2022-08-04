@@ -49,7 +49,9 @@ class InitBlockExample(name: String) {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            InitBlockExample("Raj Kanchan")
+            val initBlockExample = InitBlockExample("Raj Kanchan")
+            println(initBlockExample.firstProperty)
+            println(initBlockExample.secondProperty)
         }
     }
     /*
