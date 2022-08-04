@@ -68,13 +68,14 @@ class SecondaryConstructorPerson(val name: String) {
     val pets: MutableList<SecondaryConstructorPet> = mutableListOf()
     private val children: MutableList<SecondaryConstructorPerson> = mutableListOf()
 
+    /*As you have used primary constructor you have to delegate it with the parameter through secondary constructor */
     constructor(name: String, parent: SecondaryConstructorPerson) : this(name) {
         children.add(parent)
     }
 }
 
 class SecondaryConstructorPet(val breed: String) {
-    /* */
+    /*As you have used primary constructor you have to delegate it with the parameter through secondary constructor */
     constructor(breed: String, owner: SecondaryConstructorPerson) : this(breed) {
         owner.pets.add(this)
     }
@@ -98,3 +99,4 @@ class SecondaryConstructorsExample {
     * John Anderson son of Steven Anderson, has a Cat.
     * */
 }
+
