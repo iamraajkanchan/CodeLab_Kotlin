@@ -102,3 +102,29 @@ class SecondaryConstructorsExample {
     * */
 }
 
+/**
+ * Classes - Constructors - Even if the class has no primary constructor, the delegation still happens implicitly,
+ * and the initializer blocks are still executed
+ * */
+class InitBlockExampleImplicitDelegate {
+    init {
+        println("Init Block")
+    }
+
+    constructor(i: Int) {
+        println("Constructor $i")
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            InitBlockExampleImplicitDelegate(1)
+        }
+    }
+    /*
+    * Output
+    * Init Block
+    * Constructor 1
+    * */
+}
+
