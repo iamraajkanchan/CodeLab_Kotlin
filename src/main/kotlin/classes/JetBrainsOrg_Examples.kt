@@ -176,7 +176,7 @@ class AbstractClassExample : AbstractExampleWildShape() {
 }
 
 /**
- * Inheritance - Overriding Methods
+ * Inheritance - Overriding Methods + Overriding Properties
  * */
 /* Declare the class with 'open' modifier otherwise the class be final, and you won't be able to extend */
 open class InheritanceExampleShape {
@@ -237,18 +237,31 @@ class InheritanceExampleMain {
         @JvmStatic
         fun main(args: Array<String>) {
             val smallExample = InheritanceSmallExample()
-            smallExample.fill() // Accessing the fill() of root base class.
             smallExample.draw() // Accessing the draw() of base class.
+            smallExample.fill() // Accessing the fill() of root base class.
             val rectangleExample = InheritanceExampleRectangle()
             rectangleExample.draw() // Accessing the draw() of its class.
-            rectangleExample.fill() // Accessing the fill() of root base
+            rectangleExample.fill() // Accessing the fill() of root base.
+            val circleExample = InheritanceExampleCircle()
+            circleExample.draw() // Accessing the draw() of its class.
+            circleExample.fill() // Accessing the fill() of base class.
         }
     }
     /*
-    * Output
-    * InheritanceExampleShape :: vertexCount : 0
-    * InheritanceExampleRectangle :: vertexCount : 4
-    * Draw function in InheritanceExampleRectangle
-    * Fill function in InheritanceExampleShape
+    * Output - Comments are not added in the output.
+    * InheritanceExampleShape :: vertexCount : 0 // Called the init block of root base class.
+    * InheritanceExampleRectangle :: vertexCount : 4 // Called the init block of base class.
+    * You are not able to override draw function of InheritanceExampleRectangle class. // Called its init block
+    * InheritanceSmallExample :: vertexCount : 4 // Called its init block
+    * Draw function in InheritanceExampleRectangle // Called its draw()
+    * Fill function in InheritanceExampleShape // Called its fill()
+    * InheritanceExampleShape :: vertexCount : 0 // Called the init block of root base class.
+    * InheritanceExampleRectangle :: vertexCount : 4 // Called the init block of base class.
+    * Draw function in InheritanceExampleRectangle // Called its draw()
+    * Fill function in InheritanceExampleShape // Called its fill()
+    * InheritanceExampleShape :: vertexCount : 0 // Called the init block of root base class.
+    * InheritanceExampleCircle :: vertexCount : 0 // Called the init block of base class.
+    * Draw function in InheritanceExampleCircle // Called its draw()
+    * Fill function in InheritanceExampleShape // Called its fill()
     * */
 }
