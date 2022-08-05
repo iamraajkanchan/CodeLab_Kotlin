@@ -265,3 +265,41 @@ class InheritanceExampleMain {
     * Fill function in InheritanceExampleShape // Called its fill()
     * */
 }
+
+/**
+ * Inheritance : Derived class initialization order
+ * */
+open class InitializationOrderBase(name: String) {
+    init {
+        println("Initialization of the base class.")
+    }
+
+    open val size = name.length.also { println("Initializing size on the base class: $it") }
+}
+
+class InitializationOrderDerived(name: String, lastName: String) :
+    InitializationOrderBase(name.replaceFirstChar { it.uppercase() }
+        .also { println("Argument for the base class $it") }) {
+    override val size = (super.size + lastName.length).also { println("Initializing size on the derived class: $it") }
+
+    init {
+        println("Initialization of the derived class.")
+    }
+}
+
+class InitializationOrderMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            InitializationOrderDerived("raj", "kanchan".replaceFirstChar { it.uppercase() })
+        }
+    }
+    /*
+    * Output
+    * Argument for the base class Raj
+    * Initialization of the base class.
+    * Initializing size on the base class: 3
+    * Initializing size on the derived class: 10
+    * Initialization of the derived class.
+    * */
+}
