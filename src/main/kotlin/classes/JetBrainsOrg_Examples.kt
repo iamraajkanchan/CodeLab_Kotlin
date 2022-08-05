@@ -303,3 +303,47 @@ class InitializationOrderMain {
     * Initialization of the derived class.
     * */
 }
+
+/**
+ * Inheritance : Calling the superclass implementation.
+ * */
+open class SuperImplementationRectangle {
+    open fun draw() {
+        println("Drawing the Rectangle")
+    }
+
+    val borderColor: String get() = "black"
+}
+
+class SuperImplementationFilledRectangle : SuperImplementationRectangle() {
+    override fun draw() {
+        val filler = Filler()
+        filler.drawAndFill()
+    }
+
+    inner class Filler {
+        private fun fill() {
+            println("Filling")
+        }
+
+        fun drawAndFill() {
+            fill()
+            println("Drawn a filled rectangle with color $borderColor")
+        }
+    }
+}
+
+class SuperImplementationMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val fillRectangle = SuperImplementationFilledRectangle()
+            fillRectangle.draw()
+        }
+    }
+    /*
+    * Output
+    * Filling
+    * Drawn a filled rectangle with color black
+    * */
+}
