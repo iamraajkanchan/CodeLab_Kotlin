@@ -135,7 +135,7 @@ abstract class AbstractExamplePolygon {
     abstract fun draw()
 }
 
-class AbstractExampleRectangle: AbstractExamplePolygon() {
+class AbstractExampleRectangle : AbstractExamplePolygon() {
     override fun draw() {
         println("Drawing in AbstractExampleRectangle")
     }
@@ -172,5 +172,83 @@ class AbstractClassExample : AbstractExampleWildShape() {
     * Drawing in AbstractExampleRectangle
     * Drawing in OpenExamplePolygon
     * Drawing in AbstractClassExample
+    * */
+}
+
+/**
+ * Inheritance - Overriding Methods
+ * */
+/* Declare the class with 'open' modifier otherwise the class be final, and you won't be able to extend */
+open class InheritanceExampleShape {
+
+    /* Declare the property with 'open' modifier otherwise the function be final,
+    and you won't be able to override it */
+    open val vertexCount: Int = 0
+
+    /* Declare the function with 'open' modifier otherwise the function be final,
+    and you won't be able to override it */
+    open fun draw() {
+        println("Draw function in InheritanceExampleShape")
+    }
+
+    fun fill() {
+        println("Fill function in InheritanceExampleShape")
+    }
+
+    init {
+        println("InheritanceExampleShape :: vertexCount : $vertexCount")
+    }
+}
+
+class InheritanceExampleCircle : InheritanceExampleShape() {
+    override var vertexCount: Int = 0
+    override fun draw() {
+        println("Draw function in InheritanceExampleCircle")
+    }
+
+    init {
+        println("InheritanceExampleCircle :: vertexCount : $vertexCount")
+    }
+}
+
+open class InheritanceExampleRectangle : InheritanceExampleShape() {
+    override val vertexCount: Int = 4
+    final override fun draw() {
+        println("Draw function in InheritanceExampleRectangle")
+    }
+
+    init {
+        println("InheritanceExampleRectangle :: vertexCount : $vertexCount")
+    }
+}
+
+class InheritanceSmallExample : InheritanceExampleRectangle() {
+    override val vertexCount: Int
+        get() = super.vertexCount
+
+    init {
+        println("You are not able to override draw function of InheritanceExampleRectangle class.")
+        println("InheritanceSmallExample :: vertexCount : $vertexCount")
+    }
+}
+
+class InheritanceExampleMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val smallExample = InheritanceSmallExample()
+            smallExample.fill() // Accessing the fill() of root base class.
+            smallExample.draw() // Accessing the draw() of base class.
+            val rectangleExample = InheritanceExampleRectangle()
+            rectangleExample.draw() // Accessing the draw() of its class.
+            rectangleExample.fill() // Accessing the fill() of root base
+        }
+    }
+    /*
+    * Output
+    * InheritanceExampleShape :: vertexCount : 0
+    * InheritanceExampleRectangle :: vertexCount : 4
+    * Draw function in InheritanceExampleRectangle
+    * Fill function in InheritanceExampleShape
     * */
 }
