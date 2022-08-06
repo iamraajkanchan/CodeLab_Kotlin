@@ -347,3 +347,43 @@ class SuperImplementationMain {
     * Drawn a filled rectangle with color black
     * */
 }
+
+/**
+ * Inheritance - Overriding Rules - Accessing parent methods with the help of super keyword.
+ * */
+open class OverridingRulesExampleRectangle {
+    open fun draw() {
+        println("Drawing in OverridingRulesExampleRectangle class")
+    }
+}
+
+/* Note: Same name of a class and interface is not invalid */
+interface OverridingRulesExamplePolygon {
+    fun draw() {
+        println("Drawing in OverridingRulesExamplePolygon interface")
+    }
+}
+
+class OverridingRulesExampleSquare : OverridingRulesExampleRectangle(), OverridingRulesExamplePolygon {
+    override fun draw() {
+        println("Drawing implemented from OverridingRulesExamplePolygon and called in OverridingRulesExampleSquare")
+        /* Use such syntax to call methods of a base class */
+        super<OverridingRulesExampleRectangle>.draw()
+        /* Use such syntax to call methods of an interface class */
+        super<OverridingRulesExamplePolygon>.draw()
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val square = OverridingRulesExampleSquare()
+            square.draw()
+        }
+    }
+    /*
+    * Output
+    * Drawing implemented from OverridingRulesExamplePolygon and called in OverridingRulesExampleSquare
+    * Drawing in OverridingRulesExampleRectangle class
+    * Drawing in OverridingRulesExamplePolygon interface
+    * */
+}
