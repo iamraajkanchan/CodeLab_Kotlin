@@ -487,3 +487,34 @@ class BackingPropertiesExample {
         }
     }
 }
+
+/**
+ * Properties - Late Initialized Properties and Variables - lateinit
+ * */
+class LateInitExampleSubject {
+    fun method() {
+        println("Method function of LateInitExampleSubject")
+    }
+}
+
+class LateInitExampleMain {
+    // lateinit var counter: Int // lateinit can't be used for Primitive Types
+    lateinit var subject: LateInitExampleSubject
+
+    private fun setup() {
+        subject = LateInitExampleSubject()
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val main = LateInitExampleMain()
+            main.setup()
+            main.subject.method()
+        }
+    }
+    /*
+    * Output
+    * Method function of LateInitExampleSubject
+    * */
+}
