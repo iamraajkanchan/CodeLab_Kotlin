@@ -387,3 +387,31 @@ class OverridingRulesExampleSquare : OverridingRulesExampleRectangle(), Overridi
     * Drawing in OverridingRulesExamplePolygon interface
     * */
 }
+
+/**
+ * Properties - Getters And Setters
+ * */
+
+/* Here width and height is a property of GetterAndSetterRectangleExample class*/
+class GetterAndSetterRectangleExample(private val width: Int, private val height: Int) {
+    val area: Int
+        get() = this.width * this.height
+    var nameOfShape: String = ""
+        get() = field
+        set(value) {
+            field = value.replaceFirstChar { it.uppercase() }
+        }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val rectangle = GetterAndSetterRectangleExample(300, 600)
+            rectangle.nameOfShape = "my flat"
+            println("Area of ${rectangle.nameOfShape} with ${rectangle.width} width and ${rectangle.height} height is ${rectangle.area}")
+        }
+    }
+    /*
+    * Output
+    * Area of My flat area with 300 width and 600 height is 180000
+    * */
+}
