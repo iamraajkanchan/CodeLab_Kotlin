@@ -415,3 +415,37 @@ class GetterAndSetterRectangleExample(private val width: Int, private val height
     * Area of My flat area with 300 width and 600 height is 180000
     * */
 }
+
+/**
+ * Properties - Getters and Setters - Backing Field
+ * */
+class BackingFieldExample {
+    private var counter = 0
+        set(value) {
+            field = if (value > 0) {
+                value
+            } else {
+                0
+            }
+        }
+
+    private val isValidCounter: Boolean
+        get() = this.counter != 0
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val example = BackingFieldExample()
+            example.counter = readln().toInt()
+            if (example.isValidCounter) {
+                println("The value of counter in BackingFieldExample class is ${example.counter}")
+            } else {
+                println("The value of counter in BackingFieldExample class is not valid")
+            }
+        }
+    }
+    /*
+    * Output
+    * The value of counter in BackingFieldExample class is 25
+    * */
+}
