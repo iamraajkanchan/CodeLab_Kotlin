@@ -449,3 +449,41 @@ class BackingFieldExample {
     * The value of counter in BackingFieldExample class is 25
     * */
 }
+
+/**
+ * Properties - Getters and Setters  - Backing Properties
+ * */
+class BackingPropertiesExample {
+
+    /* The property _table is editable, but it is not accessible outside the class.
+    Can be used for internal purpose only */
+    /* So you have to make a property that is editable inside a class,
+    but it must not be accessible outside the class */
+    private var _table: Map<String, Int>? = null
+
+    /* Though the property table is accessible is outside the class, but it is not editable */
+    /* So you have to make a property that is accessible outside the class, but it must not be editable. */
+    val table: Map<String, Int>
+        get() {
+            if (_table == null) {
+                _table = HashMap()
+            }
+            return _table ?: throw AssertionError("Set to null by another thread")
+        }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val example = BackingPropertiesExample()
+            example._table = buildMap {
+                this["firstKey"] = 1
+                this["secondKey"] = 2
+                this["thirdKey"] = 3
+                this["fourthKey"] = 4
+            }
+            for (key in example.table.keys) {
+                println("Table : [Key - $key, Value - ${example.table[key]}]")
+            }
+        }
+    }
+}
