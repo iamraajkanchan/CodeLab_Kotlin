@@ -179,7 +179,7 @@ class AbstractClassExample : AbstractExampleWildShape() {
  * Inheritance - Overriding Methods + Overriding Properties
  * */
 /* Declare the class with 'open' modifier otherwise the class be final, and you won't be able to extend */
-open class InheritanceExampleShape {
+open class InheritanceExampleShape(open val color: String) {
 
     /* Declare the property with 'open' modifier otherwise the function be final,
     and you won't be able to override it */
@@ -200,7 +200,7 @@ open class InheritanceExampleShape {
     }
 }
 
-class InheritanceExampleCircle : InheritanceExampleShape() {
+class InheritanceExampleCircle(private val circleColor: String) : InheritanceExampleShape(circleColor) {
     override var vertexCount: Int = 0
     override fun draw() {
         println("Draw function in InheritanceExampleCircle")
@@ -211,7 +211,7 @@ class InheritanceExampleCircle : InheritanceExampleShape() {
     }
 }
 
-open class InheritanceExampleRectangle : InheritanceExampleShape() {
+open class InheritanceExampleRectangle(private val rectangleColor: String) : InheritanceExampleShape(rectangleColor) {
     override val vertexCount: Int = 4
     final override fun draw() {
         println("Draw function in InheritanceExampleRectangle")
@@ -222,7 +222,7 @@ open class InheritanceExampleRectangle : InheritanceExampleShape() {
     }
 }
 
-class InheritanceSmallExample : InheritanceExampleRectangle() {
+class InheritanceSmallExample(color: String) : InheritanceExampleRectangle(color) {
     override val vertexCount: Int
         get() = super.vertexCount
 
@@ -236,13 +236,13 @@ class InheritanceExampleMain {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val smallExample = InheritanceSmallExample()
+            val smallExample = InheritanceSmallExample("Yellow")
             smallExample.draw() // Accessing the draw() of base class.
             smallExample.fill() // Accessing the fill() of root base class.
-            val rectangleExample = InheritanceExampleRectangle()
+            val rectangleExample = InheritanceExampleRectangle("Blue")
             rectangleExample.draw() // Accessing the draw() of its class.
             rectangleExample.fill() // Accessing the fill() of root base.
-            val circleExample = InheritanceExampleCircle()
+            val circleExample = InheritanceExampleCircle("Green")
             circleExample.draw() // Accessing the draw() of its class.
             circleExample.fill() // Accessing the fill() of base class.
         }
