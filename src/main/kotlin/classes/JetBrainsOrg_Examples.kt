@@ -518,3 +518,45 @@ class LateInitExampleMain {
     * Method function of LateInitExampleSubject
     * */
 }
+
+/**
+ * Inheritance - Properties in Interfaces
+ * */
+
+interface InterfaceForInterfaceWithProperties {
+    val prop: Int
+    val propertyWithImplementation: Int
+        get() = 0
+    /* To execute this method you have to create an instance of the Interface */
+    fun displayProperty() {
+        println("Property without implementation : $prop")
+        println("Property with implementation: $propertyWithImplementation")
+    }
+}
+
+/*
+* When you are implementing an interface you won't have to call its constructor i.e. ()
+* But when you are extending a class you must have to call its primary constructor i.e. ()
+*/
+class InterfaceWithPropertiesMain : InterfaceForInterfaceWithProperties {
+    /* If you don't initialize the property of an interface in its body then you have
+    to initialize the property in the implementing class*/
+    override val prop: Int
+        get() = 1
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val main = InterfaceWithPropertiesMain()
+            /*
+            * Because the class implements InterfaceForInterfaceWithProperties that's why you can call the
+            * method of the interface directly.
+            * */
+            main.displayProperty()
+        }
+    }
+    /*
+    * Output
+    * Property without implementation : 1
+    * Property with implementation: 0
+    * */
+}
