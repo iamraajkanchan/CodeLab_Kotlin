@@ -676,3 +676,29 @@ class SAMConversionsExampleMain {
     * Is 2909031 even? false
     * */
 }
+
+/**
+ * Extensions - Extension Functions
+ * */
+class ExtensionFunctionsExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val list = mutableListOf('a', 'e', 'i', 'o', 'u')
+            println("Before Swap: $list")
+            list.swap(2, 3)
+            println("After Swap: $list")
+        }
+
+        private fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
+            val temp = this[index1] // This corresponds to the list
+            this[index1] = this[index2]
+            this[index2] = temp
+        }
+    }
+    /*
+    * Output
+    * Before Swap: [a, e, i, o, u]
+    * After Swap: [a, e, o, i, u]
+    * */
+}
