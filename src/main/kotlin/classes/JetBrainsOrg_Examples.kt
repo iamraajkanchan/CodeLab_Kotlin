@@ -594,3 +594,60 @@ class InheritanceOnInterfaceEmployee(override val firstName: String, override va
     * Name of Employee: Katy Perry
     * */
 }
+
+/**
+ * Inheritance - Resolving overriding conflicts
+ * */
+
+interface ResolvingOverridingA {
+    fun foo() {
+        println("ResolvingOverridingA :: foo")
+    }
+
+    fun bar()
+}
+
+interface ResolvingOverridingB {
+    fun foo() {
+        println("ResolvingOverridingB :: foo")
+    }
+
+    fun bar() {
+        println("ResolvingOverridingB :: bar")
+    }
+}
+
+class ResolvingOverridingClass : ResolvingOverridingA {
+    override fun bar() {
+        println("ResolvingOverridingA :: ResolvingOverridingClass :: bar")
+    }
+}
+
+class ResolvingOverridingMain : ResolvingOverridingA, ResolvingOverridingB {
+    override fun foo() {
+        super<ResolvingOverridingA>.foo()
+        super<ResolvingOverridingB>.foo()
+    }
+
+    override fun bar() {
+        super<ResolvingOverridingB>.bar()
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val main = ResolvingOverridingMain()
+            main.foo()
+            main.bar()
+            val classObject = ResolvingOverridingClass()
+            classObject.bar()
+        }
+    }
+    /*
+    * Output
+    * ResolvingOverridingA :: foo
+    * ResolvingOverridingB :: foo
+    * ResolvingOverridingB :: bar
+    * ResolvingOverridingA :: ResolvingOverridingClass :: bar
+    * */
+}
