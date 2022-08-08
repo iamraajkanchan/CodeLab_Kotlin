@@ -651,3 +651,28 @@ class ResolvingOverridingMain : ResolvingOverridingA, ResolvingOverridingB {
     * ResolvingOverridingA :: ResolvingOverridingClass :: bar
     * */
 }
+
+/**
+ * Functional (SAM) Interfaces - SAM Conversions
+ * */
+
+class SAMConversionsExampleMain {
+    fun interface IntPredicate {
+        fun accept(number: Int): Boolean
+    }
+
+    companion object {
+        /* If you are using Functional Interface, you don't have to use object keyword to create its instance. */
+        private val isEven = IntPredicate { it % 2 == 0 }
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val number = readln().toInt()
+            println("Is $number even? ${isEven.accept(number)}")
+        }
+    }
+    /*
+    * Output
+    * Is 2909031 even? false
+    * */
+}
