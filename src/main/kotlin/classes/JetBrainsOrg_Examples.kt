@@ -1,5 +1,7 @@
 package classes
 
+import kotlin.random.Random
+
 /**
  * You can use a trailing comma when you declare properties
  * */
@@ -527,6 +529,7 @@ interface InterfaceForInterfaceWithProperties {
     val prop: Int
     val propertyWithImplementation: Int
         get() = 0
+
     /* To execute this method you have to create an instance of the Interface */
     fun displayProperty() {
         println("Property without implementation : $prop")
@@ -543,6 +546,7 @@ class InterfaceWithPropertiesMain : InterfaceForInterfaceWithProperties {
     to initialize the property in the implementing class*/
     override val prop: Int
         get() = 1
+
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -558,5 +562,35 @@ class InterfaceWithPropertiesMain : InterfaceForInterfaceWithProperties {
     * Output
     * Property without implementation : 1
     * Property with implementation: 0
+    * */
+}
+
+/**
+ * Interface - Interface Inheritance
+ * */
+
+interface InheritanceOnInterfaceNamed {
+    val name: String
+}
+
+interface InheritanceOnInterfacePerson : InheritanceOnInterfaceNamed {
+    val firstName: String
+    val lastName: String
+    override val name: String
+        get() = "$firstName $lastName"
+}
+
+class InheritanceOnInterfaceEmployee(override val firstName: String, override val lastName: String) :
+    InheritanceOnInterfacePerson {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val employee = InheritanceOnInterfaceEmployee("Katy", "Perry")
+            println("Name of Employee: ${employee.name}")
+        }
+    }
+    /*
+    * Output
+    * Name of Employee: Katy Perry
     * */
 }
