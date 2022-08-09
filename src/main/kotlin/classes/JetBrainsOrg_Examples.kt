@@ -741,3 +741,28 @@ class StaticBehaviorOfExtensionFunctions {
     * Extension Function with parameter: 45
     * */
 }
+
+/**
+ * Extension Functions - Nullable Receiver
+ * */
+class NullableReceiverForExtensionFunctions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            var main: NullableReceiverForExtensionFunctions? = null
+            println("Before assigning object: ${main.getClassName()}")
+            main = NullableReceiverForExtensionFunctions()
+            println("After assigning object: ${main.getClassName()}")
+        }
+
+        private fun NullableReceiverForExtensionFunctions?.getClassName(): String {
+            if (this == null) return "null"
+            return "Nullable Receiver Class For Extension Functions"
+        }
+    }
+    /*
+    * Output
+    * Before assigning object: null
+    * After assigning object: Nullable Receiver Class For Extension Functions
+    * */
+}
