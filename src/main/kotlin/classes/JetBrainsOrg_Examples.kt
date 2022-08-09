@@ -784,3 +784,46 @@ class ExtensionFunctionsInCompanionObjects {
     * Companion
     * */
 }
+
+/**
+ * Extension Functions : Declaring extensions as members
+ * */
+
+class ExtensionFunctionsWithMembersHost(private val hostName: String) {
+    fun printHostName() {
+        print(hostName)
+    }
+}
+
+class ExtensionFunctionsWithMembersConnection(
+    private val host: ExtensionFunctionsWithMembersHost,
+    private val portName: String
+) {
+
+    private fun printPort() {
+        print(portName)
+    }
+
+    private fun ExtensionFunctionsWithMembersHost.printConnectionString() {
+        printHostName()
+        print(":")
+        printPort()
+    }
+
+    fun connect() {
+        host.printConnectionString() // Calls the extension function
+    }
+}
+
+class ExtensionFunctionsWithMembers {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ExtensionFunctionsWithMembersConnection(ExtensionFunctionsWithMembersHost("google.com"), "443").connect()
+        }
+    }
+    /*
+    * Output
+    * google.com:443
+    * */
+}
