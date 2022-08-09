@@ -837,3 +837,49 @@ class ExtensionFunctionsWithMembers {
     * */
 }
 
+/**
+ * Extension Functions - Declaring extensions as members - Inheritance
+ * */
+open class ExtensionFunctionsBase {}
+class ExtensionFunctionsDerived : ExtensionFunctionsBase() {}
+
+open class ExtensionFunctionsBaseCaller() {
+    open fun ExtensionFunctionsBase.printFunctionInfo() {
+        println("ExtensionFunctionsBase extension function in ExtensionFunctionsBaseCaller")
+    }
+
+    open fun ExtensionFunctionsDerived.printFunctionInfo() {
+        println("ExtensionFunctionsDerived extension function in ExtensionFunctionsBaseCaller ")
+    }
+
+    fun call(base: ExtensionFunctionsBase) {
+        base.printFunctionInfo()
+    }
+}
+
+class ExtensionFunctionsDerivedCaller : ExtensionFunctionsBaseCaller() {
+    override fun ExtensionFunctionsBase.printFunctionInfo() {
+        println("ExtensionFunctionsBase extension function in ExtensionFunctionsDerivedCaller")
+    }
+
+    override fun ExtensionFunctionsDerived.printFunctionInfo() {
+        println("ExtensionFunctionsDerived extension function in ExtensionFunctionsDerivedCaller")
+    }
+}
+
+class ExtensionFunctionsWithMembersMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ExtensionFunctionsBaseCaller().call(ExtensionFunctionsBase())
+            ExtensionFunctionsDerivedCaller().call(ExtensionFunctionsBase())
+            ExtensionFunctionsDerivedCaller().call(ExtensionFunctionsDerived())
+        }
+    }
+    /*
+    * Output
+    * ExtensionFunctionsBase extension function in ExtensionFunctionsBaseCaller
+    * ExtensionFunctionsBase extension function in ExtensionFunctionsDerivedCaller
+    * ExtensionFunctionsBase extension function in ExtensionFunctionsDerivedCaller
+    * */
+}
