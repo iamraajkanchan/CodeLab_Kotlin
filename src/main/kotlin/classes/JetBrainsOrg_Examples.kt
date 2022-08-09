@@ -810,8 +810,15 @@ class ExtensionFunctionsWithMembersConnection(
         printPort()
     }
 
+    private fun ExtensionFunctionsWithMembersHost.getConnectionString() {
+        println()
+        println(toString()) // Calls ExtensionFunctionsWithMembersHost.toString()
+        println(this@ExtensionFunctionsWithMembersConnection.toString()) // Calls ExtensionFunctionsWithMembersConnection.toString()
+    }
+
     fun connect() {
         host.printConnectionString() // Calls the extension function
+        host.getConnectionString()
     }
 }
 
@@ -825,5 +832,8 @@ class ExtensionFunctionsWithMembers {
     /*
     * Output
     * google.com:443
+    * classes.ExtensionFunctionsWithMembersHost@45ff54e6
+    * classes.ExtensionFunctionsWithMembersConnection@2328c243
     * */
 }
+
