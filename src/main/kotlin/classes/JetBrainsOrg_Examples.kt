@@ -702,3 +702,42 @@ class ExtensionFunctionsExample {
     * After Swap: [a, e, o, i, u]
     * */
 }
+
+/**
+ * Extension Functions - Extensions are resolved statically
+ * */
+class StaticBehaviorOfExtensionFunctions {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            /* Defining a base class inside a function */
+            open class Shape
+
+            /* Defining a derived class inside a function */
+            class Rectangle : Shape() {
+                fun printFunctionType() = println("Class Method")
+            }
+
+            fun Shape.getName() = println("Shape")
+            fun Rectangle.getName() = println("Rectangle")
+
+            fun printClassName(shape: Shape) {
+                shape.getName()
+            }
+            printClassName(Rectangle()) // Output Shape
+
+            fun Rectangle.printFunctionType() = println("Extension Function")
+            Rectangle().printFunctionType()
+
+            fun Rectangle.printFunctionType(i: Int) = println("Extension Function with parameter: $i")
+            Rectangle().printFunctionType(45)
+
+        }
+    }
+    /*
+    * Output
+    * Shape
+    * Class Method
+    * Extension Function with parameter: 45
+    * */
+}
