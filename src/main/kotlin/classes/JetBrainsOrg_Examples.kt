@@ -766,3 +766,21 @@ class NullableReceiverForExtensionFunctions {
     * After assigning object: Nullable Receiver Class For Extension Functions
     * */
 }
+
+/**
+ * Extension Functions - Companion object extensions
+ * */
+class ExtensionFunctionsInCompanionObjects {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ExtensionFunctionsInCompanionObjects.printCompanion()
+        }
+
+        private fun ExtensionFunctionsInCompanionObjects.Companion.printCompanion() = println("Companion")
+    }
+    /*
+    * Output
+    * Companion
+    * */
+}
