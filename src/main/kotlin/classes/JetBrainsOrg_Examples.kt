@@ -889,42 +889,49 @@ class ExtensionFunctionsWithMembersMain {
  * Enum classes
  * */
 
-enum class Transactions(requestType: String, purposeType: Int) {
-    Balane_Enquiry("BalEnq", 21),
-    Mini_Statement("MiniStmnt", 19),
-    Cash_Withdrawal("Collector", 23),
-    Cash_Deposit("Debit", 33),
-    Fund_Transfer("Debit", 36),
+/* If you want to use the properties of enum objects declare the properties as val. */
+enum class Transactions(val requestType: String, val purposeType: Int) {
+    BalanceEnquiry("BalEnq", 21),
+    MiniStatement("MiniStatement", 19),
+    CashWithdrawal("Collector", 23),
+    CashDeposit("Debit", 33),
+    FundTransfer("Debit", 36),
 }
 
 class EnumClassExample {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            println(getRequestType(Transactions.Cash_Deposit))
-            println(getPurposeType(Transactions.Cash_Withdrawal))
-            println(getRequestType(Transactions.Mini_Statement))
-            println(getPurposeType(Transactions.Mini_Statement))
+            println(getRequestType(Transactions.CashDeposit))
+            println(getPurposeType(Transactions.CashWithdrawal))
+            println(getRequestType(Transactions.MiniStatement))
+            println(getPurposeType(Transactions.MiniStatement))
         }
 
         private fun getRequestType(transactions: Transactions): String {
             return when (transactions) {
-                Transactions.Cash_Deposit -> transactions.name
-                Transactions.Balane_Enquiry -> Transactions.Balane_Enquiry.name
-                Transactions.Fund_Transfer -> Transactions.Fund_Transfer.name
-                Transactions.Mini_Statement -> Transactions.Mini_Statement.name
-                Transactions.Cash_Withdrawal -> Transactions.Cash_Withdrawal.name
+                Transactions.CashDeposit -> transactions.requestType
+                Transactions.BalanceEnquiry -> transactions.requestType
+                Transactions.FundTransfer -> transactions.requestType
+                Transactions.MiniStatement -> transactions.requestType
+                Transactions.CashWithdrawal -> transactions.requestType
             }
         }
 
-        private fun getPurposeType(transactions: Transactions): String {
+        private fun getPurposeType(transactions: Transactions): Int {
             return when (transactions) {
-                Transactions.Cash_Deposit -> Transactions.Cash_Deposit.name
-                Transactions.Balane_Enquiry -> Transactions.Balane_Enquiry.name
-                Transactions.Fund_Transfer -> Transactions.Fund_Transfer.name
-                Transactions.Mini_Statement -> Transactions.Mini_Statement.name
-                Transactions.Cash_Withdrawal -> Transactions.Cash_Withdrawal.name
+                Transactions.CashDeposit -> transactions.purposeType
+                Transactions.BalanceEnquiry -> transactions.purposeType
+                Transactions.FundTransfer -> transactions.purposeType
+                Transactions.MiniStatement -> transactions.purposeType
+                Transactions.CashWithdrawal -> transactions.purposeType
             }
         }
     }
+    /*
+    * Output
+    * Debit23
+    * MiniStatement
+    * 19
+    * */
 }
