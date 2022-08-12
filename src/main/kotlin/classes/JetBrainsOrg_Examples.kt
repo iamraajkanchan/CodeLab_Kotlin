@@ -1,5 +1,6 @@
 package classes
 
+import javax.xml.crypto.KeySelector.Purpose
 import kotlin.random.Random
 
 /**
@@ -882,4 +883,48 @@ class ExtensionFunctionsWithMembersMain {
     * ExtensionFunctionsBase extension function in ExtensionFunctionsDerivedCaller
     * ExtensionFunctionsBase extension function in ExtensionFunctionsDerivedCaller
     * */
+}
+
+/**
+ * Enum classes
+ * */
+
+enum class Transactions(requestType: String, purposeType: Int) {
+    Balane_Enquiry("BalEnq", 21),
+    Mini_Statement("MiniStmnt", 19),
+    Cash_Withdrawal("Collector", 23),
+    Cash_Deposit("Debit", 33),
+    Fund_Transfer("Debit", 36),
+}
+
+class EnumClassExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println(getRequestType(Transactions.Cash_Deposit))
+            println(getPurposeType(Transactions.Cash_Withdrawal))
+            println(getRequestType(Transactions.Mini_Statement))
+            println(getPurposeType(Transactions.Mini_Statement))
+        }
+
+        private fun getRequestType(transactions: Transactions): String {
+            return when (transactions) {
+                Transactions.Cash_Deposit -> transactions.name
+                Transactions.Balane_Enquiry -> Transactions.Balane_Enquiry.name
+                Transactions.Fund_Transfer -> Transactions.Fund_Transfer.name
+                Transactions.Mini_Statement -> Transactions.Mini_Statement.name
+                Transactions.Cash_Withdrawal -> Transactions.Cash_Withdrawal.name
+            }
+        }
+
+        private fun getPurposeType(transactions: Transactions): String {
+            return when (transactions) {
+                Transactions.Cash_Deposit -> Transactions.Cash_Deposit.name
+                Transactions.Balane_Enquiry -> Transactions.Balane_Enquiry.name
+                Transactions.Fund_Transfer -> Transactions.Fund_Transfer.name
+                Transactions.Mini_Statement -> Transactions.Mini_Statement.name
+                Transactions.Cash_Withdrawal -> Transactions.Cash_Withdrawal.name
+            }
+        }
+    }
 }
