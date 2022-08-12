@@ -892,9 +892,9 @@ class ExtensionFunctionsWithMembersMain {
 /* If you want to use the properties of enum objects declare the properties as val. */
 enum class Transactions(val requestType: String, val purposeType: Int) {
     BalanceEnquiry("BalEnq", 21),
-    MiniStatement("MiniStatement", 19),
     CashWithdrawal("Collector", 23),
     CashDeposit("Debit", 33),
+    MiniStatement("MiniStatement", 19),
     FundTransfer("Debit", 36),
 }
 
@@ -906,6 +906,27 @@ class EnumClassExample {
             println(getPurposeType(Transactions.CashWithdrawal))
             println(getRequestType(Transactions.MiniStatement))
             println(getPurposeType(Transactions.MiniStatement))
+            /* To print the values of every object of an enum class */
+            println("Printing Value of Every Object of An Enum Class")
+            repeat(100) { print("=") }
+            println(enumValues<Transactions>().joinToString { "\nName: ${it.name} - Ordinal: ${it.ordinal} - Request Type: ${it.requestType} - Purpose Type: ${it.purposeType}" })
+            /* To print the values of an individual object of an enum class */
+            repeat(100) { print("=") }
+            println()
+            println("Printing Value of An Individual Object Of An Enum Class")
+            repeat(100) { print("=") }
+            println()
+            println(
+                "Name: ${enumValueOf<Transactions>(Transactions.FundTransfer.name).name} - Ordinal: ${
+                    enumValueOf<Transactions>(
+                        Transactions.FundTransfer.name
+                    ).ordinal
+                } - Request Type: ${enumValueOf<Transactions>(Transactions.FundTransfer.name).requestType} - Purpose Type: ${
+                    enumValueOf<Transactions>(
+                        Transactions.FundTransfer.name
+                    ).purposeType
+                }"
+            )
         }
 
         private fun getRequestType(transactions: Transactions): String {
@@ -923,15 +944,27 @@ class EnumClassExample {
                 Transactions.CashDeposit -> transactions.purposeType
                 Transactions.BalanceEnquiry -> transactions.purposeType
                 Transactions.FundTransfer -> transactions.purposeType
-                Transactions.MiniStatement -> transactions.purposeType
+                Transactions.MiniStatement -> transactions.ordinal
                 Transactions.CashWithdrawal -> transactions.purposeType
             }
         }
     }
     /*
     * Output
-    * Debit23
+    * Debit
+    * 23
     * MiniStatement
-    * 19
+    * 3
+    * Printing Value of Every Object of An Enum Class
+    * ====================================================================================================
+    * Name: BalanceEnquiry - Ordinal: 0 - Request Type: BalEnq - Purpose Type: 21,
+    * Name: CashWithdrawal - Ordinal: 1 - Request Type: Collector - Purpose Type: 23,
+    * Name: CashDeposit - Ordinal: 2 - Request Type: Debit - Purpose Type: 33,
+    * Name: MiniStatement - Ordinal: 3 - Request Type: MiniStatement - Purpose Type: 19,
+    * Name: FundTransfer - Ordinal: 4 - Request Type: Debit - Purpose Type: 36
+    * ====================================================================================================
+    * Printing Value of An Individual Object Of An Enum Class
+    * ====================================================================================================
+    * Name: FundTransfer - Ordinal: 4 - Request Type: Debit - Purpose Type: 36
     * */
 }
