@@ -1074,3 +1074,53 @@ class CancelWithCancellableOperatorOnIntRange() {
     * Error message from the system
     * */
 }
+
+/**
+ * Data Classes - Properties declared in the class body
+ * */
+data class PersonForDataClasses(private val name: String) {
+    var age: Int = 0
+}
+
+class DataClassesMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val person1 = PersonForDataClasses("John Hopkins")
+            val person2 = PersonForDataClasses("Amber Heard")
+            /* Properties excluded outside the primary constructor doesn't affect a data class */
+            person1.age = 24
+            /* Properties excluded outside the primary constructor doesn't affect a data class */
+            person2.age = 22
+            /* Will return false because the value of properties in the primary constructor is different. */
+            println("person1 == person2: ${person1 == person2}")
+            println("person1 with age ${person1.age}: $person1")
+            println("person1 with age ${person1.age}: $person2")
+            val person3 = PersonForDataClasses("Amber Heard")
+            /* Properties excluded outside the primary constructor doesn't affect a data class */
+            person3.age = 32
+            /* Will return true because the value of properties in the primary constructor is same. */
+            println("person2 == person3: ${person2 == person3}")
+            println("person2 with age ${person2.age}: $person2")
+            println("person3 with age ${person3.age}: $person3")
+            val person4 = person1.copy()
+            println("person4 with age ${person4.age}: $person4")
+            println("person4.toString() with age ${person4.toString()}")
+            println("person4 == person1: ${person4 == person1}")
+            println("person4.equals(person1): ${person4.equals(person1)}")
+        }
+    }
+    /*
+    * Output
+    * person1 == person2: false
+    * person1 with age 24: PersonForDataClasses(name=John Hopkins)
+    * person1 with age 24: PersonForDataClasses(name=Amber Heard)
+    * person2 == person3: true
+    * person2 with age 22: PersonForDataClasses(name=Amber Heard)
+    * person3 with age 32: PersonForDataClasses(name=Amber Heard)
+    * person4 with age 0: PersonForDataClasses(name=John Hopkins)
+    * person4.toString() with age PersonForDataClasses(name=John Hopkins)
+    * person4 == person1: true
+    * person4.equals(person1): true
+    * */
+}
