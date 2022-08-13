@@ -797,8 +797,7 @@ class ExtensionFunctionsWithMembersHost(private val hostName: String) {
 }
 
 class ExtensionFunctionsWithMembersConnection(
-    private val host: ExtensionFunctionsWithMembersHost,
-    private val portName: String
+    private val host: ExtensionFunctionsWithMembersHost, private val portName: String
 ) {
 
     private fun printPort() {
@@ -886,16 +885,16 @@ class ExtensionFunctionsWithMembersMain {
 }
 
 /**
- * Enum classes
+ * Enum classes -  Working with enum classes.
  * */
 
 /* If you want to use the properties of enum objects declare the properties as val. */
 enum class Transactions(val requestType: String, val purposeType: Int) {
-    BalanceEnquiry("BalEnq", 21),
-    CashWithdrawal("Collector", 23),
-    CashDeposit("Debit", 33),
-    MiniStatement("MiniStatement", 19),
-    FundTransfer("Debit", 36),
+    BalanceEnquiry("BalEnq", 21), CashWithdrawal("Collector", 23), CashDeposit(
+        "Debit",
+        33
+    ),
+    MiniStatement("MiniStatement", 19), FundTransfer("Debit", 36),
 }
 
 class EnumClassExample {
@@ -966,5 +965,42 @@ class EnumClassExample {
     * Printing Value of An Individual Object Of An Enum Class
     * ====================================================================================================
     * Name: FundTransfer - Ordinal: 4 - Request Type: Debit - Purpose Type: 36
+    * */
+}
+
+/**
+ * Enum Classes - Anonymous classes
+ * */
+enum class OfferState(private val exemptionPercentage: Int) {
+    DISCOUNT(20) {
+        override fun initiateOrder(price: Int, item: String) {
+            calculateAndDisplay(price, item)
+        }
+    },
+    VOUCHER(15) {
+        override fun initiateOrder(price: Int, item: String) {
+            calculateAndDisplay(price, item)
+        }
+    };
+
+    abstract fun initiateOrder(price: Int, item: String)
+    fun calculateAndDisplay(price: Int, item: String) {
+        val actualAmount = price - price * exemptionPercentage / 100
+        println("You have to pay only $actualAmount for $item at $exemptionPercentage% using ${this.name}")
+    }
+}
+
+class EnumWithAnonymousClassesMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            OfferState.DISCOUNT.initiateOrder(4000, "Washing Machine")
+            OfferState.VOUCHER.initiateOrder(4000, "Refrigerator")
+        }
+    }
+    /*
+    * Output
+    * You have to pay only 3200 for Washing Machine at 20% using DISCOUNT
+    * You have to pay only 3400 for Refrigerator at 15% using VOUCHER
     * */
 }
