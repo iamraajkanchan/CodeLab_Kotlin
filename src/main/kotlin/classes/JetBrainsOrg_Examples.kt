@@ -1,5 +1,7 @@
 package classes
 
+import java.util.function.BinaryOperator
+import java.util.function.IntBinaryOperator
 import javax.xml.crypto.KeySelector.Purpose
 import kotlin.random.Random
 
@@ -1002,5 +1004,39 @@ class EnumWithAnonymousClassesMain {
     * Output
     * You have to pay only 3200 for Washing Machine at 20% using DISCOUNT
     * You have to pay only 3400 for Refrigerator at 15% using VOUCHER
+    * */
+}
+
+/**
+ * Enum classes - Implementing interfaces with enum classes
+ * */
+enum class IntArithmetics : BinaryOperator<Int>, IntBinaryOperator {
+
+    PLUS {
+        override fun apply(t: Int, u: Int): Int = t + u
+    },
+    TIMES {
+        override fun apply(t: Int, u: Int): Int = t * u
+    };
+
+    override fun applyAsInt(left: Int, right: Int): Int = apply(left, right)
+}
+
+class EnumWithInterfaces {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println("PLUS operation overriding apply method ${IntArithmetics.PLUS.apply(4, 5)}")
+            println("TIMES operation overriding apply method ${IntArithmetics.TIMES.apply(4, 5)}")
+            println("PLUS operation overriding applyShift method ${IntArithmetics.PLUS.applyAsInt(4, 5)}")
+            println("TIMES operation overriding applyShift method ${IntArithmetics.TIMES.applyAsInt(4, 5)}")
+        }
+    }
+    /*
+    * Output
+    * PLUS operation overriding apply method 9
+    * TIMES operation overriding apply method 20
+    * PLUS operation overriding applyShift method 9
+    * TIMES operation overriding applyShift method 20
     * */
 }
