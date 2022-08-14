@@ -893,8 +893,7 @@ class ExtensionFunctionsWithMembersMain {
 /* If you want to use the properties of enum objects declare the properties as val. */
 enum class Transactions(val requestType: String, val purposeType: Int) {
     BalanceEnquiry("BalEnq", 21), CashWithdrawal("Collector", 23), CashDeposit(
-        "Debit",
-        33
+        "Debit", 33
     ),
     MiniStatement("MiniStatement", 19), FundTransfer("Debit", 36),
 }
@@ -1038,5 +1037,41 @@ class EnumWithInterfaces {
     * TIMES operation overriding apply method 20
     * PLUS operation overriding applyShift method 9
     * TIMES operation overriding applyShift method 20
+    * */
+}
+
+/**
+ * Inline Classes - Members
+ * */
+
+/* It is mandatory to use @JvmInline annotation when you are using Inline classes */
+/* Note: use 'value' modifier to declare an inline class */
+@JvmInline
+value class Name(private val s: String) {
+    init {
+        require(s.isNotEmpty())
+    }
+
+    val length: Int
+        get() = s.length
+
+    fun greet() {
+        println("Hello $s, welcome to the Tree House!!!")
+    }
+}
+
+class InlineClassWithMembers {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val name = Name("Amber Heard")
+            name.greet()
+            println("Length of name variable is ${name.length}")
+        }
+    }
+    /*
+    * Output
+    * Hello Amber Heard, welcome to the Tree House!!!
+    * Length of name variable is 11
     * */
 }
