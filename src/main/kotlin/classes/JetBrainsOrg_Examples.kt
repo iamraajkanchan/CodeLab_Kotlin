@@ -1046,8 +1046,9 @@ class EnumWithInterfaces {
 
 /* It is mandatory to use @JvmInline annotation when you are using Inline classes */
 /* Note: use 'value' modifier to declare an inline class */
+/* An inline class must have at least on property */
 @JvmInline
-value class Name(private val s: String) {
+value class InlineClassWithMembersName(private val s: String) {
     init {
         require(s.isNotEmpty())
     }
@@ -1064,7 +1065,7 @@ class InlineClassWithMembers {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val name = Name("Amber Heard")
+            val name = InlineClassWithMembersName("Amber Heard")
             name.greet()
             println("Length of name variable is ${name.length}")
         }
@@ -1073,5 +1074,42 @@ class InlineClassWithMembers {
     * Output
     * Hello Amber Heard, welcome to the Tree House!!!
     * Length of name variable is 11
+    * */
+}
+
+/**
+ * Inline Classes - Inheritance
+ * */
+
+/* You must use @JvmInline annotation to declare an inline class */
+/* Use 'value' modifier to declare an inline class */
+/* An inline class must have at least on property */
+
+/* You can use this interface to print value from an inline class */
+interface Printable {
+    fun returnValue(): String
+}
+
+@JvmInline
+value class InlineClassesWithInheritanceName(private val s: String) : Printable {
+    init {
+        require(s.isNotEmpty())
+    }
+
+    override fun returnValue(): String = "Input value is $s"
+
+}
+
+class InlineClassesWithInheritanceMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val name = InlineClassesWithInheritanceName(readln())
+            println(name.returnValue())
+        }
+    }
+    /*
+    * Output
+    * Hello World
     * */
 }
