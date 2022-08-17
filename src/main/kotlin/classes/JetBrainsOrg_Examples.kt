@@ -1197,3 +1197,28 @@ class WithInlineClassMain {
         * */
     }
 }
+
+/**
+ * Object expressions and declarations - Object expressions
+ *
+ * Note: Object expressions can't have a constructor.
+ **/
+class SimpleObjectExpressionMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val helloWorld = object {
+                val hello = "Hello"
+                val world = "World!!!"
+                override fun toString(): String  = "$hello $world"
+                fun modify(text: String) : String = text.uppercase()
+            }
+            println(helloWorld)
+            println(helloWorld.modify("i am loving object expression"))
+        }
+    }
+    /*
+    * Output
+    * Hello World!!!
+    * */
+}
