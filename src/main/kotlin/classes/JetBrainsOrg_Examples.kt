@@ -1116,8 +1116,9 @@ class InlineClassesWithInheritanceMain {
 
 /**
  * Inline Classes - Medium Example - Example of using a Data Class without Inline Class.
+ * @author https://medium.com/@riggaroo/lessons-learnt-with-kotlin-using-inline-classes-9c3d424650d1
  * */
-data class WithOutInlineOrder(
+data class WithOutInlineClassOrder(
     private val orderId: Int,
     private val price: Int,
     private val supplier: String,
@@ -1131,8 +1132,53 @@ class WithoutInlineClassMain {
             /* Here orderId is shuffled with price and supplier is shuffled with customer
             * so there is no way to check if proper parameter is added in the constructor
             * */
-            val amazonOrder = WithOutInlineOrder(101, 298082, "Taylor Swift", "Amazon")
+            val amazonOrder = WithOutInlineClassOrder(101, 298082, "Taylor Swift", "Amazon")
             println(amazonOrder.toString())
         }
+    }
+    /*
+    * Output
+    * WithOutInlineClassOrder(orderId=101, price=298082, supplier=Taylor Swift, customer=Amazon)
+    * */
+}
+
+/**
+ * Inline Classes - Medium Example - Example of using a Data Class with Inline Class.
+ * @author https://medium.com/@riggaroo/lessons-learnt-with-kotlin-using-inline-classes-9c3d424650d1
+ * */
+@JvmInline
+value class WithInlineClassOrderId(private val orderId: Int)
+
+@JvmInline
+value class WithInlineClassPrice(private val price: Int)
+
+@JvmInline
+value class WithInlineClassSupplier(private val supplierName: String)
+
+@JvmInline
+value class WithInlineClassCustomer(private val customerName: String)
+data class WithInlineClassOrder(
+    private val orderId: WithInlineClassOrderId,
+    private val price: WithInlineClassPrice,
+    private val supplier: WithInlineClassSupplier,
+    private val customer: WithInlineClassCustomer
+)
+
+class WithInlineClassMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val amazonOrder = WithInlineClassOrder(
+                WithInlineClassOrderId(298082),
+                WithInlineClassPrice(101),
+                WithInlineClassSupplier("Amazon"),
+                WithInlineClassCustomer("Taylor Swift")
+            )
+            println(amazonOrder.toString())
+        }
+        /*
+        * Output
+        * WithInlineClassOrder(orderId=WithInlineClassOrderId(orderId=298082), price=WithInlineClassPrice(price=101), supplier=WithInlineClassSupplier(supplierName=Amazon), customer=WithInlineClassCustomer(customerName=Taylor Swift))
+        * */
     }
 }
