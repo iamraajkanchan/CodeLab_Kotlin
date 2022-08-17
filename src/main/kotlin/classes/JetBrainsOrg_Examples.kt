@@ -1117,7 +1117,7 @@ class InlineClassesWithInheritanceMain {
 /**
  * Inline Classes - Medium Example - Example of using a Data Class without Inline Class.
  * */
-data class Order(
+data class WithOutInlineOrder(
     private val orderId: Int,
     private val price: Int,
     private val supplier: String,
@@ -1131,7 +1131,7 @@ class WithoutInlineClassMain {
             /* Here orderId is shuffled with price and supplier is shuffled with customer
             * so there is no way to check if proper parameter is added in the constructor
             * */
-            val amazonOrder = Order(101, 298082, "Taylor Swift", "Amazon")
+            val amazonOrder = WithOutInlineOrder(101, 298082, "Taylor Swift", "Amazon")
             println(amazonOrder.toString())
         }
     }
