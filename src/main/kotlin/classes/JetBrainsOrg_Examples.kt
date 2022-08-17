@@ -1058,6 +1058,8 @@ class EnumWithInterfaces {
  *
  * Inline classes are experimental. May or may not exist in Kotlin.
  *
+ * Note: Do not use Inline Class for Android Development.
+ *
  * */
 
 @JvmInline
