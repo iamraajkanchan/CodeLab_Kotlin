@@ -1110,6 +1110,29 @@ class InlineClassesWithInheritanceMain {
     }
     /*
     * Output
-    * Hello World
+    * Hello World!!!
     * */
+}
+
+/**
+ * Inline Classes - Medium Example - Example of using a Data Class without Inline Class.
+ * */
+data class Order(
+    private val orderId: Int,
+    private val price: Int,
+    private val supplier: String,
+    private val customer: String
+)
+
+class WithoutInlineClassMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            /* Here orderId is shuffled with price and supplier is shuffled with customer
+            * so there is no way to check if proper parameter is added in the constructor
+            * */
+            val amazonOrder = Order(101, 298082, "Taylor Swift", "Amazon")
+            println(amazonOrder.toString())
+        }
+    }
 }
