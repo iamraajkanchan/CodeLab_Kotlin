@@ -1042,11 +1042,24 @@ class EnumWithInterfaces {
 
 /**
  * Inline Classes - Members
+ * It is mandatory to use @JvmInline annotation when you are using Inline classes
+ * Note: use 'value' modifier to declare an inline class
+ * An inline class must have at least one and only one property.
+ *
+ * Benefits
+ * If you use a normal wrapper class, you could introduce performance overheads as
+ * you would be allocating memory to create the wrapper class. Whereas with inline
+ * classes, there is no additional memory used since the properties are unwrapped.
+ *
+ * Inline classes ensures compile-time safety.
+ *
+ * Difference between typeAlias and inline class
+ * typeAlias doesn't enforce compile time safety but inline class does.
+ *
+ * Inline classes are experimental. May or may not exist in Kotlin.
+ *
  * */
 
-/* It is mandatory to use @JvmInline annotation when you are using Inline classes */
-/* Note: use 'value' modifier to declare an inline class */
-/* An inline class must have at least on property */
 @JvmInline
 value class InlineClassWithMembersName(private val s: String) {
     init {
