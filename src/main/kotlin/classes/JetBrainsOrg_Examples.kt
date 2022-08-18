@@ -1254,14 +1254,24 @@ class InheritingAnonymousObjectsMain {
  * */
 class ReturningAnonymousObjectsMain {
     companion object {
-        /* If the function is declared as private then you won't be able to access
-         * the property of the assigned object. If you don't then you will ge a compile time error.
+        /*
+         * Because the property is declared as private, then only you will be able to access
+         * the member of the assigned object. If you don't then you will get compile time error.
+         */
+        private val objectRef = object {
+            val y: String = "Accessing the value of y from the property of class"
+        }
+
+        /*
+         * Because the function is declared as private, then only you will be able to access
+         * the member of the assigned object. If you don't then you will get compile time error.
          */
         private fun getObject() = object {
-            val x : String = "x"
+            val x : String = "Accessing the value of x from the function of class"
         }
 
         private fun printX() {
+            println(objectRef.y)
             print(getObject().x)
         }
         @JvmStatic
@@ -1271,6 +1281,7 @@ class ReturningAnonymousObjectsMain {
     }
     /*
     * Output
-    * x
+    * Accessing the value of y from the property of class
+    * Accessing the value of x from the function of class
     * */
 }
