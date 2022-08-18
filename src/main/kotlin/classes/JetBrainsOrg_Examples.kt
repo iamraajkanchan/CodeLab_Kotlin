@@ -1361,3 +1361,50 @@ class ReturningAnonymousObjectsWithInterfaceMain {
     * Adding private modifier on getObjectB function to access x, but still it is not accessible
     * */
 }
+
+/**
+ * Object expressions and declarations - Object declarations
+ * A class cannot have multiple companion objects because members of a companion object can be accessed
+ * by simply using a classname so, there is no use of having multiple companion objects.
+ *
+ * Though a class can have multiple objects.
+ * */
+class CompanionObjectsMain {
+
+    private fun accessMembersOfCompanionObject() : CompanionObjectsMain {
+        return create()
+    }
+
+    companion object Main {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println("Main method from Main companion object")
+            val instance = CompanionObjectsMain().accessMembersOfCompanionObject()
+            println(instance.toString())
+            println("Value of a property of Properties Object ${Properties.x}")
+            Methods.printClassName()
+        }
+
+        fun create(): CompanionObjectsMain = CompanionObjectsMain()
+    }
+
+    object Properties {
+        /* If you declare it as private, then the property will be inaccessible */
+        const val x : Int = 0
+    }
+
+    object Methods {
+        /* If you declare it as private, then the method will be inaccessible. */
+        fun printClassName() {
+            println("Name of the class is ${this.javaClass.name}")
+        }
+    }
+
+    /*
+    * Output
+    * Main method from Main companion object
+    * classes.CompanionObjectsMain@1d81eb93
+    * Value of a property of Properties Object 0
+    * Name of the class is classes.CompanionObjectsMain$Methods
+    * */
+}
