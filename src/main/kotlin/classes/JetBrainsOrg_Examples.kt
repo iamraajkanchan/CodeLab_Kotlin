@@ -1299,6 +1299,8 @@ interface ReturningAnonymousObjectsWithInterfaceB {}
 
 class ReturningAnonymousObjectsWithInterfaceMain {
     companion object {
+        private var counter = 0
+
         /* The return type is Any, so x is not accessible, until and unless you add private modifier */
         private fun getObject() = object {
             val x: String = "Accessing the value of x from getObject function of a class"
@@ -1306,7 +1308,11 @@ class ReturningAnonymousObjectsWithInterfaceMain {
 
         /* The return type is ReturningAnonymousObjetWithInterfaceA, so x is not accessible */
         private fun getObjectA() = object : ReturningAnonymousObjectsWithInterfaceA {
-            override fun functionFromA() {}
+            override fun functionFromA() {
+                counter++
+                println("Counter: $counter")
+            }
+
             val x: String = "Accessing the value of x from getObjectA function of a class"
         }
 
@@ -1318,7 +1324,11 @@ class ReturningAnonymousObjectsWithInterfaceMain {
         /* For this function explicit return type is required */
         private fun getObjectB(): ReturningAnonymousObjectsWithInterfaceB =
             object : ReturningAnonymousObjectsWithInterfaceA, ReturningAnonymousObjectsWithInterfaceB {
-                override fun functionFromA() {}
+                override fun functionFromA() {
+                    counter++
+                    println("Counter: $counter")
+                }
+
                 val x: String = "Accessing the value of x from getObjectB function of a class"
             }
 
@@ -1330,12 +1340,14 @@ class ReturningAnonymousObjectsWithInterfaceMain {
             println("Adding private modifier on getSimpleObjectB function to access x")
             println(getSimpleObjectB().x)
             println("Adding private modifier on getObjectB function to access x, but still it is not accessible")
-            // println(getObjectB().x) // Getting compile time error.
+            // println(getObjectB().x) // Getting compile time error. This property is not accessible
         }
 
         @JvmStatic
         fun main(args: Array<String>) {
             printX()
+            getObjectA().functionFromA()
+            // getObjectB().functionFromA() // Getting compile time error. This function is not accessible.
         }
     }
     /*
