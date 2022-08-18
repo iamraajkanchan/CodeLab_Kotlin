@@ -1210,8 +1210,8 @@ class SimpleObjectExpressionMain {
             val helloWorld = object {
                 val hello = "Hello"
                 val world = "World!!!"
-                override fun toString(): String  = "$hello $world"
-                fun modify(text: String) : String = text.uppercase()
+                override fun toString(): String = "$hello $world"
+                fun modify(text: String): String = text.uppercase()
             }
             println(helloWorld)
             println(helloWorld.modify("i am loving object expression"))
@@ -1267,13 +1267,14 @@ class ReturningAnonymousObjectsMain {
          * the member of the assigned object. If you don't then you will get compile time error.
          */
         private fun getObject() = object {
-            val x : String = "Accessing the value of x from the function of class"
+            val x: String = "Accessing the value of x from the function of class"
         }
 
         private fun printX() {
             println(objectRef.y)
             print(getObject().x)
         }
+
         @JvmStatic
         fun main(args: Array<String>) {
             printX()
@@ -1283,5 +1284,68 @@ class ReturningAnonymousObjectsMain {
     * Output
     * Accessing the value of y from the property of class
     * Accessing the value of x from the function of class
+    * */
+}
+
+/**
+ * Object expressions and declarations - Object expressions - Anonymous objects as return and value types
+ * */
+
+interface ReturningAnonymousObjectsWithInterfaceA {
+    fun functionFromA()
+}
+
+interface ReturningAnonymousObjectsWithInterfaceB {}
+
+class ReturningAnonymousObjectsWithInterfaceMain {
+    companion object {
+        /* The return type is Any, so x is not accessible, until and unless you add private modifier */
+        private fun getObject() = object {
+            val x: String = "Accessing the value of x from getObject function of a class"
+        }
+
+        /* The return type is ReturningAnonymousObjetWithInterfaceA, so x is not accessible */
+        private fun getObjectA() = object : ReturningAnonymousObjectsWithInterfaceA {
+            override fun functionFromA() {}
+            val x: String = "Accessing the value of x from getObjectA function of a class"
+        }
+
+        private fun getSimpleObjectB() = object : ReturningAnonymousObjectsWithInterfaceB {
+            val x: String = "Accessing the value of x from getObjectA function of a class"
+        }
+
+        /* The return type is ReturningAnonymousObjectsWithInterfaceB, so x is not accessible, until and unless you add private modifier */
+        /* For this function explicit return type is required */
+        private fun getObjectB(): ReturningAnonymousObjectsWithInterfaceB =
+            object : ReturningAnonymousObjectsWithInterfaceA, ReturningAnonymousObjectsWithInterfaceB {
+                override fun functionFromA() {}
+                val x: String = "Accessing the value of x from getObjectB function of a class"
+            }
+
+        private fun printX() {
+            println("Adding private modifier on getObject function to access x")
+            println(getObject().x)
+            println("Adding private modifier on getObjectA function to access x")
+            println(getObjectA().x)
+            println("Adding private modifier on getSimpleObjectB function to access x")
+            println(getSimpleObjectB().x)
+            println("Adding private modifier on getObjectB function to access x, but still it is not accessible")
+            // println(getObjectB().x) // Getting compile time error.
+        }
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            printX()
+        }
+    }
+    /*
+    * Output
+    * Adding private modifier on getObject function to access x
+    * Accessing the value of x from getObject function of a class
+    * Adding private modifier on getObjectA function to access x
+    * Accessing the value of x from getObjectA function of a class
+    * Adding private modifier on getSimpleObjectB function to access x
+    * Accessing the value of x from getObjectA function of a class
+    * Adding private modifier on getObjectB function to access x, but still it is not accessible
     * */
 }
