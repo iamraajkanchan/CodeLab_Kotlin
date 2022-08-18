@@ -1369,7 +1369,7 @@ class ReturningAnonymousObjectsWithInterfaceMain {
  * */
 class CompanionObjectsMain {
 
-    private fun accessMembersOfCompanionObject() : CompanionObjectsMain {
+    private fun accessMembersOfCompanionObject(): CompanionObjectsMain {
         return create()
     }
 
@@ -1388,7 +1388,7 @@ class CompanionObjectsMain {
 
     object Properties {
         /* If you declare it as private, then the property will be inaccessible */
-        const val x : Int = 0
+        const val x: Int = 0
     }
 
     object Methods {
@@ -1432,4 +1432,41 @@ class DelegationPatternExample {
             Derived(baseImpl).printMyProperty()
         }
     }
+}
+
+/**
+ * Delegations - Overriding a member of an interface implemented by delegation.
+ * */
+class OverridingInterfaceMemberByDelegation {
+    interface Base {
+        fun printMessage()
+        fun printMessageLine()
+    }
+
+    class BaseImpl(private val x: Int) : Base {
+        /* Overriding the printMessage function of Base interface. */
+        override fun printMessage() = print(x)
+        /* Overriding the printMessage function of Base interface */
+        override fun printMessageLine() = println(x)
+
+    }
+
+    class Derived(private val text: String, referenceB: Base) : Base by referenceB {
+        /* Overriding the printMessage function of Base interface. */
+        override fun printMessage() = print(text)
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val baseImpl = BaseImpl(10)
+            val derived = Derived("abc", baseImpl)
+            derived.printMessage()
+            derived.printMessageLine()
+        }
+    }
+    /*
+    * Output
+    * abc10
+    * */
 }
