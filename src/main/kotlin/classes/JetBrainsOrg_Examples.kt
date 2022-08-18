@@ -1199,7 +1199,7 @@ class WithInlineClassMain {
 }
 
 /**
- * Object expressions and declarations - Object expressions
+ * Object expressions and declarations - Object expressions - Creating anonymous objects from scratch
  *
  * Note: Object expressions can't have a constructor.
  **/
@@ -1220,5 +1220,31 @@ class SimpleObjectExpressionMain {
     /*
     * Output
     * Hello World!!!
+    * */
+}
+
+/**
+ * Object expressions and declarations - Object expressions - Inheriting anonymous objects from supertypes.
+ * Here an object expression is inheriting a class and an interface.
+ **/
+open class InheritingAnonymousObjectsA(private val x: Int) {
+    open val y: Int = x
+}
+
+interface InheritingAnonymousObjectsB {}
+
+class InheritingAnonymousObjectsMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val ab = object : InheritingAnonymousObjectsA(1), InheritingAnonymousObjectsB {
+                override val y: Int = 15
+            }
+            println(ab.y)
+        }
+    }
+    /*
+    * Output
+    * 15
     * */
 }
