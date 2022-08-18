@@ -2,8 +2,6 @@ package classes
 
 import java.util.function.BinaryOperator
 import java.util.function.IntBinaryOperator
-import javax.xml.crypto.KeySelector.Purpose
-import kotlin.random.Random
 
 /**
  * You can use a trailing comma when you declare properties
@@ -1407,4 +1405,31 @@ class CompanionObjectsMain {
     * Value of a property of Properties Object 0
     * Name of the class is classes.CompanionObjectsMain$Methods
     * */
+}
+
+/**
+ * Delegation - Delegation Pattern
+ * */
+class DelegationPatternExample {
+    interface Base {
+        fun printMyProperty()
+    }
+
+    class BaseImpl(private val x: Int) : Base {
+        override fun printMyProperty() {
+            println("Property of BaseImpl class is $x")
+        }
+    }
+
+    class Derived(referenceB: Base) : Base by referenceB
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val baseImpl = BaseImpl(10)
+            /* Because Class BaseImpl implements Base interface that's why using an instance of BaseImpl
+             is valid*/
+            Derived(baseImpl).printMyProperty()
+        }
+    }
 }
