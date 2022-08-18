@@ -1248,3 +1248,29 @@ class InheritingAnonymousObjectsMain {
     * 15
     * */
 }
+
+/**
+ * Object expressions and declarations - Object expressions - Anonymous objects as return and value types
+ * */
+class ReturningAnonymousObjectsMain {
+    companion object {
+        /* If the function is declared as private then you won't be able to access
+         * the property of the assigned object. If you don't then you will ge a compile time error.
+         */
+        private fun getObject() = object {
+            val x : String = "x"
+        }
+
+        private fun printX() {
+            print(getObject().x)
+        }
+        @JvmStatic
+        fun main(args: Array<String>) {
+            printX()
+        }
+    }
+    /*
+    * Output
+    * x
+    * */
+}
