@@ -1439,14 +1439,20 @@ class DelegationPatternExample {
  * */
 class OverridingInterfaceMemberByDelegation {
     interface Base {
+        val message: String
         fun printMessage()
         fun printMessageLine()
     }
 
     class BaseImpl(private val x: Int) : Base {
+        override val message: String = "BaseImpl :: x : $x"
+
         /* Overriding the printMessage function of Base interface. */
+        /* printMessage can't access 'message' property of Base interface */
         override fun printMessage() = print(x)
+
         /* Overriding the printMessage function of Base interface */
+        /* printMessageLine can't access 'message' property of Base interface */
         override fun printMessageLine() = println(x)
 
     }
@@ -1463,10 +1469,12 @@ class OverridingInterfaceMemberByDelegation {
             val derived = Derived("abc", baseImpl)
             derived.printMessage()
             derived.printMessageLine()
+            println(derived.message)
         }
     }
     /*
     * Output
     * abc10
+    * BaseImpl :: x : 10
     * */
 }
