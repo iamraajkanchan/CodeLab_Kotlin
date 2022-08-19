@@ -2,6 +2,7 @@ package classes
 
 import java.util.function.BinaryOperator
 import java.util.function.IntBinaryOperator
+import kotlin.reflect.KProperty
 
 /**
  * You can use a trailing comma when you declare properties
@@ -1476,5 +1477,41 @@ class OverridingInterfaceMemberByDelegation {
     * Output
     * abc10
     * BaseImpl :: x : 10
+    * */
+}
+
+/**
+ * Delegated Properties -
+ * */
+class DelegatedPropertiesExample {
+    var p: String by Delegate(10)
+
+    class Delegate (private val a: Int) {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
+            return "$thisRef, thank you for delegating ${property.name} to me."
+        }
+
+        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+            println("$value has been assigned to ${property.name} in $thisRef.")
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val e = DelegatedPropertiesExample()
+            println("Before Initializing the p property")
+            println(e.p)
+            e.p = "New"
+            println("After initializing the property")
+            println(e.p)
+        }
+    }
+    /*
+    * Output
+    * classes.DelegatedPropertiesExample@5e91993f, thank you for delegating p to me.
+    * New has been assigned to p} in classes.DelegatedPropertiesExample@5e91993f.
+    * After initializing the property
+    * classes.DelegatedPropertiesExample@5e91993f, thank you for delegating p to me.
     * */
 }
