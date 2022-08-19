@@ -1520,6 +1520,7 @@ class DelegatedPropertiesExample {
 
 /**
  * Delegated Properties - Standard Delegates - Observable Properties
+ * Reference - https://medium.com/backyard-programmers/kotlin-standard-delegates-lazy-observable-and-vetoable-761a82b74e57
  * */
 class ObservablePropertiesExample {
 
