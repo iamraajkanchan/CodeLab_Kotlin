@@ -2,6 +2,8 @@ package classes
 
 import java.util.function.BinaryOperator
 import java.util.function.IntBinaryOperator
+import kotlin.properties.Delegates
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
@@ -1481,12 +1483,12 @@ class OverridingInterfaceMemberByDelegation {
 }
 
 /**
- * Delegated Properties -
+ * Delegated Properties - First Example
  * */
 class DelegatedPropertiesExample {
     var p: String by Delegate(10)
 
-    class Delegate (private val a: Int) {
+    class Delegate(private val a: Int) {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
             return "$thisRef, thank you for delegating ${property.name} to me."
         }
@@ -1513,5 +1515,46 @@ class DelegatedPropertiesExample {
     * New has been assigned to p} in classes.DelegatedPropertiesExample@5e91993f.
     * After initializing the property
     * classes.DelegatedPropertiesExample@5e91993f, thank you for delegating p to me.
+    * */
+}
+
+/**
+ * Delegated Properties - Standard Delegates - Observable Properties
+ * */
+class ObservablePropertiesExample {
+
+    var name: String by Delegates.observable("anonymous") { property, oldValue, newValue ->
+        println("$oldValue -> $newValue for $property")
+    }
+
+    var age: Int by Delegates.observable(0) { property, oldValue, newValue ->
+        println("$oldValue -> $newValue for $property")
+    }
+
+    var address: String by Delegates.vetoable("new address") { property, oldValue, newValue ->
+        println("$oldValue -> $newValue for $property")
+        oldValue != newValue
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val user = ObservablePropertiesExample()
+            user.name = "Java"
+            user.name = "Kotlin"
+            user.age = 15
+            user.age = 6
+            user.address = "America"
+            user.address = "Russia"
+        }
+    }
+    /*
+    * Output
+    * anonymous -> Java for var classes.ObservablePropertiesExample.name: kotlin.String
+    * Java -> Kotlin for var classes.ObservablePropertiesExample.name: kotlin.String
+    * 0 -> 15 for var classes.ObservablePropertiesExample.age: kotlin.Int
+    * 15 -> 6 for var classes.ObservablePropertiesExample.age: kotlin.Int
+    * new address -> America for var classes.ObservablePropertiesExample.address: kotlin.String
+    * America -> Russia for var classes.ObservablePropertiesExample.address: kotlin.String
     * */
 }
