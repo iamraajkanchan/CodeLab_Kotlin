@@ -1,5 +1,6 @@
 package classes
 
+import coroutines.CoroutineScopeLaunch
 import java.util.function.BinaryOperator
 import java.util.function.IntBinaryOperator
 import kotlin.properties.Delegates
@@ -1557,5 +1558,34 @@ class ObservablePropertiesExample {
     * 15 -> 6 for var classes.ObservablePropertiesExample.age: kotlin.Int
     * new address -> America for var classes.ObservablePropertiesExample.address: kotlin.String
     * America -> Russia for var classes.ObservablePropertiesExample.address: kotlin.String
+    * */
+}
+
+/**
+ * Delegated Properties - Delegating to another property
+ * */
+class DelegatingToAnotherPropertyMain {
+    var newName: String = ""
+    /* newName is delegated to oldName so setting value to oldName
+    will set the value to newName and vice versa */
+    var oldName: String by this::newName
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val main = DelegatingToAnotherPropertyMain()
+            println("Setting a value to oldName")
+            main.oldName = "Daniel Cornell"
+            println("DelegatingToAnotherPropertyMain :: main :: oldName: ${main.oldName}")
+            println("DelegatingToAnotherPropertyMain :: main :: newName: ${main.newName}")
+            println("Setting a value to newName")
+            main.newName = "Jimmy Ken"
+            println("DelegatingToAnotherPropertyMain :: main :: newName: ${main.newName}")
+            println("DelegatingToAnotherPropertyMain :: main :: oldName: ${main.oldName}")
+        }
+    }
+    /*
+    * Output
+    * DelegatingToAnotherPropertyMain :: main :: oldName: Daniel Cornell
     * */
 }
