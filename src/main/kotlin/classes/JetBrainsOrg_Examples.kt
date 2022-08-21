@@ -1566,6 +1566,7 @@ class ObservablePropertiesExample {
  * */
 class DelegatingToAnotherPropertyMain {
     var newName: String = ""
+
     /* newName is delegated to oldName so setting value to oldName
     will set the value to newName and vice versa */
     var oldName: String by this::newName
@@ -1587,5 +1588,29 @@ class DelegatingToAnotherPropertyMain {
     /*
     * Output
     * DelegatingToAnotherPropertyMain :: main :: oldName: Daniel Cornell
+    * */
+}
+
+/**
+ * Delegated Properties - Storing properties in a map.
+ * */
+class StoringPropertiesInMapUsingDelegatesMain {
+    class User(map: Map<String, Any>) {
+        val name: String by map
+        val age: Int by map
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val user = User(mapOf("name" to "Katty Perry", "age" to 22))
+            println(user.name)
+            println(user.age)
+        }
+    }
+    /*
+    * Output
+    * Katty Perry
+    * 22
     * */
 }
