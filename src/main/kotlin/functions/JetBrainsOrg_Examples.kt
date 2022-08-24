@@ -50,18 +50,31 @@ class FunctionsWithVarArgMain {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
             val job = launch(Dispatchers.IO) {
-                foo("Hello Kotlin", "Hello Android")
+                launch {
+                    foo("Hello Kotlin", "Hello Android")
+                }
+                launch {
+                    foo("Hello Dart", "Hello Flutter")
+                }
             }
-            delay(1000L)
             job.join()
             job.cancel()
-            println("${Thread.currentThread().name} is completed")
+            println("${Thread.currentThread().name} coroutine is completed")
         }
 
         private suspend fun foo(vararg text: String) {
+            /* Do not use iterator to print values of vararg argument */
             text.asFlow().collect {
                 println(it)
             }
         }
     }
+    /*
+    * Output
+    * Hello Kotlin
+    * Hello Android
+    * Hello Dart
+    * Hello Flutter
+    * main coroutine is completed
+    * */
 }
