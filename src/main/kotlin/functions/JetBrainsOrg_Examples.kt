@@ -1,5 +1,8 @@
 package functions
 
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+
 /**
  * Functions - Default arguments
  * */
@@ -37,4 +40,28 @@ class FunctionWithDefaultArguments {
     * FunctionWithDefaultArguments :: printValues :: baz : 1
     * Testing the qux argument
     * */
+}
+
+/**
+ * Functions - Named Arguments - vararg with asFlow
+ * */
+class FunctionsWithVarArgMain {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            val job = launch(Dispatchers.IO) {
+                foo("Hello Kotlin", "Hello Android")
+            }
+            delay(1000L)
+            job.join()
+            job.cancel()
+            println("${Thread.currentThread().name} is completed")
+        }
+
+        private suspend fun foo(vararg text: String) {
+            text.asFlow().collect {
+                println(it)
+            }
+        }
+    }
 }
