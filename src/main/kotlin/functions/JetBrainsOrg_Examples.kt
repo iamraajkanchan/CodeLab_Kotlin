@@ -90,6 +90,15 @@ class FunctionWithVarArgsAndGenerics {
             list.forEach {
                 println(it)
             }
+            repeat(100) {
+                print("=")
+            }
+            println()
+            val a = arrayOf("Kotlin", "Java", "Android")
+            val listWithString = asList(*list.toTypedArray(), *a)
+            listWithString.forEach {
+                println(it)
+            }
         }
 
         private fun <T> asList(vararg ts: T): List<T> {
@@ -105,5 +114,12 @@ class FunctionWithVarArgsAndGenerics {
     * 1
     * 2
     * 3
+    * ====================================================================================================
+    * 1
+    * 2
+    * 3
+    * Kotlin
+    * Java
+    * Android
     * */
 }
