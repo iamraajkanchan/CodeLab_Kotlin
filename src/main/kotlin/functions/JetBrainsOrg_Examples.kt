@@ -78,3 +78,32 @@ class FunctionsWithVarArgMain {
     * main coroutine is completed
     * */
 }
+
+/**
+ * Functions - Named Arguments - Variable number of arguments (varargs)
+ * */
+class FunctionWithVarArgsAndGenerics {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val list = asList(1, 2, 3)
+            list.forEach {
+                println(it)
+            }
+        }
+
+        private fun <T> asList(vararg ts: T): List<T> {
+            val result = ArrayList<T>()
+            for (t in ts) {
+                result.add(t)
+            }
+            return result
+        }
+    }
+    /*
+    * Output
+    * 1
+    * 2
+    * 3
+    * */
+}
