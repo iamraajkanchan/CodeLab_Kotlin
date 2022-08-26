@@ -138,11 +138,25 @@ class InitBlockExampleImplicitDelegate {
 /**
  * Classes - Abstract Classes - When you are using an abstract class you don't have to use 'open' keyword to inherit
  * */
-abstract class AbstractExamplePolygon {
+abstract class AbstractShape() {
+    abstract fun defineShape()
+}
+
+/* An abstract class can extend another abstract class*/
+abstract class AbstractExamplePolygon : AbstractShape() {
+    override fun defineShape() {
+        println("This is a Polygon")
+    }
+
     abstract fun draw()
 }
 
 class AbstractExampleRectangle : AbstractExamplePolygon() {
+    override fun defineShape() {
+        // super.defineShape()
+        println("This is a Rectangle")
+    }
+
     override fun draw() {
         println("Drawing in AbstractExampleRectangle")
     }
@@ -167,6 +181,7 @@ class AbstractClassExample : AbstractExampleWildShape() {
         @JvmStatic
         fun main(args: Array<String>) {
             val abstractExampleRectangle = AbstractExampleRectangle()
+            abstractExampleRectangle.defineShape()
             abstractExampleRectangle.draw()
             val openExamplePolygon = OpenExamplePolygon()
             openExamplePolygon.draw()
@@ -176,6 +191,7 @@ class AbstractClassExample : AbstractExampleWildShape() {
     }
     /*
     * Output
+    * This is a Rectangle
     * Drawing in AbstractExampleRectangle
     * Drawing in OpenExamplePolygon
     * Drawing in AbstractClassExample
