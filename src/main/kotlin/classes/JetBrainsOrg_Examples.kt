@@ -153,6 +153,8 @@ abstract class AbstractExamplePolygon : AbstractShape() {
 
 class AbstractExampleRectangle : AbstractExamplePolygon() {
     override fun defineShape() {
+        /* You have the liberty not to use the super.defineShape() method overridden from the abstract class
+        * because its body is already is defined in the parent class. */
         // super.defineShape()
         println("This is a Rectangle")
     }
