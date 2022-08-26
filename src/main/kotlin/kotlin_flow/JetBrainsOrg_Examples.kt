@@ -526,6 +526,51 @@ class CollectLatestExample {
 }
 
 /**
+ * Asynchronous Flow: Comparing collect() and collectLatest() terminal flow operator
+ * */
+class CompareCollectAndCollectLatest {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) = runBlocking {
+            flowIntValues().collect {
+                println("Collecting $it from flowIntValues using collect operator")
+                delay(1000L)
+                println("$it is collected from flowIntValues using collect operator")
+            }
+            repeat(50) {
+                print("=")
+            }
+            println()
+            flowIntValues().collectLatest {
+                println("Collecting $it from flowIntValues using collectLatest operator")
+                delay(1000L)
+                println("$it is collected from flowIntValues using collectLatest operator")
+            }
+        }
+
+        private fun flowIntValues(): Flow<Int> = flow {
+            emit(1)
+            println("Delaying emit of 0.5 seconds")
+            delay(500L)
+            emit(2)
+        }
+    }
+    /*
+    * Operator
+    * Collecting 1 from flowIntValues using collect operator
+    * 1 is collected from flowIntValues using collect operator
+    * Delaying emit of 0.5 seconds
+    * Collecting 2 from flowIntValues using collect operator
+    * 2 is collected from flowIntValues using collect operator
+    * ==================================================
+    * Collecting 1 from flowIntValues using collectLatest operator
+    * Delaying emit of 0.5 seconds
+    * Collecting 2 from flowIntValues using collectLatest operator
+    * 2 is collected from flowIntValues using collectLatest operator
+    * */
+}
+
+/**
  * Asynchronous Flow : Composing Multiple Flows - Zip Operator
  * */
 class ZipOperatorExample {
