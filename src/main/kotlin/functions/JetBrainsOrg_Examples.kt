@@ -123,3 +123,26 @@ class FunctionWithVarArgsAndGenerics {
     * Android
     * */
 }
+
+/**
+ * Functions - Named Arguments - Infix Notations
+ * */
+class InfixNotationsExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            /* Here 2 is the firstArgument */
+            /* Couldn't figure out the significance of */
+            val result = 100 add 2
+            println(result)
+        }
+
+        private infix fun Int.add(firstArgument: Int): Int {
+            return firstArgument + 2
+        }
+    }
+    /*
+    * Output
+    * 4
+    * */
+}
