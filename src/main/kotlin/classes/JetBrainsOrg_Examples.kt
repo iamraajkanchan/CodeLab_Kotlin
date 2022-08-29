@@ -912,10 +912,11 @@ class ExtensionFunctionsWithMembersMain {
 
 /* If you want to use the properties of enum objects declare the properties as val. */
 enum class Transactions(val requestType: String, val purposeType: Int) {
-    BalanceEnquiry("BalEnq", 21), CashWithdrawal("Collector", 23), CashDeposit(
-        "Debit", 33
-    ),
-    MiniStatement("MiniStatement", 19), FundTransfer("Debit", 36),
+    BalanceEnquiry("BalEnq", 21),
+    MiniStatement("MiniStatement", 19),
+    CashWithdrawal("Collector", 23),
+    CashDeposit("Debit", 33),
+    FundTransfer("Debit", 36),
 }
 
 class EnumClassExample {

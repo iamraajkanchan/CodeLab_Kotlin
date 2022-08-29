@@ -146,3 +146,32 @@ class InfixNotationsExample {
     * 4
     * */
 }
+
+/**
+ * High-Order functions and lambdas - High Order functions - Function Types -
+ * Passing Anonymous Function as a parameter to another function.
+ * */
+class HighOrderFunctionsExample {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println(joinTwoStrings("Hello") {
+                it.uppercase()
+            })
+            println(joinTwoStrings("Love") {
+                it.uppercase()
+            })
+        }
+
+        private fun joinTwoStrings(staticArgument: String, dynamicArgument: (aString: String) -> String): () -> String {
+            val dynamicArgument = {
+                "$staticArgument ${dynamicArgument.invoke("world!!!")}"
+            }
+            return dynamicArgument
+        }
+    }
+    /*
+    * Output
+    *
+    * */
+}

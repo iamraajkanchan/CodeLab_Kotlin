@@ -3,6 +3,7 @@ package kotlin_flow
 import coroutines.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.lang.RuntimeException
 import kotlin.system.measureTimeMillis
 
 /**
@@ -959,7 +960,7 @@ class OnCompletionWithCatchExample {
 
         private fun simple(): Flow<Int> = flow {
             emit(1)
-            throw java.lang.RuntimeException()
+            throw RuntimeException()
         }
     }
     /*
