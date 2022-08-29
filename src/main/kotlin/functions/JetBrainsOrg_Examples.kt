@@ -155,12 +155,12 @@ class HighOrderFunctionsExample {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            println(joinTwoStrings("Hello") {
+           joinTwoStrings("Hello") {
                 it.uppercase()
-            })
-            println(joinTwoStrings("Love") {
+            }
+           joinTwoStrings("Love") {
                 it.uppercase()
-            })
+            }
         }
 
         private fun joinTwoStrings(staticArgument: String, dynamicArgument: (aString: String) -> String): () -> String {
