@@ -164,10 +164,11 @@ class HighOrderFunctionsExample {
         }
 
         private fun joinTwoStrings(staticArgument: String, dynamicArgument: (aString: String) -> String): () -> String {
-            val dynamicArgument = {
+            /* Using the same name as the argument used in function, will give you Named Shadow Warning. */
+            val argument = {
                 "$staticArgument ${dynamicArgument.invoke("world!!!")}"
             }
-            return dynamicArgument
+            return argument
         }
     }
     /*
