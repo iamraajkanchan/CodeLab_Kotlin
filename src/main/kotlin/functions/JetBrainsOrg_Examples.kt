@@ -159,13 +159,17 @@ class HighOrderFunctionsExample {
                 it.uppercase()
             }
            joinTwoStrings("Love") {
-                it.uppercase()
+               /* These print methods are not printing the output */
+               println(it)
+               it.uppercase()
             }
         }
 
         private fun joinTwoStrings(staticArgument: String, dynamicArgument: (aString: String) -> String): () -> String {
             /* Using the same name as the argument used in function, will give you Named Shadow Warning. */
             val argument = {
+                /* These print methods are not printing the output */
+                println("$staticArgument ${dynamicArgument.invoke("world!!!")}")
                 "$staticArgument ${dynamicArgument.invoke("world!!!")}"
             }
             return argument
