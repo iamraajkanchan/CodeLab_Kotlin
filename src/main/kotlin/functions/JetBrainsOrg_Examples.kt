@@ -155,13 +155,13 @@ class HighOrderFunctionsExample {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-           joinTwoStrings("Hello") {
+            joinTwoStrings("Hello") {
                 it.uppercase()
             }
-           joinTwoStrings("Love") {
-               /* These print methods are not printing the output */
-               println(it)
-               it.uppercase()
+            joinTwoStrings("Love") {
+                /* These print methods are not printing the output */
+                println(it)
+                it.uppercase()
             }
         }
 
@@ -178,5 +178,32 @@ class HighOrderFunctionsExample {
     /*
     * Output
     *
+    * */
+}
+
+/**
+ * High Order functions and lambdas - Raywender Lich - Combining data in Pairs
+ * src - https://www.youtube.com/watch?v=-i5BGPG3Q5o&list=PL23Revp-82LKI2N0NeyTQhe4J5-5VVGT0&index=2
+ * */
+
+class CombiningDataInPairs {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val fullName = Pair<String, String>("John", "Snow")
+            val age = 31
+            println("Using methods and properties provided by Pair")
+            println("His name is ${fullName.first} ${fullName.second}")
+            val (firstName, lastName) = fullName
+            println("Using destructuring method on a Pair variable")
+            println("His name is $firstName $lastName")
+        }
+    }
+    /*
+    * Output
+    * Using methods and properties provided by Pair
+    * His name is John Snow
+    * Using destructuring method on a Pair variable
+    * His name is John Snow
     * */
 }
