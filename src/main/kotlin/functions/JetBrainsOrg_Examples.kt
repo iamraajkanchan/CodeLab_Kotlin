@@ -207,3 +207,36 @@ class CombiningDataInPairs {
     * His name is John Snow
     * */
 }
+
+
+/**
+ * High Order functions and lambdas - Raywender Lich - Combining data in Triples
+ * src - https://www.youtube.com/watch?v=-i5BGPG3Q5o&list=PL23Revp-82LKI2N0NeyTQhe4J5-5VVGT0&index=2
+ * */
+class CombiningDataInTriples {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val fullName = Pair<String, String>("Matt", "Storm")
+            val person = Pair(fullName, 31)
+            println("Using methods and properties of Pair")
+            println("His name is ${person.first.first} ${person.first.second}. He is ${person.second} years old")
+            val birthdayInDetails = Triple<Int, Int, Int>(16, 1, 1990)
+            val personDetail = Pair(fullName, birthdayInDetails)
+            println("Using methods and properties of Pair and Triplets")
+            println("${personDetail.first.first} ${personDetail.first.second} is born in ${personDetail.second.first}-${personDetail.second.second}-${personDetail.second.third}")
+            val (name, birthDay) = personDetail
+            val (firstName, lastName) = name
+            val (date, month, year) = birthDay
+            println("Using destructuring methods of Pair and Triplets")
+            println("$firstName $lastName is born in $date-$month-$year")
+        }
+    }
+    /*
+    * Output
+    * Using methods and properties of Pair
+    * His name is Matt Storm. He is 31 years old
+    * Using methods and properties of Pair and Triplets
+    * Matt Storm is born in 16-1-1990
+    * */
+}
