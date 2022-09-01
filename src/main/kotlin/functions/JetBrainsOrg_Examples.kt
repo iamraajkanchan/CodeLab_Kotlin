@@ -3,6 +3,9 @@ package functions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import java.lang.Math.floor
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Functions - Default arguments
@@ -255,6 +258,11 @@ class GeneratingJulianClass {
             println(myInvalidJulianDate)
             val myValidJulianDate = toJulianAlgorithm(intArrayOf(2022, 9, 1))
             println(myValidJulianDate)
+            val d = SimpleDateFormat("D")
+            println(d.format(Date()))
+            val julianDay = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+            val julianYear = Calendar.getInstance().get(Calendar.YEAR)
+            println("$julianYear$julianDay")
         }
 
         /**
