@@ -2,6 +2,7 @@ package functions
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
+import java.lang.Math.floor
 
 /**
  * Functions - Default arguments
@@ -239,4 +240,92 @@ class CombiningDataInTriples {
     * Using methods and properties of Pair and Triplets
     * Matt Storm is born in 16-1-1990
     * */
+}
+
+/**
+ * Functions - Generate Julian
+ * */
+class GeneratingJulianClass {
+    private val JGREG = 15 + 31 * (10 + 12 * 1582)
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val myInvalidJulianDate = toJulianInvalid(intArrayOf(2022, 9, 1))
+            println(myInvalidJulianDate)
+            val myValidJulianDate = toJulianAlgorithm(intArrayOf(2022, 9, 1))
+            println(myValidJulianDate)
+        }
+
+        /**
+         * Resource
+         * https://www.rgagnon.com/javadetails/java-0506.html
+         * */
+        private fun toJulianInvalid(ymd: IntArray): Double {
+            val myObject = GeneratingJulianClass()
+            val year = ymd[0]
+            val month = ymd[1]
+            val day = ymd[2]
+
+            var julianYear = year
+            if (year < 0) {
+                julianYear++
+            }
+            var julianMonth = month
+            if (month > 2) {
+                julianMonth++
+            } else {
+                julianYear--
+                julianMonth += 13
+            }
+            var julian =
+                kotlin.math.floor(365.25 * julianYear) + kotlin.math.floor(30.6001 * julianMonth) + day + 1720995.0
+            if (day + 31 * (month + 12 * year) >= myObject.JGREG) {
+                val ja = (0.01 * julianYear).toInt()
+                julian += 2 - ja + (0.25 * ja)
+            }
+            return kotlin.math.floor(julian)
+        }
+
+        /**
+         * Resource
+         * https://quasar.as.utexas.edu/BillInfo/JulianDatesG.html
+         * */
+        private fun toJulianAlgorithm(ymd: IntArray): Double {
+            val year = ymd[0]
+            val month = ymd[1]
+            val day = ymd[2]
+
+            val a = year / 100
+            val b = a / 4
+            val c = 2 - a + b
+            val e = 365.25 * (year + 4716)
+            val f = 30.6001 * (month + 1)
+            val julianDate = c + day + e + f - 1524.5
+            return julianDate
+        }
+
+        /**
+         * Resource
+         * https://quasar.as.utexas.edu/BillInfo/JulianDatesG.html
+         * */
+        private fun toJulianAlgorithmNew(ymd: IntArray): Double {
+            var year = ymd[0]
+            var month = ymd[1]
+            val day = ymd[2]
+
+            if (month < 3) {
+                year--
+                month += 12
+            }
+
+            val a = year / 100
+            val b = a / 4
+            val c = 2 - a + b
+            val e = 365.25 * (year + 4716)
+            val f = 30.6001 * (month + 1)
+            val julianDate = c + day + e + f - 1524.5
+            return julianDate
+        }
+    }
 }
