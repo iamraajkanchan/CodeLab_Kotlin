@@ -352,9 +352,10 @@ class OperatorOverloadingWithIncrementsDecrements {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            incHours()
-            incMinutes()
-            incDays()
+            this::incMinutes.invoke()
+            this::incHours.invoke()
+            /* If you don't invoke the function it won't execute. */
+            this::incDays.invoke()
         }
 
         private fun incHours() {
