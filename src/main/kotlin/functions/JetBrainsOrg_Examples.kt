@@ -4,6 +4,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import java.lang.Math.floor
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -342,4 +343,41 @@ class GeneratingJulianClass {
             return julianDate
         }
     }
+}
+
+/**
+ * Operator Overloading - Unary Operations - Increments and Decrements
+ * */
+class OperatorOverloadingWithIncrementsDecrements {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            // incHours()
+            incMinutes()
+        }
+
+        private fun incHours() {
+            operator fun LocalTime.inc(): LocalTime = plusHours(1)
+            var time = LocalTime.now()
+            println("Without using increment operator :: time : $time")
+            time++
+            println("Using post increment operator :: time: $time")
+            println("Using pre increment operator :: time ${++time}")
+        }
+
+        private fun incMinutes() {
+            operator fun LocalTime.inc(): LocalTime = plusMinutes(10)
+            var time = LocalTime.now()
+            println("Without using increment operator :: time : $time")
+            time++
+            println("Using post increment operator :: time: $time")
+            println("Using pre increment operator :: time ${++time}")
+        }
+    }
+    /*
+    * Output
+    * Without using increment operator :: time : 12:19:33.957032
+    * Using post increment operator :: time: 12:29:33.957032
+    * Using pre increment operator :: time 12:39:33.957032
+    * */
 }
