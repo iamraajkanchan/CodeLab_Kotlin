@@ -2,7 +2,6 @@ package functions
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
-import java.lang.Math.floor
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
@@ -198,10 +197,10 @@ class CombiningDataInPairs {
             val fullName = Pair<String, String>("John", "Snow")
             val age = 31
             println("Using methods and properties provided by Pair")
-            println("His name is ${fullName.first} ${fullName.second}")
+            println("His name is ${fullName.first} ${fullName.second} and he is $age old")
             val (firstName, lastName) = fullName
             println("Using destructuring method on a Pair variable")
-            println("His name is $firstName $lastName")
+            println("His name is $firstName $lastName and he is $age old")
         }
     }
     /*
@@ -250,7 +249,7 @@ class CombiningDataInTriples {
  * Functions - Generate Julian
  * */
 class GeneratingJulianClass {
-    private val JGREG = 15 + 31 * (10 + 12 * 1582)
+    private val J_GREG = 15 + 31 * (10 + 12 * 1582)
 
     companion object {
         @JvmStatic
@@ -270,6 +269,9 @@ class GeneratingJulianClass {
             println("$currentYear/$currentMonth/$currentDay")
             val currentJulianDay = toJulianInvalid(intArrayOf(currentYear, currentMonth, currentDay))
             println("Current Julian Day : $currentJulianDay")
+            // Do not use this method to identify a Julian Day
+            val tempJulianDay = toJulianAlgorithmNew(intArrayOf(currentYear, currentMonth, currentDay))
+            println("Temp Julian Day : $tempJulianDay")
         }
 
         /**
@@ -295,7 +297,7 @@ class GeneratingJulianClass {
             }
             var julian =
                 kotlin.math.floor(365.25 * julianYear) + kotlin.math.floor(30.6001 * julianMonth) + day + 1720995.0
-            if (day + 31 * (month + 12 * year) >= myObject.JGREG) {
+            if (day + 31 * (month + 12 * year) >= myObject.J_GREG) {
                 val ja = (0.01 * julianYear).toInt()
                 julian += 2 - ja + (0.25 * ja)
             }
@@ -352,28 +354,48 @@ class OperatorOverloadingWithIncrementsDecrements {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            this::incMinutes.invoke()
-            this::incHours.invoke()
+            this::incMinutes.invoke() // This is similar to call the function incMinutes()
+            this::incHours.invoke() // This is similar to call the function incHours()
             /* If you don't invoke the function it won't execute. */
-            this::incDays.invoke()
+            this::incDays.invoke() // This is similar to call the function incDays()
+            this::decHours.invoke()
+            this::decMinutes.invoke()
         }
 
         private fun incHours() {
-            operator fun LocalTime.inc(): LocalTime = plusHours(1)
+            operator fun LocalTime.inc(): LocalTime = plusHours(1L)
             var time = LocalTime.now()
-            println("Localtime without using increment operator :: time : $time")
+            println("LocalTime without using increment operator :: time : $time")
             time++
-            println("Incrementing hour of Localtime using post increment operator :: time: $time")
-            println("Incrementing hour of Localtime using pre increment operator :: time ${++time}")
+            println("Incrementing hour of LocalTime using post increment operator :: time : $time")
+            println("Incrementing hour of LocalTime using pre increment operator :: time : ${++time}")
+        }
+
+        private fun decHours() {
+            operator fun LocalTime.dec(): LocalTime = minusHours(1L)
+            var time = LocalTime.now()
+            println("LocalTime without using decrement operator :: time : $time")
+            time--
+            println("Decrementing hour of LocalTime using post decrement operator :: time : $time")
+            println("Decrementing hour of LocalTime using pre decrement operator :: time : ${--time}")
         }
 
         private fun incMinutes() {
-            operator fun LocalTime.inc(): LocalTime = plusMinutes(10)
+            operator fun LocalTime.inc(): LocalTime = plusMinutes(10L)
             var time = LocalTime.now()
-            println("Localtime without using increment operator :: time : $time")
+            println("LocalTime without using increment operator :: time : $time")
             time++
-            println("Incrementing minutes of Localtime using post increment operator :: time: $time")
-            println("Incrementing minutes of Localtime using pre increment operator :: time ${++time}")
+            println("Incrementing minutes of LocalTime using post increment operator :: time : $time")
+            println("Incrementing minutes of LocalTime using pre increment operator :: time : ${++time}")
+        }
+
+        private fun decMinutes() {
+            operator fun LocalTime.dec(): LocalTime = minusMinutes(10L)
+            var time = LocalTime.now()
+            println("LocalTime without using decrement operator :: time : $time")
+            time--
+            println("Decrementing minutes of LocalTime using post decrement operator :: time : $time")
+            println("Decrementing minutes of LocalTime using pre decrement operator :: time : ${--time}")
         }
 
         /**
@@ -405,5 +427,8 @@ class OperatorOverloadingWithIncrementsDecrements {
     * Date without using increment operator :: day : Fri Sep 02 14:01:59 IST 2022
     * Incrementing day of Date using post increment operator :: day : Sat Sep 03 14:01:59 IST 2022
     * Incrementing day of Date using pre increment operator :: day : Sat Sep 03 14:01:59 IST 2022
+    * LocalTime without using decrement operator :: time : 19:02:14.696268100
+    * Decrementing minutes of LocalTime using post decrement operator :: time : 18:52:14.696268100
+    * Decrementing minutes of LocalTime using pre decrement operator :: time : 18:42:14.696268100
     * */
 }
