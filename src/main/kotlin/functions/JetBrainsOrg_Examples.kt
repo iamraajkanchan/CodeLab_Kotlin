@@ -263,6 +263,12 @@ class GeneratingJulianClass {
             val julianDay = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
             val julianYear = Calendar.getInstance().get(Calendar.YEAR)
             println("$julianYear$julianDay")
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+            val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+            val currentDay = Calendar.getInstance().get(Calendar.DATE)
+            println("$currentYear/$currentMonth/$currentDay")
+            val currentJulianDay = toJulianInvalid(intArrayOf(currentYear, currentMonth, currentDay))
+            println("Current Julian Day : $currentJulianDay")
         }
 
         /**
