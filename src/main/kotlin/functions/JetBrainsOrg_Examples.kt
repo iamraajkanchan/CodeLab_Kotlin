@@ -352,32 +352,57 @@ class OperatorOverloadingWithIncrementsDecrements {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            // incHours()
+            incHours()
             incMinutes()
+            incDays()
         }
 
         private fun incHours() {
             operator fun LocalTime.inc(): LocalTime = plusHours(1)
             var time = LocalTime.now()
-            println("Without using increment operator :: time : $time")
+            println("Localtime without using increment operator :: time : $time")
             time++
-            println("Using post increment operator :: time: $time")
-            println("Using pre increment operator :: time ${++time}")
+            println("Incrementing hour of Localtime using post increment operator :: time: $time")
+            println("Incrementing hour of Localtime using pre increment operator :: time ${++time}")
         }
 
         private fun incMinutes() {
             operator fun LocalTime.inc(): LocalTime = plusMinutes(10)
             var time = LocalTime.now()
-            println("Without using increment operator :: time : $time")
+            println("Localtime without using increment operator :: time : $time")
             time++
-            println("Using post increment operator :: time: $time")
-            println("Using pre increment operator :: time ${++time}")
+            println("Incrementing minutes of Localtime using post increment operator :: time: $time")
+            println("Incrementing minutes of Localtime using pre increment operator :: time ${++time}")
+        }
+
+        /**
+         * Reference - https://www.baeldung.com/java-add-hours-date
+         * */
+        private fun incDays() {
+            operator fun Date.inc(): Date {
+                val calendar = Calendar.getInstance()
+                calendar.time = Date()
+                calendar.add(Calendar.HOUR_OF_DAY, 24)
+                return calendar.time
+            }
+
+            var day = Date()
+            println("Date without using increment operator :: day : $day")
+            day++
+            println("Incrementing day of Date using post increment operator :: day : $day")
+            println("Incrementing day of Date using pre increment operator :: day : ${++day}")
         }
     }
     /*
     * Output
-    * Without using increment operator :: time : 12:19:33.957032
-    * Using post increment operator :: time: 12:29:33.957032
-    * Using pre increment operator :: time 12:39:33.957032
+    * Localtime without using increment operator :: time : 14:01:59.727171400
+    * Incrementing hour of Localtime using post increment operator :: time: 15:01:59.727171400
+    * Incrementing hour of Localtime using pre increment operator :: time 16:01:59.727171400
+    * Localtime without using increment operator :: time : 14:01:59.729166400
+    * Incrementing minutes of Localtime using post increment operator :: time: 14:11:59.729166400
+    * Incrementing minutes of Localtime using pre increment operator :: time 14:21:59.729166400
+    * Date without using increment operator :: day : Fri Sep 02 14:01:59 IST 2022
+    * Incrementing day of Date using post increment operator :: day : Sat Sep 03 14:01:59 IST 2022
+    * Incrementing day of Date using pre increment operator :: day : Sat Sep 03 14:01:59 IST 2022
     * */
 }
