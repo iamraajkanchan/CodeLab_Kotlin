@@ -2,6 +2,7 @@ package functions
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
+import org.w3c.dom.ranges.Range
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
@@ -486,6 +487,108 @@ class OperatorOverloadingUnaryOperations {
         * Object of Point Class with unary minus operator :: point : Point(x=-10, y=-3)
         * Object of Confirm Class without using unary not operator :: confirmObject : Confirm(isValidMobile=true, isValidOtp=false)
         * Object of Confirm Class using unary not operator :: confirmObject : Confirm(isValidMobile=false, isValidOtp=true)
+        * */
+    }
+}
+
+/**
+ * Operator Overloading - Binary Operations - Arithmetic Operators
+ * */
+class OperatorOverloadingArithmeticOperations {
+    class CalculatingValues(val number: Int)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            this::addOperation.invoke()
+            this::subtractOperation.invoke()
+            this::multiplyOperation.invoke()
+            this::divideOperation.invoke()
+            this::remainderOperation.invoke()
+            this::rangeOperation.invoke()
+        }
+
+        private fun addOperation() {
+            operator fun CalculatingValues.plus(argument: Int) = CalculatingValues(number + argument)
+            val myObject = CalculatingValues(10)
+            // myObject.plus(1) This operation doesn't make any difference
+            println("Value of the property of CalculatingValues class before using plus operator function :: number : ${myObject.number}")
+            println(
+                "Value of the property of CalculatingValues class after using plus operator function :: number : ${
+                    myObject.plus(1).number
+                }"
+            )
+        }
+
+        private fun subtractOperation() {
+            operator fun CalculatingValues.minus(argument: Int) = CalculatingValues(number - argument)
+            val myObject = CalculatingValues(10)
+            // myObject.minus(1) // This operation doesn't make any difference
+            println("Value of the property of CalculatingValues class before using minus operator function :: number : ${myObject.number}")
+            println(
+                "Value of the property of CalculatingValues class after using minus operator function :: number : ${
+                    myObject.minus(1).number
+                }"
+            )
+        }
+
+        private fun multiplyOperation() {
+            operator fun CalculatingValues.times(argument: Int) = CalculatingValues(number * argument)
+            val myObject = CalculatingValues(10)
+            // myObject.times(3) // This operation doesn't make any difference
+            println("Value of the property of CalculatingValues class before using times operator function :: number : ${myObject.number}")
+            println(
+                "Value of the property of CalculatingValues class after using times operator function :: number : ${
+                    myObject.times(3).number
+                }"
+            )
+        }
+
+        private fun divideOperation() {
+            operator fun CalculatingValues.div(argument: Int) = CalculatingValues(number / argument)
+            val myObject = CalculatingValues(10)
+            // myObject.div(5) // This operation doesn't make any difference
+            println("Value of the property of CalculatingValues class before using div operator function :: number : ${myObject.number}")
+            println(
+                "Value of the property of CalculatingValues class after using div operator function :: number : ${
+                    myObject.div(5).number
+                }"
+            )
+        }
+
+        private fun remainderOperation() {
+            operator fun CalculatingValues.rem(argument: Int) = CalculatingValues(number % argument)
+            val myObject = CalculatingValues(10)
+            // myObject.rem(3) // This operation doesn't make any difference
+            println("Value of the property of CalculatingValues class before using rem operator function :: number : ${myObject.number}")
+            println(
+                "Value of the property of CalculatingValues class after using rem operator function :: number : ${
+                    myObject.rem(3).number
+                }"
+            )
+        }
+
+        private fun rangeOperation() {
+            operator fun CalculatingValues.rangeTo(argument: Int) = number..argument
+            val myObject = CalculatingValues(10)
+            println(
+                "Value of the property of CalculatingValues class before using rangeTo operator function :: ${
+                    myObject.rangeTo(15)
+                }"
+            )
+        }
+        /*
+        * Output
+        * Value of the property of CalculatingValues class before using plus operator function :: number : 10
+        * Value of the property of CalculatingValues class after using plus operator function :: number : 11
+        * Value of the property of CalculatingValues class before using minus operator function :: number : 10
+        * Value of the property of CalculatingValues class after using minus operator function :: number : 9
+        * Value of the property of CalculatingValues class before using times operator function :: number : 10
+        * Value of the property of CalculatingValues class after using times operator function :: number : 30
+        * Value of the property of CalculatingValues class before using div operator function :: number : 10
+        * Value of the property of CalculatingValues class after using div operator function :: number : 2
+        * Value of the property of CalculatingValues class before using rem operator function :: number : 10
+        * Value of the property of CalculatingValues class after using rem operator function :: number : 1
+        * Value of the property of CalculatingValues class before using rangeTo operator function :: 10..15
         * */
     }
 }
