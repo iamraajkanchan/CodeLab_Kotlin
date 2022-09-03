@@ -591,3 +591,36 @@ class OperatorOverloadingArithmeticOperations {
         * */
     }
 }
+
+/**
+ * Operator Overloading - Binary Operations - in Operator
+ * */
+class OperatorOverloadingInOperations {
+    class TempClass(val char: Char)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            this::doExist.invoke()
+            this::doNotExist.invoke()
+        }
+
+        private fun doExist() {
+            operator fun TempClass.contains(chars: CharArray): Boolean = char in chars
+            val tempObject = TempClass('e')
+            val comparingRange = charArrayOf('a', 'b', 'f', 'g', 'e')
+            println("Result of contains operator function on object of TempClass :: ${comparingRange in tempObject}")
+        }
+
+        private fun doNotExist() {
+            operator fun TempClass.contains(chars: CharArray): Boolean = char in chars
+            val tempObject = TempClass('e')
+            val comparingRange = charArrayOf('a', 'b', 'f', 'g', 'e')
+            println("Result of not contains operator function on object of TempClass :: ${comparingRange !in tempObject}")
+        }
+    }
+    /*
+    * Output
+    * Result of contains operator function on object of TempClass :: true
+    * Result of not contains operator function on object of TempClass :: false
+    * */
+}
