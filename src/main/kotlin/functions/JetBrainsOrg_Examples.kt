@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 /**
  * Functions - Default arguments
@@ -367,6 +368,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using increment operator :: time : $time")
             time++
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
             println("Incrementing hour of LocalTime using post increment operator :: time : $time")
             println("Incrementing hour of LocalTime using pre increment operator :: time : ${++time}")
         }
@@ -376,6 +378,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using decrement operator :: time : $time")
             time--
+            // Note: If you do not define the dec() operator function above, you will get compile time error if you use this operator.
             println("Decrementing hour of LocalTime using post decrement operator :: time : $time")
             println("Decrementing hour of LocalTime using pre decrement operator :: time : ${--time}")
         }
@@ -385,6 +388,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using increment operator :: time : $time")
             time++
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
             println("Incrementing minutes of LocalTime using post increment operator :: time : $time")
             println("Incrementing minutes of LocalTime using pre increment operator :: time : ${++time}")
         }
@@ -394,6 +398,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using decrement operator :: time : $time")
             time--
+            // Note: If you do not define the dec() operator function above, you will get compile time error if you use this operator.
             println("Decrementing minutes of LocalTime using post decrement operator :: time : $time")
             println("Decrementing minutes of LocalTime using pre decrement operator :: time : ${--time}")
         }
@@ -412,6 +417,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var day = Date()
             println("Date without using increment operator :: day : $day")
             day++
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
             println("Incrementing day of Date using post increment operator :: day : $day")
             println("Incrementing day of Date using pre increment operator :: day : ${++day}")
         }
@@ -431,4 +437,43 @@ class OperatorOverloadingWithIncrementsDecrements {
     * Decrementing minutes of LocalTime using post decrement operator :: time : 18:52:14.696268100
     * Decrementing minutes of LocalTime using pre decrement operator :: time : 18:42:14.696268100
     * */
+}
+
+/**
+ * Operator Overloading - Unary Operations - Unary Prefix Operators
+ * */
+class OperatorOverloadingUnaryOperations {
+    data class Point(val x: Int, val y: Int)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            this::convertIntegerToPositive.invoke()
+            this::convertIntegerToNegative.invoke()
+        }
+
+        private fun convertIntegerToPositive() {
+            operator fun Point.unaryPlus() = Point(+x, +y)
+            val point = Point(-10, -3)
+            println("Object of Point Class without using unary plus operator :: point : $point")
+            /* Unary plus operation is not working */
+            println("Object of Point Class with unary plus operator :: point : ${+point}")
+            // Note: If you do not define the unaryPlus operator function above, you will get compile time error if you use this operator.
+        }
+
+        private fun convertIntegerToNegative() {
+            operator fun Point.unaryMinus() = Point(-x, -y)
+            val point = Point(10, 3)
+            println("Object of Point Class without using unary minus operator :: point : $point")
+            // Unary Minus Operation is Working
+            println("Object of Point Class with unary minus operator :: point : ${-point}")
+            // Note: If you do not define the unaryMinus operator function above, you will get compile time error if you use this operator.
+        }
+        /*
+        * Output
+        * Object of Point Class without using unary plus operator :: point : Point(x=-10, y=-3)
+        * Object of Point Class with unary plus operator :: point : Point(x=-10, y=-3)
+        * Object of Point Class without using unary minus operator :: point : Point(x=10, y=3)
+        * Object of Point Class with unary minus operator :: point : Point(x=-10, y=-3)
+        * */
+    }
 }
