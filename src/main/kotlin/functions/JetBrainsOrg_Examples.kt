@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.absoluteValue
 
 /**
  * Functions - Default arguments
@@ -368,7 +367,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using increment operator :: time : $time")
             time++
-            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use '++' operator.
             println("Incrementing hour of LocalTime using post increment operator :: time : $time")
             println("Incrementing hour of LocalTime using pre increment operator :: time : ${++time}")
         }
@@ -378,7 +377,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using decrement operator :: time : $time")
             time--
-            // Note: If you do not define the dec() operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the dec() operator function above, you will get compile time error if you use '--' operator.
             println("Decrementing hour of LocalTime using post decrement operator :: time : $time")
             println("Decrementing hour of LocalTime using pre decrement operator :: time : ${--time}")
         }
@@ -388,7 +387,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using increment operator :: time : $time")
             time++
-            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use '++' operator.
             println("Incrementing minutes of LocalTime using post increment operator :: time : $time")
             println("Incrementing minutes of LocalTime using pre increment operator :: time : ${++time}")
         }
@@ -398,7 +397,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var time = LocalTime.now()
             println("LocalTime without using decrement operator :: time : $time")
             time--
-            // Note: If you do not define the dec() operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the dec() operator function above, you will get compile time error if you use '--' operator.
             println("Decrementing minutes of LocalTime using post decrement operator :: time : $time")
             println("Decrementing minutes of LocalTime using pre decrement operator :: time : ${--time}")
         }
@@ -417,7 +416,7 @@ class OperatorOverloadingWithIncrementsDecrements {
             var day = Date()
             println("Date without using increment operator :: day : $day")
             day++
-            // Note: If you do not define the inc() operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the inc() operator function above, you will get compile time error if you use '++' operator.
             println("Incrementing day of Date using post increment operator :: day : $day")
             println("Incrementing day of Date using pre increment operator :: day : ${++day}")
         }
@@ -444,11 +443,13 @@ class OperatorOverloadingWithIncrementsDecrements {
  * */
 class OperatorOverloadingUnaryOperations {
     data class Point(val x: Int, val y: Int)
+    data class Confirm(val isValidMobile: Boolean, val isValidOtp: Boolean)
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             this::convertIntegerToPositive.invoke()
             this::convertIntegerToNegative.invoke()
+            this::invertBooleanValue.invoke()
         }
 
         private fun convertIntegerToPositive() {
@@ -457,7 +458,7 @@ class OperatorOverloadingUnaryOperations {
             println("Object of Point Class without using unary plus operator :: point : $point")
             /* Unary plus operation is not working */
             println("Object of Point Class with unary plus operator :: point : ${+point}")
-            // Note: If you do not define the unaryPlus operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the unaryPlus operator function above, you will get compile time error if you use '+' operator.
         }
 
         private fun convertIntegerToNegative() {
@@ -466,7 +467,16 @@ class OperatorOverloadingUnaryOperations {
             println("Object of Point Class without using unary minus operator :: point : $point")
             // Unary Minus Operation is Working
             println("Object of Point Class with unary minus operator :: point : ${-point}")
-            // Note: If you do not define the unaryMinus operator function above, you will get compile time error if you use this operator.
+            // Note: If you do not define the unaryMinus operator function above, you will get compile time error if you use '-' operator.
+        }
+
+        private fun invertBooleanValue() {
+            operator fun Confirm.not() = Confirm(!isValidMobile, !isValidOtp)
+            val confirmObject = Confirm(isValidMobile = true, isValidOtp = false)
+            println("Object of Confirm Class without using unary not operator :: confirmObject : $confirmObject")
+            // Unary Not Operation is Working
+            println("Object of Confirm Class using unary not operator :: confirmObject : ${!confirmObject}")
+            // Note: If you do not define the unary not operator function above, you will get compile time error if you use '!' operator.
         }
         /*
         * Output
@@ -474,6 +484,8 @@ class OperatorOverloadingUnaryOperations {
         * Object of Point Class with unary plus operator :: point : Point(x=-10, y=-3)
         * Object of Point Class without using unary minus operator :: point : Point(x=10, y=3)
         * Object of Point Class with unary minus operator :: point : Point(x=-10, y=-3)
+        * Object of Confirm Class without using unary not operator :: confirmObject : Confirm(isValidMobile=true, isValidOtp=false)
+        * Object of Confirm Class using unary not operator :: confirmObject : Confirm(isValidMobile=false, isValidOtp=true)
         * */
     }
 }
