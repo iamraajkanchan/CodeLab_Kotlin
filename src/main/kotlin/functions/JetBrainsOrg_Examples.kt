@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.asFlow
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
+import java.util.concurrent.locks.Condition
 import kotlin.collections.ArrayList
 
 /**
@@ -622,5 +623,49 @@ class OperatorOverloadingInOperations {
     * Output
     * Result of contains operator function on object of TempClass :: true
     * Result of not contains operator function on object of TempClass :: false
+    * */
+}
+
+/**
+ * Operator Overloading - Binary Operations - Equality and Inequality Operators
+ * Please refer this resource
+ * https://www.codingame.com/playgrounds/6847/kotlin-operator-overloading
+ * */
+class OperatorOverloadingWithEqualityInequality {
+    data class Person(val name: String) {
+        override fun equals(other: Any?): Boolean {
+            if (other == null || other !is Person || name != other.name) {
+                return false
+            }
+            return true
+        }
+
+        override fun hashCode(): Int {
+            return name.hashCode()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val john = Person("John")
+            val sara = Person("Sara")
+            val isJohnAndSaraEqualDoubleEqual = john == sara
+            println("Is John and Sara equal using == operator? : $isJohnAndSaraEqualDoubleEqual")
+            val isJohnAndSaraEqualTripleEqual = john === sara
+            println("Is John and Sara equal using === operator? : $isJohnAndSaraEqualTripleEqual")
+            val john2 = Person("John")
+            val isJohnAndJohn2EqualDoubleEqual = john == john2
+            println("Is John and John2 equal using == operator? : $isJohnAndJohn2EqualDoubleEqual")
+            val isJohnAndJohn2EqualTripleEqual = john === john2
+            println("Is John and John2 equal using === operator? : $isJohnAndJohn2EqualTripleEqual")
+        }
+    }
+    /*
+    * Output
+    * Is John and Sara equal using == operator? : false
+    * Is John and Sara equal using === operator? : false
+    * Is John and John2 equal using == operator? : true
+    * Is John and John2 equal using === operator? : false
     * */
 }
