@@ -1,12 +1,12 @@
 package functions
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
-import java.util.concurrent.locks.Condition
-import kotlin.collections.ArrayList
 
 /**
  * Functions - Default arguments
@@ -668,4 +668,54 @@ class OperatorOverloadingWithEqualityInequality {
     * Is John and John2 equal using == operator? : true
     * Is John and John2 equal using === operator? : false
     * */
+
+    class ConversionHexToStringAndViceVersa() {
+        companion object {
+            @JvmStatic
+            fun main(args: Array<String>) {
+                println("Conversion of AG/SIS/0C4328CE-A8EB-4F79-891E-8749268F0F86/JS006580/0000000000000")
+                println(convertHexToString(convertStringToHex("AG/SIS/0C4328CE-A8EB-4F79-891E-8749268F0F86/JS006580/0000000000000").also { println("$it length ${it.length}") }))
+                println(convertHexToString("41472F5349532F3145433445"))
+                println(isDecimal("104"))
+            }
+
+            private fun convertStringToHex(stringData: String): String {
+                val sb = StringBuffer()
+                val charArray: CharArray = stringData.toCharArray()
+                for (i in stringData.indices) {
+                    val hexString = Integer.toHexString(charArray[i].code)
+                    sb.append(hexString)
+                }
+                return sb.toString()
+            }
+
+            private fun convertHexToString(stringData: String): String {
+                var result = ""
+                val charArray: CharArray = stringData.toCharArray()
+                var i = 0
+                while (i < charArray.size) {
+                    val st = "" + charArray[i].toString() + "" + charArray[i + 1]
+                    val ch = st.toInt(16).toChar()
+                    result += ch
+                    i += 2
+                }
+                return result
+            }
+
+            private fun isDecimal(var0: String): Boolean {
+                val var1 = var0.length
+                var var3: Int
+                var var2 = 0
+                while (var2 < var1) {
+                    var3 = var2 + 1
+                    var var4: Char
+                    if (var0[var2].also { var4 = it } < '0' || var4 > '9') {
+                        return false
+                    }
+                    var2 = var3
+                }
+                return true
+            }
+        }
+    }
 }
