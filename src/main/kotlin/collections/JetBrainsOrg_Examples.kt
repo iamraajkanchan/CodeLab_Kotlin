@@ -358,3 +358,40 @@ class ShuffleCollectionItemsOfList {
         }
     }
 }
+
+/**
+ * DifferenceBetweenMapAndHashMap - My Personal Example
+ * */
+
+class DifferenceBetweenMapAndHashMap {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val employeeMap = mutableMapOf<String, String>().apply {
+                put("Yes Bank", "Pruthviraj")
+                put("FSS", "Pruthviraj")
+                put("Vodafone", "Pruthviraj")
+                put("Airtel", "Pruthviraj")
+            }
+            for (employee in employeeMap) {
+                println("Key: ${employee.key} Value: ${employee.value}")
+            }
+            println("Employee working in Yes Bank is ${employeeMap["Yes Bank"]}")
+            val employeeHashMap = hashMapOf(
+                Pair("Mobicule", "Pruthviraj"),
+                Pair("Mobicule", "Aakash"),
+                Pair("Mobicule", "Virant"),
+                Pair("FSS", "Raj"),
+                Pair("FSS", "Zaid")
+            )
+        }
+    }
+    /*
+    * Output
+    * Key: Yes Bank Value: Pruthviraj
+    * Key: FSS Value: Pruthviraj
+    * Key: Vodafone Value: Pruthviraj
+    * Key: Airtel Value: Pruthviraj
+    * Employee working in Yes Bank is Pruthviraj
+    * */
+}
