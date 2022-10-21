@@ -331,3 +331,30 @@ class BuilderFunctionsForCollections {
     * Build String for a StringBuilder: Welcome To Kotlin 2.0
     * */
 }
+
+/**
+ * ShuffleCollectionItemsOfList - My Personal Example
+ **/
+
+class ShuffleCollectionItemsOfList {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val immutableBrandList = arrayOf("Airtel", "Vodafone", "Jio", "Idea", "Huawei")
+            val immutableBrandListIterator = immutableBrandList.iterator()
+            while (immutableBrandListIterator.hasNext()) {
+                println(immutableBrandListIterator.next())
+            }
+            val customBrandList = mutableListOf<String>()
+            customBrandList.add(immutableBrandList.indexOf("Airtel"), "Huawei")
+            customBrandList.add(immutableBrandList.indexOf("Vodafone"), "Vodafone")
+            customBrandList.add(immutableBrandList.indexOf("Jio"), "Idea")
+            customBrandList.add(immutableBrandList.indexOf("Idea"), "Airtel")
+            customBrandList.add(immutableBrandList.indexOf("Huawei"), "Jio")
+            customBrandList.forEach { println(it) }
+            immutableBrandList.sort()
+            println("ImmutableBrandList")
+            immutableBrandList.forEach { println(it) }
+        }
+    }
+}
