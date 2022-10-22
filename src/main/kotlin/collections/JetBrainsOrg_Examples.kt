@@ -367,7 +367,7 @@ class DifferenceBetweenVariousMaps {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            addSeparator("Map")
+            addSeparatorLabel("Map")
             val employeeMap = mapOf<String, String>(
                 Pair("Yes Bank", "PruthviRaj"),
                 Pair("HDFC Bank", "Abhishek"),
@@ -379,7 +379,7 @@ class DifferenceBetweenVariousMaps {
                 println("Key: ${employee.key} Value: ${employee.value}")
             }
             println("Employee working in Yes Bank is ${employeeMap["Yes Bank"]}")
-            addSeparator("HashMap")
+            addSeparatorLabel("HashMap")
             val employeeHashMap = hashMapOf(
                 Pair("Yes Bank", "PruthviRaj"),
                 Pair("HDFC Bank", "Abhishek"),
@@ -390,7 +390,7 @@ class DifferenceBetweenVariousMaps {
             for (employee in employeeHashMap) {
                 println("Key: ${employee.key} Value: ${employee.value}")
             }
-            addSeparator("LinkedHashMap")
+            addSeparatorLabel("LinkedHashMap")
             val employeeLinkedHashMap = linkedMapOf(
                 Pair("Yes Bank", "PruthviRaj"),
                 Pair("HDFC Bank", "Abhishek"),
@@ -403,12 +403,13 @@ class DifferenceBetweenVariousMaps {
             }
         }
 
-        private fun addSeparator(mapType: String) {
-            repeat(100) {
-                print("-")
-            }
-            println()
+        private fun addSeparatorLabel(mapType: String) {
+            addSeparator()
             println("Example of $mapType")
+            addSeparator()
+        }
+
+        private fun addSeparator() {
             repeat(100) {
                 print("-")
             }
