@@ -363,35 +363,56 @@ class ShuffleCollectionItemsOfList {
  * DifferenceBetweenMapAndHashMap - My Personal Example
  * */
 
-class DifferenceBetweenMapAndHashMap {
+class DifferenceBetweenVariousMaps {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val employeeMap = mutableMapOf<String, String>().apply {
-                put("Yes Bank", "Pruthviraj")
-                put("FSS", "Pruthviraj")
-                put("Vodafone", "Pruthviraj")
-                put("Airtel", "Pruthviraj")
-            }
+            addSeparator("Map")
+            val employeeMap = mapOf<String, String>(
+                Pair("Yes Bank", "PruthviRaj"),
+                Pair("HDFC Bank", "Abhishek"),
+                Pair("Baroda Bank", "Rahul"),
+                Pair("Union Bank", "Supriya"),
+                Pair("SBI Bank", "Neha")
+            )
             for (employee in employeeMap) {
                 println("Key: ${employee.key} Value: ${employee.value}")
             }
             println("Employee working in Yes Bank is ${employeeMap["Yes Bank"]}")
+            addSeparator("HashMap")
             val employeeHashMap = hashMapOf(
-                Pair("Mobicule", "Pruthviraj"),
-                Pair("Mobicule", "Aakash"),
-                Pair("Mobicule", "Virant"),
-                Pair("FSS", "Raj"),
-                Pair("FSS", "Zaid")
+                Pair("Yes Bank", "PruthviRaj"),
+                Pair("HDFC Bank", "Abhishek"),
+                Pair("Baroda Bank", "Rahul"),
+                Pair("Union Bank", "Supriya"),
+                Pair("SBI Bank", "Neha")
             )
+            for (employee in employeeHashMap) {
+                println("Key: ${employee.key} Value: ${employee.value}")
+            }
+            addSeparator("LinkedHashMap")
+            val employeeLinkedHashMap = linkedMapOf(
+                Pair("Yes Bank", "PruthviRaj"),
+                Pair("HDFC Bank", "Abhishek"),
+                Pair("Baroda Bank", "Rahul"),
+                Pair("Union Bank", "Supriya"),
+                Pair("SBI Bank", "Neha")
+            )
+            for (employee in employeeLinkedHashMap) {
+                println("Key: ${employee.key} Value: ${employee.value}")
+            }
+        }
+
+        private fun addSeparator(mapType: String) {
+            repeat(100) {
+                print("-")
+            }
+            println()
+            println("Example of $mapType")
+            repeat(100) {
+                print("-")
+            }
+            println()
         }
     }
-    /*
-    * Output
-    * Key: Yes Bank Value: Pruthviraj
-    * Key: FSS Value: Pruthviraj
-    * Key: Vodafone Value: Pruthviraj
-    * Key: Airtel Value: Pruthviraj
-    * Employee working in Yes Bank is Pruthviraj
-    * */
 }
