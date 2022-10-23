@@ -12,7 +12,7 @@ class ImmutableList<E> {
 
     constructor(initialCapacity: Int) {
         if (initialCapacity > 0) {
-            this.elements = Array(initialCapacity) {_ -> null}
+            this.elements = Array(initialCapacity) { _ -> null }
         } else if (initialCapacity == 0) {
             this.elements = emptyArray()
         } else {
@@ -105,13 +105,19 @@ class ImmutableList<E> {
     override fun toString() = Arrays.toString(elements)
 }
 
-fun main(args: Array<String>) {
-    val immutableList = ImmutableList<String>("A", "B", "C")
-    val modifiedList = immutableList.add("D")
-    println("Initial List - $immutableList")
-    println("List after adding an element - $modifiedList")
+class ImmutableListImplementation {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val immutableList = ImmutableList<String>("A", "B", "C")
+            // Add a new element in an immutable list with the help of a customized add function.
+            val modifiedList = immutableList.add("D")
+            println("Initial List - $immutableList")
+            println("List after adding an element - $modifiedList")
 
-    val list2 = immutableList.set(1, "E")
-    println("Initial List - $immutableList")
-    println("List after replacing an element at 1st index - $list2")
+            val list2 = immutableList.set(1, "E")
+            println("Initial List - $immutableList")
+            println("List after replacing an element at 1st index - $list2")
+        }
+    }
 }
