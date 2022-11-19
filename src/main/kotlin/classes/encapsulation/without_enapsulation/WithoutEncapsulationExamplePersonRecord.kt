@@ -4,7 +4,8 @@ class WithoutEncapsulationExamplePersonRecord {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            var academics: WithoutEncapsulationExamplePersonInAcademics? = null
+            // val office =  WithoutEncapsulationExamplePersonInOffice.getInstance()
+            // It is not feasible to get the instance of office which is defined in WithoutEncapsulationExamplePersonInOffice
         }
     }
 }

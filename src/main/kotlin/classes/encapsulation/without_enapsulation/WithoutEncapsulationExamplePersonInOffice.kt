@@ -1,15 +1,23 @@
 package classes.encapsulation.without_enapsulation
 
 class WithoutEncapsulationExamplePersonInOffice {
+    var christine: WithoutEncapsulationExamplePersonWithRelation? = null
     companion object {
+        private var personInOffice : WithoutEncapsulationExamplePersonInOffice? = null
         @JvmStatic
         fun main(args: Array<String>) {
-            val christine = WithoutEncapsulationExamplePersonWithRelation()
-            christine.fatherName = "Mark Robinson"
-            christine.motherName = "Marry Jane"
-            christine.brotherName = "Tom Holland"
-            christine.sisterName = "Katy Perry"
-            christine.partnerName = "Jack Parser"
+            personInOffice = WithoutEncapsulationExamplePersonInOffice()
+            personInOffice?.christine = WithoutEncapsulationExamplePersonWithRelation().apply {
+                fatherName = "Mark Robinson"
+                motherName = "Marry Jane"
+                brotherName = "Tom Holland"
+                sisterName = "Katy Perry"
+                partnerName = "Jack Parser"
+            }
+            getInstance(personInOffice)
+        }
+        fun getInstance(personInOffice: WithoutEncapsulationExamplePersonInOffice?) : WithoutEncapsulationExamplePersonInOffice? {
+            return personInOffice
         }
     }
 }
