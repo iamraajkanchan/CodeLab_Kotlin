@@ -4,7 +4,7 @@ class WithoutEncapsulationExamplePersonRecord {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            var person: WithoutEncapsulationExamplePersonWithRelation? = null
+            var academics: WithoutEncapsulationExamplePersonInAcademics? = null
         }
     }
 }
