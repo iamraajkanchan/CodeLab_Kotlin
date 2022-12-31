@@ -31,6 +31,9 @@ class CoroutineScopeLaunch {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
+            /**
+             * Note: Do not use Dispatchers.Main - It is meant to use for Android Framework.
+             * */
             CoroutineScope(Dispatchers.Default).launch {
                 val num1 = getValue()
                 val num2 = getValue()
