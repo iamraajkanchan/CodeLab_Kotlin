@@ -10,12 +10,12 @@ class CollectionTypes {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val numbers = mutableListOf<String>("one", "two", "three", "four")
-            for (number in numbers) print("$number ")
+            val numberInStrings = mutableListOf<String>("one", "two", "three", "four")
+            for (number in numberInStrings) print("$number ")
             println()
             println("Adding fine in numbers")
-            numbers.add("five")
-            numbers.forEach { print("$it ") }
+            numberInStrings.add("five")
+            numberInStrings.forEach { print("$it ") }
             println()
         }
     }
